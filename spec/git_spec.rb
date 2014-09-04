@@ -1,4 +1,5 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
+require 'spec_helper'
 require 'between-meals/repo/git'
 require 'between-meals/repo.rb'
 require 'logger'

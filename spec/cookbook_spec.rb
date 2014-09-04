@@ -1,4 +1,5 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
+require 'spec_helper'
 require 'between-meals/changes/change'
 require 'between-meals/changes/cookbook'
 require 'between-meals/changeset'
