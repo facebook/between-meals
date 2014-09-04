@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
     rspec-expectations
     rspec-mocks
   }.each do |dep|
-    s.add_development_dependency gem
+    s.add_development_dependency dep
   end
 end
