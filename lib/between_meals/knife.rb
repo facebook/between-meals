@@ -3,7 +3,7 @@
 require 'json'
 require 'fileutils'
 require 'digest/md5'
-require 'between-meals/util'
+require 'between_meals/util'
 
 module BetweenMeals
   # Knife does not have a usable API for using it as a lib

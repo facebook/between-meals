@@ -1,8 +1,8 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
-require 'between-meals/changes/change'
-require 'between-meals/changes/cookbook'
-require 'between-meals/changes/role'
-require 'between-meals/changes/databag'
+require 'between_meals/changes/change'
+require 'between_meals/changes/cookbook'
+require 'between_meals/changes/role'
+require 'between_meals/changes/databag'
 
 module BetweenMeals
   # Convenience for dealing with changes

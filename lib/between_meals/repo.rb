@@ -22,10 +22,10 @@ module BetweenMeals
     def self.get(type, repo_path, logger)
       case type
       when 'svn'
-        require 'between-meals/repo/svn'
+        require 'between_meals/repo/svn'
         BetweenMeals::Repo::Svn.new(repo_path, logger)
       when 'git'
-        require 'between-meals/repo/git'
+        require 'between_meals/repo/git'
         BetweenMeals::Repo::Git.new(repo_path, logger)
       else
         fail "Do not know repo type #{type}"

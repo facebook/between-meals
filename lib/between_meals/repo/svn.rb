@@ -1,7 +1,7 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
 
-require 'between-meals/repo'
-require 'between-meals/changeset'
+require 'between_meals/repo'
+require 'between_meals/changeset'
 require 'mixlib/shellout'
 
 module BetweenMeals

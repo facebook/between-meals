@@ -2,7 +2,7 @@
 
 require 'rugged'
 require 'mixlib/shellout'
-require 'between-meals/changeset'
+require 'between_meals/changeset'
 
 module BetweenMeals
   # Local checkout wrapper
