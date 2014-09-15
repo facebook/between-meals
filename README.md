@@ -1,5 +1,7 @@
 # Between Meals
 
+[![Build Status](https://travis-ci.org/facebook/between-meals.svg)](http://travis-ci.org/facebook/between-meals)
+
 ## Intro
 Ohai!
 
