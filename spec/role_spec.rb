@@ -15,8 +15,8 @@
 # limitations under the License.
 
 require 'spec_helper'
-require 'between-meals/changes/change'
-require 'between-meals/changes/role'
+require 'between_meals/changes/change'
+require 'between_meals/changes/role'
 require 'logger'
 
 describe BetweenMeals::Changes::Role do

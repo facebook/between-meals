@@ -15,8 +15,8 @@
 # limitations under the License.
 
 require 'spec_helper'
-require 'between-meals/changes/change'
-require 'between-meals/changes/databag'
+require 'between_meals/changes/change'
+require 'between_meals/changes/databag'
 require 'logger'
 
 describe BetweenMeals::Changes::Databag do

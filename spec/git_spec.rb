@@ -15,8 +15,8 @@
 # limitations under the License.
 
 require 'spec_helper'
-require 'between-meals/repo/git'
-require 'between-meals/repo.rb'
+require 'between_meals/repo/git'
+require 'between_meals/repo.rb'
 require 'logger'
 
 describe BetweenMeals::Repo::Git do
