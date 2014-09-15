@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'between-meals/repo'
-require 'between-meals/repo/git'
-require 'between-meals/repo/svn'
+require 'between_meals/repo'
+require 'between_meals/repo/git'
+require 'between_meals/repo/svn'
 
 describe 'BetweenMeals::Repo' do
 

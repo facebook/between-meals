@@ -15,9 +15,9 @@
 # limitations under the License.
 
 require 'spec_helper'
-require 'between-meals/changes/change'
-require 'between-meals/changes/cookbook'
-require 'between-meals/changeset'
+require 'between_meals/changes/change'
+require 'between_meals/changes/cookbook'
+require 'between_meals/changeset'
 require 'logger'
 
 describe BetweenMeals::Changes::Cookbook do
