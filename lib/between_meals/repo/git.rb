@@ -24,10 +24,10 @@ module BetweenMeals
     # Git provider
     class Git < BetweenMeals::Repo
       def setup
-        if File.exists?(File.expand_path(@repo_path))
+        begin
           @repo = Rugged::Repository.new(File.expand_path(@repo_path))
-        else
-          @repo = nil
+        rescue
+          fail "Could not open repo from #{@repo_path}"
         end
         @bin = 'git'
       end
