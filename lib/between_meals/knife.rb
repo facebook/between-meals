@@ -140,7 +140,7 @@ module BetweenMeals
           dbitems = dbs.map do |x|
             File.join(@databag_dir, dbname, "#{x.item}.json")
           end.join(' ')
-          exec!("#{@knife} data bag from file #{dbname} #{dbitems}", @logger)
+          exec!("#{@knife} data bag from file #{dbname} #{dbitems} -c #{config}", @logger)
         end
       end
     end
