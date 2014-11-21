@@ -34,6 +34,10 @@ module BetweenMeals
           re = %r{^#{dir}/([^/]+)/.*}
           debug("[cookbook] Matching #{path} against ^#{re}")
           m = path.match(re)
+          if !m
+            debug("[cookbook] (retry) Matching #{path} against ^#{re}")
+            m = "#{path}/".match(re)
+          end
           next unless m
           info("Cookbook is #{m[1]}")
           return {

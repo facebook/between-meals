@@ -173,7 +173,7 @@ module BetweenMeals
         # X: "unknown" change type (most probably a bug, please report it)
 
         # rubocop:disable MultilineBlockChain
-        changes.lines.map do |line|
+        changes.lines.to_a.reverse.map do |line|
           case line
           when /^A\s+(\S+)$/
             # A path
