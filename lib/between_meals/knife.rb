@@ -30,6 +30,7 @@ module BetweenMeals
       @logger = opts[:logger] || nil
       @user = opts[:user] || ENV['USER']
       @home = opts[:home] || ENV['HOME']
+      @ssl = opts[:ssl] || true
       @host = opts[:host] || 'localhost'
       @port = opts[:port] || 4000
       @config = opts[:config] ||
@@ -122,12 +123,14 @@ module BetweenMeals
     end
 
     def write_user_config
+      scheme = @ssl ? 'https' : 'http'
       cfg = <<-BLOCK
 user = ENV['USER']
 log_level :info
 log_location STDOUT
 node_name user
-chef_server_url "http://#{@host}:#{@port}"
+chef_server_url "#{scheme}://#{@host}:#{@port}"
+ssl_verify_mode :verify_none
 cache_type 'BasicFile'
 client_key '#{@client_key}'
 cache_options(:path => File.expand_path("#{@checksum_dir}"))
