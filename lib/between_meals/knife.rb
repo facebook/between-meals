@@ -30,7 +30,8 @@ module BetweenMeals
       @logger = opts[:logger] || nil
       @user = opts[:user] || ENV['USER']
       @home = opts[:home] || ENV['HOME']
-      @ssl = opts[:ssl] || true
+      # make sure people can pass in false :)
+      @ssl = opts[:ssl].nil? ? true : opts[:ssl] 
       @host = opts[:host] || 'localhost'
       @port = opts[:port] || 4000
       @config = opts[:config] ||
