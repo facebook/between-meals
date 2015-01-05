@@ -84,7 +84,7 @@ module BetweenMeals
       if cookbooks.any?
         cookbooks.each do |cookbook|
           exec!("#{@knife} cookbook delete #{cookbook.name}" +
-                  " --purge --yes -c #{@config}", @logger)
+                  " --purge -a --yes -c #{@config}", @logger)
         end
       end
     end
