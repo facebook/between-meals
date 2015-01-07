@@ -1,13 +1,13 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
 
 # Copyright 2013-present Facebook
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,12 +31,13 @@ module BetweenMeals
       @user = opts[:user] || ENV['USER']
       @home = opts[:home] || ENV['HOME']
       # make sure people can pass in false :)
-      @ssl = opts[:ssl].nil? ? true : opts[:ssl] 
+      @ssl = opts[:ssl].nil? ? true : opts[:ssl]
       @host = opts[:host] || 'localhost'
       @port = opts[:port] || 4000
       @config = opts[:config] ||
         "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
+      @berks = opts[:berks_bin] || 'berks'
       @pem = opts[:pem] ||
         "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
@@ -73,10 +74,34 @@ module BetweenMeals
       exec!("#{@knife} cookbook upload -a -c #{@config}", @logger)
     end
 
+    def berks_cookbook_upload_all
+      @cookbook_dirs.each do |path|
+        Dir.chdir(path)  # http://stackoverflow.com/a/808285/830426
+        cookbook_dirs=Dir["*"].reject{|o| not File.directory?(o)}
+        cookbook_dirs.each do |dir|
+          @logger.warn("Running berkshelf on cookbook: #{dir}")
+          exec!("cd #{path}/#{dir} && #{@berks} install && #{@berks} upload", @logger)
+        end
+      end
+    end
+
     def cookbook_upload(cookbooks)
       if cookbooks.any?
         cookbooks = cookbooks.map { |x| x.name }.join(' ')
         exec!("#{@knife} cookbook upload #{cookbooks} -c #{@config}", @logger)
+      end
+    end
+
+    def berks_cookbook_upload(cookbooks, cookbook_paths)
+      # cookbooks: array
+      # cookbook_paths: array
+      cookbook_paths.each do |path|
+        if cookbooks.any?
+          cookbooks.each do |cb|
+            @logger.warn("Running berkshelf on cookbook: #{cb}")
+            exec!("cd #{path}/#{cb} && #{@berks} upload", @logger)
+          end
+        end
       end
     end
 
