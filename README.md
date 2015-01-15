@@ -1,8 +1,6 @@
 # Between Meals
 
-[![Build Status](https://travis-ci.org/wjimenez5271/between-meals.svg)](https://travis-ci.org/wjimenez5271/between-meals)
-
-A fork of Facebook's [Between Meals](https://github.com/facebook/between-meals)
+[![Build Status](https://travis-ci.org/facebook/between-meals.svg)](http://travis-ci.org/facebook/between-meals)
 
 ## Intro
 Ohai!
@@ -23,3 +21,4 @@ functions.
 * JSON
 * Mixlib::ShellOut
 * Rugged
+
