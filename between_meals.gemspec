@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'between_meals'
-  s.version = '0.0.6'
+  s.version = '0.0.5'
   s.homepage = 'https://github.com/facebook/between-meals'
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = ['README.md', 'LICENSE']
