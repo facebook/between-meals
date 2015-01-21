@@ -76,7 +76,7 @@ module BetweenMeals
 
     def berks_cookbook_upload_all
       @cookbook_dirs.each do |path|
-        cookbooks = Dir['${path}/*'].reject { |o| !File.directory?(o) }
+        cookbooks = Dir["#{path}/*"].select { |o| File.directory?(o) }
         cookbooks.each do |cb|
           @logger.warn("Running berkshelf on cookbook: #{cb}")
           exec!("cd #{path}/#{cb} && #{@berks} install && #{@berks} upload",
