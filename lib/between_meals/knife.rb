@@ -98,9 +98,10 @@ module BetweenMeals
       if cookbooks.any?
         @cookbook_dirs.each do |path|
           cookbooks.each do |cb|
+            next unless File.exists?("#{path}/#{cb}")
             @logger.warn("Running berkshelf on cookbook: #{cb}")
-            exec!("cd #{path}/#{cb} && #{@berks} update", @logger)
-            exec!("cd #{path}/#{cb} && #{@berks} upload", @logger)
+            exec!("cd #{path}/#{cb} && #{@berks} update && #{@berks} upload",
+              @logger)
           end
         end
       end
