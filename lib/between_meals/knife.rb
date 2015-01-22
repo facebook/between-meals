@@ -37,6 +37,7 @@ module BetweenMeals
       @config = opts[:config] ||
         "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
+      @berks = opts[:berks_bin] || 'berks'
       @pem = opts[:pem] ||
         "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
@@ -73,10 +74,36 @@ module BetweenMeals
       exec!("#{@knife} cookbook upload -a -c #{@config}", @logger)
     end
 
+    def berks_cookbook_upload_all
+      @cookbook_dirs.each do |path|
+        cookbooks = Dir["#{path}/*"].select { |o| File.directory?(o) }
+        cookbooks.each do |cb|
+          @logger.warn("Running berkshelf on cookbook: #{cb}")
+          exec!("cd #{path}/#{cb} && #{@berks} install && #{@berks} upload",
+                @logger)
+        end
+      end
+    end
+
     def cookbook_upload(cookbooks)
       if cookbooks.any?
         cookbooks = cookbooks.map { |x| x.name }.join(' ')
         exec!("#{@knife} cookbook upload #{cookbooks} -c #{@config}", @logger)
+      end
+    end
+
+    def berks_cookbook_upload(cookbooks)
+      # cookbooks: array
+      # cookbook_paths: array
+      if cookbooks.any?
+        @cookbook_dirs.each do |path|
+          cookbooks.each do |cb|
+            next unless File.exists?("#{path}/#{cb}")
+            @logger.warn("Running berkshelf on cookbook: #{cb}")
+            exec!("cd #{path}/#{cb} && #{@berks} update && #{@berks} upload",
+              @logger)
+          end
+        end
       end
     end
 
