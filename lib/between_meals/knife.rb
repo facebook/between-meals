@@ -38,6 +38,7 @@ module BetweenMeals
         "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
       @berks = opts[:berks_bin] || 'berks'
+      @berks_config = opts[:berks_config]
       @pem = opts[:pem] ||
         "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
