@@ -76,7 +76,7 @@ module BetweenMeals
     end
 
     def berks_cookbook_upload_all
-      unless @berks_config.nil?
+      if @berks_config
         @berks_config = '--config=' + @berks_config
       end
       @cookbook_dirs.each do |path|
@@ -99,7 +99,7 @@ module BetweenMeals
     def berks_cookbook_upload(cookbooks)
       # cookbooks: array
       # cookbook_paths: array
-      unless @berks_config.nil?
+      if @berks_config
         @berks_config = '--config=' + @berks_config
       end
       if cookbooks.any?
@@ -107,7 +107,7 @@ module BetweenMeals
           cookbooks.each do |cb|
             next unless File.exists?("#{path}/#{cb}")
             @logger.warn("Running berkshelf on cookbook: #{cb}")
-            exec!("cd #{path}/#{cb} && #{@berks} update #{@berks_config} && " \
+            exec!("cd #{path}/#{cb} && #{@berks} update #{@berks_config} && " +
               "#{@berks} upload #{@berks_config}", @logger)
           end
         end
