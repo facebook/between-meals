@@ -38,6 +38,7 @@ module BetweenMeals
         "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
       @berks = opts[:berks_bin] || 'berks'
+      @berks_config = opts[:berks_config]
       @pem = opts[:pem] ||
         "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
@@ -75,12 +76,15 @@ module BetweenMeals
     end
 
     def berks_cookbook_upload_all
+      if @berks_config
+        berks_config = '--config=' + @berks_config
+      end
       @cookbook_dirs.each do |path|
         cookbooks = Dir["#{path}/*"].select { |o| File.directory?(o) }
         cookbooks.each do |cb|
           @logger.warn("Running berkshelf on cookbook: #{cb}")
-          exec!("cd #{path}/#{cb} && #{@berks} install && #{@berks} upload",
-                @logger)
+          exec!("cd #{cb} && #{@berks} install #{berks_config} && " +
+            "#{@berks} upload #{berks_config}", @logger)
         end
       end
     end
@@ -95,13 +99,16 @@ module BetweenMeals
     def berks_cookbook_upload(cookbooks)
       # cookbooks: array
       # cookbook_paths: array
+      if @berks_config
+        berks_config = '--config=' + @berks_config
+      end
       if cookbooks.any?
         @cookbook_dirs.each do |path|
           cookbooks.each do |cb|
             next unless File.exists?("#{path}/#{cb}")
             @logger.warn("Running berkshelf on cookbook: #{cb}")
-            exec!("cd #{path}/#{cb} && #{@berks} update && #{@berks} upload",
-              @logger)
+            exec!("cd #{path}/#{cb} && #{@berks} update #{berks_config} && " +
+              "#{@berks} upload #{berks_config}", @logger)
           end
         end
       end
