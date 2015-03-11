@@ -41,6 +41,9 @@ module BetweenMeals
       when 'git'
         require 'between_meals/repo/git'
         BetweenMeals::Repo::Git.new(repo_path, logger)
+      when 'hg'
+        require 'between_meals/repo/hg'
+        BetweenMeals::Repo::Hg.new(repo_path, logger)
       else
         fail "Do not know repo type #{type}"
       end
