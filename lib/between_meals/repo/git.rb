@@ -124,7 +124,23 @@ module BetweenMeals
         cmd.stdout
       end
 
+      def name
+        _config('user.name')
+      end
+
+      def email
+        _config('user.email')
+      end
+
       private
+
+      def _config key
+        cmd = Mixlib::ShellOut.new("#{@bin} config #{key}")
+        cmd.run_command!
+        cmd.stdout.strip
+      rescue
+        nil
+      end
 
       def check_refs(start_ref, end_ref)
         unless @repo.exists?(start_ref)

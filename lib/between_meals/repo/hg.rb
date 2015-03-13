@@ -97,7 +97,26 @@ module BetweenMeals
         end
       end
 
+      def email
+        _username[2]
+      rescue
+        nil
+      end
+
+      def name
+        _username[1]
+      rescue
+        nil
+      end
+
       private
+
+      def _username
+        s = Mixlib::ShellOut.new(
+          "#{@bin} config ui.username"
+        ).run_command
+        s.stdout.lines.first.strip.match(/^(.*?)(?:\s<(.*)>)?$/)
+      end
 
       def check_refs(start_ref, end_ref)
         s = Mixlib::ShellOut.new(
