@@ -50,89 +50,89 @@ module BetweenMeals
     end
 
     def exists?
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def status
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def setup
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def head_rev
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def head_msg
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def head_msg=
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def head_parents
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def latest_revision
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def create(_url)
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     # Return files changed between two revisions
     def changes(_start_ref, _end_ref)
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def update
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     # Return all files
     def files
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def latest_revision
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def head
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def checkout
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def update
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def last_author
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def last_msg
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def last_msg=
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def name
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
 
     def email
-      fail 'Not implemented'
+      fail "#{__method__} not implemented"
     end
   end
 end
