@@ -126,5 +126,13 @@ module BetweenMeals
     def last_msg=
       fail 'Not implemented'
     end
+
+    def name
+      fail 'Not implemented'
+    end
+
+    def email
+      fail 'Not implemented'
+    end
   end
 end

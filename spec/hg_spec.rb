@@ -24,7 +24,7 @@ describe BetweenMeals::Repo::Hg do
     Logger.new('/dev/null')
   end
 
-  FIXTURES = [
+  examples = [
     {
       :name => 'empty filelists',
       :changes => '',
@@ -81,12 +81,34 @@ describe BetweenMeals::Repo::Hg do
     },
   ]
 
-  FIXTURES.each do |fixture|
+  examples.each do |fixture|
     it "should handle #{fixture[:name]}" do
       BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
-      git = BetweenMeals::Repo::Hg.new('foo', logger)
-      git.send(:parse_status, fixture[:changes]).
+      hg = BetweenMeals::Repo::Hg.new('foo', logger)
+      hg.send(:parse_status, fixture[:changes]).
         should eq(fixture[:result])
+    end
+  end
+
+  examples = [
+    {
+      :config => 'baz <foo@bar.com>',
+      :name=> 'baz',
+      :email => 'foo@bar.com',
+    },
+    {
+      :config => 'bar',
+      :name => 'bar',
+      :email => nil,
+    }
+  ]
+
+  examples.each do |example|
+    it 'should read config' do
+      Mixlib::ShellOut.any_instance.stub(:stdout).and_return(example[:config])
+      hg = BetweenMeals::Repo::Hg.new('foo', logger)
+      hg.email.should eq(example[:email])
+      hg.name.should eq(example[:name])
     end
   end
 
