@@ -136,7 +136,7 @@ module BetweenMeals
 
       def _config key
         cmd = Mixlib::ShellOut.new("#{@bin} config #{key}")
-        cmd.run_command!
+        cmd.run_command
         cmd.stdout.strip
       rescue
         nil
