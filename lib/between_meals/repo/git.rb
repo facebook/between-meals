@@ -58,7 +58,7 @@ module BetweenMeals
       end
 
       def head_parents
-        @repo.head.target.parents
+        @repo.head.target.parents.map {|x| {:rev => x.tree.oid, :time => x.time}}
       end
 
       def checkout(url)

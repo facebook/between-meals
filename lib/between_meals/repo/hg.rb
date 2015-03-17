@@ -50,8 +50,12 @@ module BetweenMeals
       # Return files changed between two revisions
       def changes(start_ref, end_ref)
         check_refs(start_ref, end_ref)
+        cmd = "#{@bin} status --rev #{start_ref}"
+        if end_ref
+          cmd += " --rev #{end_ref}"
+        end
         s = Mixlib::ShellOut.new(
-          "#{@bin} status --rev #{start_ref} --rev #{end_ref}",
+          cmd,
           :cwd => File.expand_path(@repo_path)
         )
         s.run_command.error!
@@ -97,6 +101,38 @@ module BetweenMeals
         end
       end
 
+      def head_parents
+        lines = show.stdout.lines
+        time = lines.select {|line| line.match(/^date:/)}.map {|x| x.match(/^date:\s*(.*)$/)[1]}.first
+        rev = lines.select {|line| line.match(/^changeset:/)}.map {|x| x.match(/^changeset:\s*(.*)$/)[1]}.first
+        [{
+          :time => Time.parse(time),
+          :rev => rev,
+        }]
+      end
+
+      def last_author
+        line = show.stdout.lines.select {|line| line.match(/^user:/)}.first
+        {:email => line.match(/^user:\s*(.*)<(.*)>$/)[2]}
+      rescue
+        nil
+      end
+
+      def last_msg
+        s = Mixlib::ShellOut.new(
+          "#{@bin} log -l 1 --template '{desc}'"
+        ).run_command
+        s.stdout
+      rescue
+        nil
+      end
+
+      def last_msg=(msg)
+        Mixlib::ShellOut.new(
+          "#{@bin} commit --amend -m '#{msg}'"
+        ).run_command
+      end
+
       def email
         _username[2]
       rescue
@@ -110,6 +146,12 @@ module BetweenMeals
       end
 
       private
+
+      def show
+        Mixlib::ShellOut.new(
+          "#{@bin} show"
+        ).run_command
+      end
 
       def _username
         s = Mixlib::ShellOut.new(
