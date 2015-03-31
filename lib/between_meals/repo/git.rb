@@ -63,7 +63,7 @@ module BetweenMeals
 
       def checkout(url)
         s = Mixlib::ShellOut.new(
-          "#{@bin} clone #{url} #{@repo} #{@repo_path}"
+          "#{@bin} clone --recurse-submodules #{url} #{@repo} #{@repo_path}"
         ).run_command
         s.error!
         @repo = Rugged::Repository.new(File.expand_path(@repo_path))
@@ -93,16 +93,21 @@ module BetweenMeals
       end
 
       def update
-        cmd = Mixlib::ShellOut.new(
-          "#{@bin} pull --rebase", :cwd => File.expand_path(@repo_path)
-        )
-        cmd.run_command
-        if cmd.exitstatus != 0
-          @logger.error('Something went wrong with git!')
-          @logger.error(cmd.stdout)
-          fail
+        cmds = ["#{@bin} pull --rebase  --recurse-submodules", "#{@bin} submodule update --init --recursive"]
+        stdout = ""
+        cmds.each do |cmd|
+          cmd = Mixlib::ShellOut.new(
+            "#{@bin} pull --rebase  --recurse-submodules", :cwd => File.expand_path(@repo_path)
+          )
+          cmd.run_command
+          if cmd.exitstatus != 0
+            @logger.error('Something went wrong with git!')
+            @logger.error(cmd.stdout)
+            fail
+          end
+          stdout = stdout + cmd.stdout
         end
-        cmd.stdout
+        stdout
       end
 
       # Return all files
@@ -168,7 +173,7 @@ module BetweenMeals
         # X: "unknown" change type (most probably a bug, please report it)
 
         # rubocop:disable MultilineBlockChain
-        changes.lines.map do |line|
+        changes.lines.to_a.reverse.map do |line|
           case line
           when /^A\s+(\S+)$/
             # A path
