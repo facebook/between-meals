@@ -106,6 +106,7 @@ describe BetweenMeals::Repo::Hg do
   examples.each do |example|
     it 'should read config' do
       Mixlib::ShellOut.any_instance.stub(:stdout).and_return(example[:config])
+      File.should_receive('exist?').and_return(true)
       hg = BetweenMeals::Repo::Hg.new('foo', logger)
       hg.email.should eq(example[:email])
       hg.name.should eq(example[:name])
