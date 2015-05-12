@@ -24,6 +24,7 @@ module BetweenMeals
     # SVN implementation
     class Svn < BetweenMeals::Repo
       def setup
+        fail if File.exists?(File.expand_path(@repo_path + 'hooks'))
         @bin = 'svn'
       end
 
