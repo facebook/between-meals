@@ -18,6 +18,7 @@ require 'pathname'
 require 'mixlib/shellout'
 require 'between_meals/repo/svn'
 require 'between_meals/repo/hg'
+require 'between_meals/repo/git'
 
 module BetweenMeals
   # Local checkout wrapper

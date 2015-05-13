@@ -159,7 +159,7 @@ module BetweenMeals
         )
         cmd.run_command
         if cmd.exitstatus != 0
-          @logger.error('Something went wrong with git!')
+          @logger.error('Something went wrong with hg!')
           @logger.error(cmd.stdout)
           fail
         end
