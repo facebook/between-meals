@@ -22,6 +22,7 @@ module BetweenMeals
   class Repo
     # Hg implementation
     class Hg < BetweenMeals::Repo
+      # see repo.rb for API documentation.
       def setup
         @bin = 'hg'
       end

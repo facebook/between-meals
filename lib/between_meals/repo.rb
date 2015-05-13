@@ -57,6 +57,9 @@ module BetweenMeals
       fail "#{__method__} not implemented"
     end
 
+    # This method *must* succeed in the case of no repo directory so that
+    # users can call `checkout`. Users may call `exists?` to find out if
+    # we have an underlying repo yet.
     def setup
       fail "#{__method__} not implemented"
     end
