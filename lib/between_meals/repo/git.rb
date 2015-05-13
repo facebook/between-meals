@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'openssl'
 require 'rugged'
 require 'mixlib/shellout'
 require 'between_meals/changeset'
