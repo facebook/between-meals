@@ -25,11 +25,8 @@ module BetweenMeals
     class Git < BetweenMeals::Repo
       # see repo.rb for API documentation.
       def setup
-        if File.exists?(File.expand_path(@repo_path))
-          @repo = Rugged::Repository.new(File.expand_path(@repo_path))
-        else
-          @repo = nil
-        end
+        fail unless File.exists?(File.expand_path(@repo_path + '.git'))
+        @repo = Rugged::Repository.new(File.expand_path(@repo_path))
         @bin = 'git'
       end
 

@@ -24,6 +24,7 @@ module BetweenMeals
     class Hg < BetweenMeals::Repo
       # see repo.rb for API documentation.
       def setup
+        fail unless File.exist?(@repo_path + ".hg")
         @bin = 'hg'
       end
 
@@ -114,9 +115,15 @@ module BetweenMeals
 
       def last_author
         line = show.stdout.lines.select {|line| line.match(/^user:/)}.first
-        {:email => line.match(/^user:\s*(.*)<(.*)>$/)[2]}
-      rescue
-        nil
+        begin
+          return {:email => line.match(/^user:\s*.*<(.*)@.*>$/)[1]}
+        rescue
+        end
+        begin
+          return {:email => line.match(/^user:\s*(.*)@.*$/)[1]}
+        rescue
+        end
+        return {:email => ''}
       end
 
       def last_msg
@@ -144,6 +151,20 @@ module BetweenMeals
         _username[1]
       rescue
         nil
+      end
+
+      def status
+        cmd = Mixlib::ShellOut.new(
+          "#{@bin} status 2>&1",
+          :cwd => File.expand_path(@repo_path)
+        )
+        cmd.run_command
+        if cmd.exitstatus != 0
+          @logger.error('Something went wrong with hg!')
+          @logger.error(cmd.stdout)
+          fail
+        end
+        cmd.stdout
       end
 
       private

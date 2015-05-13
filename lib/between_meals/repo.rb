@@ -14,7 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'pathname'
 require 'mixlib/shellout'
+require 'between_meals/repo/svn'
+require 'between_meals/repo/hg'
+require 'between_meals/repo/git'
 
 module BetweenMeals
   # Local checkout wrapper
@@ -28,21 +32,28 @@ module BetweenMeals
       @repo = nil
       @bin = nil
       setup
-    rescue
-      @logger.warn("Unable to read repo from #{File.expand_path(repo_path)}")
-      exit(1)
     end
 
     def self.get(type, repo_path, logger)
+      repo_path = ::Pathname.new(repo_path).realpath
       case type
+      when 'auto'
+        [
+          BetweenMeals::Repo::Git,
+          BetweenMeals::Repo::Hg,
+          BetweenMeals::Repo::Svn,
+        ].each do |repo|
+          begin
+            return repo.new(repo_path, logger)
+          rescue
+          end
+        end
+        fail "Could not determine repo type"
       when 'svn'
-        require 'between_meals/repo/svn'
         BetweenMeals::Repo::Svn.new(repo_path, logger)
       when 'git'
-        require 'between_meals/repo/git'
         BetweenMeals::Repo::Git.new(repo_path, logger)
       when 'hg'
-        require 'between_meals/repo/hg'
         BetweenMeals::Repo::Hg.new(repo_path, logger)
       else
         fail "Do not know repo type #{type}"
