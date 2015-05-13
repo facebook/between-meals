@@ -23,6 +23,7 @@ module BetweenMeals
   class Repo
     # SVN implementation
     class Svn < BetweenMeals::Repo
+      # see repo.rb for API documentation.
       def setup
         @bin = 'svn'
       end
