@@ -104,8 +104,8 @@ module BetweenMeals
 
       def head_parents
         lines = show.stdout.lines
-        time = lines.select {|line| line.match(/^date:/)}.map {|x| x.match(/^date:\s*(.*)$/)[1]}.first
-        rev = lines.select {|line| line.match(/^changeset:/)}.map {|x| x.match(/^changeset:\s*(.*)$/)[1]}.first
+        time = lines.select {|line| line.match(/^# Date/)}.map {|x| x.match(/^# Date\s*(.*)$/)[1]}.first
+        rev = lines.select {|line| line.match(/^# Node ID/)}.map {|x| x.match(/^# Node ID\s*(.*)$/)[1]}.first
         [{
           :time => Time.parse(time),
           :rev => rev,
@@ -113,8 +113,8 @@ module BetweenMeals
       end
 
       def last_author
-        line = show.stdout.lines.select {|line| line.match(/^user:/)}.first
-        {:email => line.match(/^user:\s*(.*)<(.*)>$/)[2]}
+        line = show.stdout.lines.select {|line| line.match(/^# User/)}.first
+        {:email => line.match(/^# User\s*(.*)<(.*)>$/)[2]}
       rescue
         nil
       end
@@ -150,7 +150,7 @@ module BetweenMeals
 
       def show
         Mixlib::ShellOut.new(
-          "#{@bin} show"
+          "#{@bin} export"
         ).run_command
       end
 
