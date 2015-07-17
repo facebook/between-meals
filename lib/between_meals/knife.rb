@@ -1,13 +1,13 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
 
 # Copyright 2013-present Facebook
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,16 +31,16 @@ module BetweenMeals
       @user = opts[:user] || ENV['USER']
       @home = opts[:home] || ENV['HOME']
       # make sure people can pass in false :)
-      @ssl = opts[:ssl].nil? ? true : opts[:ssl] 
+      @ssl = opts[:ssl].nil? ? true : opts[:ssl]
       @host = opts[:host] || 'localhost'
       @port = opts[:port] || 4000
       @config = opts[:config] ||
-        "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
+                "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
       @berks = opts[:berks_bin] || 'berks'
       @berks_config = opts[:berks_config]
       @pem = opts[:pem] ||
-        "#{@home}/.chef/#{@user}-taste-tester.pem"
+             "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
       @cookbook_dirs = opts[:cookbook_dirs]
       @databag_dir = opts[:databag_dir]
@@ -91,7 +91,7 @@ module BetweenMeals
 
     def cookbook_upload(cookbooks)
       if cookbooks.any?
-        cookbooks = cookbooks.map { |x| x.name }.join(' ')
+        cookbooks = cookbooks.map(&:name).join(' ')
         exec!("#{@knife} cookbook upload #{cookbooks} -c #{@config}", @logger)
       end
     end
@@ -135,7 +135,7 @@ module BetweenMeals
 
     def databag_upload(databags)
       if databags.any?
-        databags.group_by { |x| x.name }.each do |dbname, dbs|
+        databags.group_by(&:name).each do |dbname, dbs|
           create_databag_if_missing(dbname)
           dbitems = dbs.map do |x|
             File.join(@databag_dir, dbname, "#{x.item}.json")
@@ -150,7 +150,7 @@ module BetweenMeals
 
     def databag_delete(databags)
       if databags.any?
-        databags.group_by { |x| x.name }.each do |dbname, dbs|
+        databags.group_by(&:name).each do |dbname, dbs|
           dbs.each do |db|
             exec!("#{@knife} data bag delete #{dbname} #{db.item}" +
                     " --yes -c #{@config}", @logger)
@@ -183,7 +183,7 @@ BLOCK
       end
       if !File.exists?(@config) ||
          ::Digest::MD5.hexdigest(cfg) !=
-          ::Digest::MD5.hexdigest(File.read(@config))
+         ::Digest::MD5.hexdigest(File.read(@config))
         @logger.info("Generating #{@config}")
         File.write(@config, cfg)
       end
