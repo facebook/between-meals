@@ -1,13 +1,13 @@
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
 
 # Copyright 2013-present Facebook
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -146,7 +146,7 @@ module BetweenMeals
 
       private
 
-      def template t
+      def template(t)
         s = Mixlib::ShellOut.new(
           "#{@bin} log -l 1 -T '{#{t}}'"
         ).run_command
@@ -162,15 +162,15 @@ module BetweenMeals
 
       def check_refs(start_ref, end_ref)
         s = Mixlib::ShellOut.new(
-              "#{@bin} log -r #{start_ref}",
-              :cwd => @repo_path
-            ).run_command
+          "#{@bin} log -r #{start_ref}",
+          :cwd => @repo_path
+        ).run_command
         s.error!
         if end_ref
           s = Mixlib::ShellOut.new(
-                "#{@bin} log -r #{end_ref}",
-                :cwd => @repo_path
-              ).run_command
+            "#{@bin} log -r #{end_ref}",
+            :cwd => @repo_path
+          ).run_command
           s.error!
         end
       rescue

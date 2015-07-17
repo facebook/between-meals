@@ -1,0 +1,99 @@
+#AllCops:
+#  Include:
+#    - '**/{fb,ig}_*/**'
+#  Exclude:
+#    - '**/metadata.rb'
+
+#
+# Disabled rules
+#
+
+Encoding:
+  Enabled: false
+
+NumericLiterals:
+  Enabled: false
+
+MultilineTernaryOperator:
+  Enabled: false
+
+ModuleLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+Next:
+  Enabled: false
+
+GuardClause:
+  Enabled: false
+
+AbcSize:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+PerlBackrefs:
+  Enabled: false
+
+BlockNesting:
+  Enabled: false
+
+BracesAroundHashParameters:
+  Enabled: false
+
+WordArray:
+  Enabled: false
+
+RedundantReturn:
+  Enabled: false
+
+RedundantSelf:
+  Enabled: false
+
+CommentAnnotation:
+  Enabled: false
+
+AccessorMethodName:
+  Enabled: false
+
+LineEndConcatenation:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  Enabled: false
+
+DeprecatedClassMethods:
+  Enabled: false
+
+FileName:
+  Enabled: false
+
+PerceivedComplexity:
+  Enabled: false
+
+TrailingComma:
+  Enabled: false
+
+UnneededDisable:
+  Enabled: false
+
+#
+# Modified rules
+#
+LineLength:
+  Max: 80
+
+DotPosition:
+  EnforcedStyle: trailing
+
+HashSyntax:
+  EnforcedStyle: hash_rockets
