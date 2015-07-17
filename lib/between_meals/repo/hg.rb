@@ -103,27 +103,25 @@ module BetweenMeals
       end
 
       def head_parents
-        lines = show.stdout.lines
-        time = lines.select {|line| line.match(/^# Date/)}.map {|x| x.match(/^# Date\s*(.*)$/)[1]}.first
-        rev = lines.select {|line| line.match(/^# Node ID/)}.map {|x| x.match(/^# Node ID\s*(.*)$/)[1]}.first
         [{
-          :time => Time.parse(time),
-          :rev => rev,
+          :time => Time.parse(template('date|isodate')),
+          :rev => template('node'),
+        }]
+      rescue
+        [{
+          :time => nil,
+          :rev => nil,
         }]
       end
 
       def last_author
-        line = show.stdout.lines.select {|line| line.match(/^# User/)}.first
-        {:email => line.match(/^# User\s*(.*)<(.*)>$/)[2]}
+        { :email => template('author').match(/^(.*)<(.*)>$/)[2] }
       rescue
-        nil
+        { :email => nil }
       end
 
       def last_msg
-        s = Mixlib::ShellOut.new(
-          "#{@bin} log -l 1 --template '{desc}'"
-        ).run_command
-        s.stdout
+        template('desc')
       rescue
         nil
       end
@@ -148,10 +146,11 @@ module BetweenMeals
 
       private
 
-      def show
-        Mixlib::ShellOut.new(
-          "#{@bin} export"
+      def template t
+        s = Mixlib::ShellOut.new(
+          "#{@bin} log -l 1 -T '{#{t}}'"
         ).run_command
+        s.stdout
       end
 
       def _username
