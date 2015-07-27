@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
     rspec-core
     rspec-expectations
     rspec-mocks
+    rubocop
   }.each do |dep|
     s.add_development_dependency dep
   end
