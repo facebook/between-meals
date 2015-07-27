@@ -19,8 +19,8 @@ require 'between_meals/repo/git'
 require 'between_meals/repo/svn'
 
 describe 'BetweenMeals::Repo' do
-  let (:class_interface) { BetweenMeals::Repo.public_methods.sort }
-  let (:instance_interface) { BetweenMeals::Repo.instance_methods.sort }
+  let(:class_interface) { BetweenMeals::Repo.public_methods.sort }
+  let(:instance_interface) { BetweenMeals::Repo.instance_methods.sort }
 
   # Misc Repos should not expose anything more than parent class,
   # which default to 'Not implemented'
