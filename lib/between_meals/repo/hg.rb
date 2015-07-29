@@ -115,9 +115,14 @@ module BetweenMeals
       end
 
       def last_author
-        { :email => template('author').match(/^(.*)<(.*)>$/)[2] }
-      rescue
-        { :email => nil }
+        [
+          /^.*<(.*)>$/,
+          /^(.*@.*)$/,
+        ].each do |re|
+          m = template('author').match(re)
+          return { :email => m[1] } if m
+        end
+        return { :email => nil }
       end
 
       def last_msg
@@ -142,6 +147,15 @@ module BetweenMeals
         _username[1]
       rescue
         nil
+      end
+
+      def status
+        s = Mixlib::ShellOut.new(
+          "#{@bin} status",
+          :cwd => File.expand_path(@repo_path)
+        ).run_command
+        return nil if s.error
+        s.stdout
       end
 
       private
