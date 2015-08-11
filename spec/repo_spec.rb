@@ -24,7 +24,11 @@ describe 'BetweenMeals::Repo' do
 
   # Misc Repos should not expose anything more than parent class,
   # which default to 'Not implemented'
-  [BetweenMeals::Repo::Git, BetweenMeals::Repo::Svn].each do |klass|
+  [
+    BetweenMeals::Repo::Git,
+    BetweenMeals::Repo::Svn,
+    BetweenMeals::Repo::Hg,
+  ].each do |klass|
     it "#{klass} should conform to BetweenMeals::Repo class interface" do
       klass.public_methods.sort.should eq(class_interface)
     end

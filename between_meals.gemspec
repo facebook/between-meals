@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = 'Library for calculation Chef differences between revisions'
   s.authors = ['Phil Dibowitz', 'Marcin Sawicki']
   s.files = %w{README.md LICENSE} + Dir.glob('lib/between_meals/*.rb') +
-    Dir.glob('lib/between_meals/{changes,repo}/*.rb')
+    Dir.glob('lib/between_meals/**/*.rb')
   s.license = 'Apache'
   %w{
     colorize
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     rspec-expectations
     rspec-mocks
     rubocop
+    simplecov
   }.each do |dep|
     s.add_development_dependency dep
   end

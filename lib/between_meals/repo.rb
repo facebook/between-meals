@@ -151,5 +151,13 @@ module BetweenMeals
     def email
       fail "#{__method__} not implemented"
     end
+
+    def upstream?(_rev)
+      fail "#{__method__} not implemented"
+    end
+
+    def valid_ref?(_rev)
+      fail "#{__method__} not implemented"
+    end
   end
 end

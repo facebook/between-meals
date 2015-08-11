@@ -1,3 +1,5 @@
+# vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
+
 # Copyright 2013-present Facebook
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'simplecov'
-SimpleCov.start do
-  add_filter '.bundle'
-  add_filter 'spec'
-end
+module BetweenMeals
+  class Cmd
+    def initialize(params)
+      @bin = params[:bin] || fail
+      @cwd = params[:cwd] || Dir.pwd
+    end
 
-RSpec.configure do |config|
-  config.expect_with :rspec do |c|
-    c.syntax = :should
-  end
-  config.mock_with :rspec do |c|
-    c.syntax = :should
+    def cmd(params, cwd = nil)
+      unless cwd
+        cwd = File.expand_path(@cwd)
+      end
+      cmd = "#{@bin} #{params}"
+      c = Mixlib::ShellOut.new(
+        cmd,
+        :cwd => cwd
+      )
+      c.run_command
+      c.error!
+      c
+    end
   end
 end

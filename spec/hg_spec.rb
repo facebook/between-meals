@@ -100,12 +100,20 @@ describe BetweenMeals::Repo::Hg do
       :config => 'bar',
       :name => 'bar',
       :email => nil,
-    }
+    },
+    {
+      :config => '',
+      :name => nil,
+      :email => nil,
+    },
   ]
 
   examples.each do |example|
     it 'should read config' do
-      Mixlib::ShellOut.any_instance.stub(:stdout).and_return(example[:config])
+      cmd = double(Mixlib::ShellOut)
+      cmd.stub(:stdout).and_return(example[:config])
+      BetweenMeals::Cmd.any_instance.stub(:cmd).and_return(cmd)
+
       hg = BetweenMeals::Repo::Hg.new('foo', logger)
       hg.email.should eq(example[:email])
       hg.name.should eq(example[:name])

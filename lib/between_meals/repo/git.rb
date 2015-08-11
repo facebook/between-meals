@@ -20,13 +20,11 @@ require 'openssl'
 require 'rugged'
 require 'mixlib/shellout'
 require 'between_meals/changeset'
+require 'between_meals/repo/git/cmd'
 
 module BetweenMeals
-  # Local checkout wrapper
   class Repo
-    # Git provider
     class Git < BetweenMeals::Repo
-      # see repo.rb for API documentation.
       def setup
         if File.exists?(File.expand_path(@repo_path))
           begin
@@ -38,6 +36,10 @@ module BetweenMeals
           @repo = nil
         end
         @bin = 'git'
+        @cmd = BetweenMeals::Repo::Git::Cmd.new(
+          :bin => @bin,
+          :cwd => @repo_path,
+        )
       end
 
       def exists?
@@ -72,30 +74,24 @@ module BetweenMeals
       end
 
       def checkout(url)
-        s = Mixlib::ShellOut.new(
-          "#{@bin} clone #{url} #{@repo} #{@repo_path}"
-        ).run_command
-        s.error!
+        @cmd.clone(url, @repo_path)
         @repo = Rugged::Repository.new(File.expand_path(@repo_path))
       end
 
       # Return files changed between two revisions
       def changes(start_ref, end_ref)
-        check_refs(start_ref, end_ref)
-        s = Mixlib::ShellOut.new(
-          "#{@bin} diff --name-status #{start_ref} #{end_ref}",
-          :cwd => File.expand_path(@repo_path)
-        )
-        s.run_command.error!
+        valid_ref?(start_ref)
+        valid_ref?(end_ref)
+        stdout = @cmd.diff(start_ref, end_ref).stdout
         begin
-          parse_status(s.stdout).compact
+          parse_status(stdout).compact
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
             'Something went wrong. Please please report this output.'
           )
           @logger.error(e)
-          s.stdout.lines.each do |line|
+          stdout.lines.each do |line|
             @logger.error(line.strip)
           end
           exit(1)
@@ -103,16 +99,7 @@ module BetweenMeals
       end
 
       def update
-        cmd = Mixlib::ShellOut.new(
-          "#{@bin} pull --rebase", :cwd => File.expand_path(@repo_path)
-        )
-        cmd.run_command
-        if cmd.exitstatus != 0
-          @logger.error('Something went wrong with git!')
-          @logger.error(cmd.stdout)
-          fail
-        end
-        cmd.stdout
+        @cmd.pull.stdout
       end
 
       # Return all files
@@ -120,48 +107,36 @@ module BetweenMeals
         @repo.index.map { |x| { :path => x[:path], :status => :created } }
       end
 
-      def status
-        cmd = Mixlib::ShellOut.new(
-          "#{@bin} status --porcelain 2>&1",
-          :cwd => File.expand_path(@repo_path)
-        )
-        cmd.run_command
-        if cmd.exitstatus != 0
-          @logger.error('Something went wrong with git!')
-          @logger.error(cmd.stdout)
-          fail
+      def upstream?(rev, master = 'remotes/trunk')
+        if @cmd.merge_base(rev, master).stdout.strip == rev
+          return true
         end
-        cmd.stdout
+        return false
+      rescue
+        return false
+      end
+
+      def status
+        @cmd.status.stdout.strip
       end
 
       def name
-        _config('user.name')
+        @cmd.config('user.name').stdout.strip
       end
 
       def email
-        _config('user.email')
+        @cmd.config('user.email').stdout.strip
       end
 
-      private
-
-      def _config(key)
-        cmd = Mixlib::ShellOut.new("#{@bin} config #{key}")
-        cmd.run_command
-        cmd.stdout.strip
-      rescue
-        nil
-      end
-
-      def check_refs(start_ref, end_ref)
-        unless @repo.exists?(start_ref)
-          fail Changeset::ReferenceError
-        end
-        unless end_ref.nil?
-          unless @repo.exists?(end_ref)
+      def valid_ref?(ref)
+        unless ref.nil?
+          unless @repo.exists?(ref)
             fail Changeset::ReferenceError
           end
         end
       end
+
+      private
 
       def parse_status(changes)
         # man git-diff-files
