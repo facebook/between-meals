@@ -50,8 +50,10 @@ module BetweenMeals
     end
 
     def role_upload_all
-      roles = File.join(@role_dir, '*.rb')
-      exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
+      if File.exists?(@role_dir)
+        roles = File.join(@role_dir, '*.rb')
+        exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
+      end
     end
 
     def role_upload(roles)
