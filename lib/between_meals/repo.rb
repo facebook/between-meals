@@ -20,7 +20,7 @@ module BetweenMeals
   # Local checkout wrapper
   class Repo
     attr_reader :repo_path
-    attr_writer :bin
+    attr_accessor :bin
 
     def initialize(repo_path, logger)
       @repo_path = repo_path
@@ -35,6 +35,28 @@ module BetweenMeals
 
     def self.get(type, repo_path, logger)
       case type
+      when 'auto'
+        logger.info('Trying to detect your repo type')
+        require 'between_meals/repo/git'
+        require 'between_meals/repo/hg'
+        require 'between_meals/repo/svn'
+        [
+          BetweenMeals::Repo::Git,
+          BetweenMeals::Repo::Hg,
+          BetweenMeals::Repo::Svn,
+        ].each do |klass|
+          begin
+            r = klass.new(repo_path, logger)
+            if r.exists?
+              logger.info("Repo found to be #{klass.to_s.split('::').last}")
+              return r
+            end
+          rescue
+            logger.debug("Skipping #{klass}")
+          end
+        end
+        logger.info('Failed detecting repo type')
+        exit(1)
       when 'svn'
         require 'between_meals/repo/svn'
         BetweenMeals::Repo::Svn.new(repo_path, logger)

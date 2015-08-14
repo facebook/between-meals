@@ -29,7 +29,11 @@ module BetweenMeals
       # see repo.rb for API documentation.
       def setup
         if File.exists?(File.expand_path(@repo_path))
-          @repo = Rugged::Repository.new(File.expand_path(@repo_path))
+          begin
+            @repo = Rugged::Repository.new(File.expand_path(@repo_path))
+          rescue
+            @repo = nil
+          end
         else
           @repo = nil
         end
@@ -37,7 +41,7 @@ module BetweenMeals
       end
 
       def exists?
-        @repo && !@repo.empty?
+        !@repo.nil?
       end
 
       def head_rev
