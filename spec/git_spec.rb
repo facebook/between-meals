@@ -91,4 +91,11 @@ EOS
         should eq(fixture[:result])
     end
   end
+  it 'should handle malformed output' do
+    BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
+    git = BetweenMeals::Repo::Git.new('foo', logger)
+    lambda do
+      git.send(:parse_status, 'HGFS djs/ dsd)')
+    end.should raise_error('No match')
+  end
 end

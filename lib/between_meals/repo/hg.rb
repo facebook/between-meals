@@ -16,15 +16,17 @@
 
 require 'mixlib/shellout'
 require 'between_meals/changeset'
+require 'between_meals/repo/hg/cmd'
 
 module BetweenMeals
-  # Local checkout wrapper
   class Repo
-    # Hg implementation
     class Hg < BetweenMeals::Repo
-      # see repo.rb for API documentation.
       def setup
         @bin = 'hg'
+        @cmd = BetweenMeals::Repo::Hg::Cmd.new(
+          :bin => @bin,
+          :cwd => @repo_path,
+        )
       end
 
       def exists?
@@ -32,42 +34,27 @@ module BetweenMeals
       end
 
       def head_rev
-        s = Mixlib::ShellOut.new(
-          "#{@bin} log -r . -T '{node}'",
-          :cwd => File.expand_path(@repo_path)
-        ).run_command
-        s.error!
-        s.stdout
+        @cmd.log('node').stdout
       end
 
       def checkout(url)
-        s = Mixlib::ShellOut.new(
-          "#{@bin} clone #{url} #{@repo_path}"
-        ).run_command
-        s.error!
+        @cmd.clone(url, @repo_path)
       end
 
       # Return files changed between two revisions
       def changes(start_ref, end_ref)
-        check_refs(start_ref, end_ref)
-        cmd = "#{@bin} status --rev #{start_ref}"
-        if end_ref
-          cmd += " --rev #{end_ref}"
-        end
-        s = Mixlib::ShellOut.new(
-          cmd,
-          :cwd => File.expand_path(@repo_path)
-        )
-        s.run_command.error!
+        valid_ref?(start_ref)
+        valid_ref?(end_ref)
+        stdout = @cmd.status(start_ref, end_ref).stdout
         begin
-          parse_status(s.stdout).compact
+          parse_status(stdout).compact
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
             'Something went wrong. Please please report this output.'
           )
           @logger.error(e)
-          s.stdout.lines.each do |line|
+          stdout.lines.each do |line|
             @logger.error(line.strip)
           end
           exit(1)
@@ -75,36 +62,24 @@ module BetweenMeals
       end
 
       def update
-        cmd = Mixlib::ShellOut.new(
-          "#{@bin} pull --rebase",
-          :cwd => File.expand_path(@repo_path)
-        )
-        cmd.run_command
-        if cmd.exitstatus != 0
-          @logger.error('Something went wrong with hg!')
-          @logger.error(cmd.stdout)
-          fail
-        end
-        cmd.stdout
+        @cmd.pull.stdout
+      rescue
+        @logger.error('Something went wrong with hg!')
+        @logger.error(cmd.stdout)
+        raise
       end
 
       # Return all files
       def files
-        s = Mixlib::ShellOut.new(
-          "#{@bin} manifest",
-          :cwd => @repo_path
-        )
-        s.run_command
-        s.error!
-        s.stdout.split("\n").map do |x|
+        @cmd.manifest.stdout.split("\n").map do |x|
           { :path => x, :status => :created }
         end
       end
 
       def head_parents
         [{
-          :time => Time.parse(template('date|isodate')),
-          :rev => template('node'),
+          :time => Time.parse(@cmd.log('date|isodate')),
+          :rev => @cmd.log('node'),
         }]
       rescue
         [{
@@ -118,76 +93,56 @@ module BetweenMeals
           /^.*<(.*)>$/,
           /^(.*@.*)$/,
         ].each do |re|
-          m = template('author').match(re)
+          m = @cmd.log('author').stdout.match(re)
           return { :email => m[1] } if m
         end
         return { :email => nil }
       end
 
       def last_msg
-        template('desc')
+        @cmd.log('desc').stdout
       rescue
         nil
       end
 
       def last_msg=(msg)
-        Mixlib::ShellOut.new(
-          "#{@bin} commit --amend -m '#{msg}'"
-        ).run_command
+        @cmd.amend(msg)
       end
 
       def email
-        _username[2]
+        username[2]
       rescue
         nil
       end
 
       def name
-        _username[1]
+        username[1]
       rescue
         nil
       end
 
       def status
-        s = Mixlib::ShellOut.new(
-          "#{@bin} status",
-          :cwd => File.expand_path(@repo_path)
-        ).run_command
-        return nil if s.error
-        s.stdout
+        @cmd.status.stdout
+      end
+
+      def upstream?(rev)
+        if @cmd.rev("ancestor(master,#{rev}) & #{rev}").stdout.empty?
+          return true
+        else
+          return false
+        end
+      end
+
+      def valid_ref?(ref)
+        @cmd.log(ref)
+      rescue
+        raise Changeset::ReferenceError
       end
 
       private
 
-      def template(t)
-        s = Mixlib::ShellOut.new(
-          "#{@bin} log -l 1 -T '{#{t}}'"
-        ).run_command
-        s.stdout
-      end
-
-      def _username
-        s = Mixlib::ShellOut.new(
-          "#{@bin} config ui.username"
-        ).run_command
-        s.stdout.lines.first.strip.match(/^(.*?)(?:\s<(.*)>)?$/)
-      end
-
-      def check_refs(start_ref, end_ref)
-        s = Mixlib::ShellOut.new(
-          "#{@bin} log -r #{start_ref}",
-          :cwd => @repo_path
-        ).run_command
-        s.error!
-        if end_ref
-          s = Mixlib::ShellOut.new(
-            "#{@bin} log -r #{end_ref}",
-            :cwd => @repo_path
-          ).run_command
-          s.error!
-        end
-      rescue
-        raise Changeset::ReferenceError
+      def username
+        @cmd.username.stdout.lines.first.strip.match(/^(.*?)(?:\s<(.*)>)?$/)
       end
 
       def parse_status(changes)

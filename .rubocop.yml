@@ -86,6 +86,9 @@ TrailingComma:
 UnneededDisable:
   Enabled: false
 
+Style/Documentation:
+  Enabled: false
+
 #
 # Modified rules
 #
