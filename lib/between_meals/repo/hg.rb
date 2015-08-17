@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'pathname'
 require 'mixlib/shellout'
 require 'between_meals/changeset'
 require 'between_meals/repo/hg/cmd'
@@ -44,7 +45,7 @@ module BetweenMeals
       # Return files changed between two revisions
       def changes(start_ref, end_ref)
         valid_ref?(start_ref)
-        valid_ref?(end_ref)
+        valid_ref?(end_ref) if end_ref
         stdout = @cmd.status(start_ref, end_ref).stdout
         begin
           parse_status(stdout).compact
@@ -78,8 +79,8 @@ module BetweenMeals
 
       def head_parents
         [{
-          :time => Time.parse(@cmd.log('date|isodate')),
-          :rev => @cmd.log('node'),
+          :time => Time.parse(@cmd.log('date|isodate').stdout),
+          :rev => @cmd.log('node').stdout,
         }]
       rescue
         [{
@@ -106,7 +107,9 @@ module BetweenMeals
       end
 
       def last_msg=(msg)
-        @cmd.amend(msg)
+        if last_msg.strip != msg.strip
+          @cmd.amend(msg.strip)
+        end
       end
 
       def email
@@ -134,9 +137,9 @@ module BetweenMeals
       end
 
       def valid_ref?(ref)
-        @cmd.log(ref)
-      rescue
-        raise Changeset::ReferenceError
+        if @cmd.log(ref).stdout == ''
+          fail Changeset::ReferenceError
+        end
       end
 
       private

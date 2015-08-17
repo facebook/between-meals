@@ -43,7 +43,7 @@ module BetweenMeals
           cmd('config ui.username')
         end
 
-        def amend
+        def amend(msg)
           cmd("commit --amend -m '#{msg}'")
         end
 

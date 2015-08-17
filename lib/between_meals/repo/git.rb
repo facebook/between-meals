@@ -81,7 +81,7 @@ module BetweenMeals
       # Return files changed between two revisions
       def changes(start_ref, end_ref)
         valid_ref?(start_ref)
-        valid_ref?(end_ref)
+        valid_ref?(end_ref) if end_ref
         stdout = @cmd.diff(start_ref, end_ref).stdout
         begin
           parse_status(stdout).compact
@@ -129,10 +129,8 @@ module BetweenMeals
       end
 
       def valid_ref?(ref)
-        unless ref.nil?
-          unless @repo.exists?(ref)
-            fail Changeset::ReferenceError
-          end
+        unless @repo.exists?(ref)
+          fail Changeset::ReferenceError
         end
       end
 

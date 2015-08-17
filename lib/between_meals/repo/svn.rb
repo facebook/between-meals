@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'pathname'
 require 'between_meals/repo'
 require 'between_meals/changeset'
 require 'mixlib/shellout'
@@ -86,6 +87,8 @@ module BetweenMeals
 
       def valid_ref?(ref)
         @cmd.info_r(ref, @repo_path)
+      rescue
+        raise Changeset::ReferenceError
       end
     end
   end
