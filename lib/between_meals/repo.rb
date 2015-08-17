@@ -19,8 +19,7 @@ require 'mixlib/shellout'
 module BetweenMeals
   # Local checkout wrapper
   class Repo
-    attr_reader :repo_path
-    attr_accessor :bin
+    attr_reader :repo_path, :bin
 
     def initialize(repo_path, logger)
       @repo_path = repo_path
@@ -69,6 +68,11 @@ module BetweenMeals
       else
         fail "Do not know repo type #{type}"
       end
+    end
+
+    def bin=(bin)
+      @bin = bin
+      @cmd.bin = bin
     end
 
     def exists?
