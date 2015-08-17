@@ -16,6 +16,8 @@
 
 module BetweenMeals
   class Cmd
+    attr_accessor :bin
+
     def initialize(params)
       @bin = params[:bin] || fail
       @cwd = params[:cwd] || Dir.pwd
