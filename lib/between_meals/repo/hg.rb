@@ -137,7 +137,9 @@ module BetweenMeals
       end
 
       def valid_ref?(ref)
-        if @cmd.log(ref).stdout == ''
+        if @cmd.log(ref).stdout != ''
+          return true
+        else
           fail Changeset::ReferenceError
         end
       end
