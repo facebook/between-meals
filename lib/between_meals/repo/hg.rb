@@ -129,7 +129,7 @@ module BetweenMeals
       end
 
       def upstream?(rev)
-        if @cmd.rev("ancestor(master,#{rev}) & #{rev}").stdout.empty?
+        if @cmd.rev("'ancestor(master,#{rev}) & #{rev}'").stdout.empty?
           return true
         else
           return false
@@ -137,11 +137,10 @@ module BetweenMeals
       end
 
       def valid_ref?(ref)
-        if @cmd.log(ref).stdout != ''
-          return true
-        else
-          fail Changeset::ReferenceError
-        end
+        @cmd.rev(ref).stdout
+        return true
+      rescue
+        raise Changeset::ReferenceError
       end
 
       private
