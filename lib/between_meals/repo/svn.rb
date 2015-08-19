@@ -28,6 +28,7 @@ module BetweenMeals
         @cmd = BetweenMeals::Repo::Svn::Cmd.new(
           :bin => @bin,
           :cwd => '/tmp',
+          :logger => @logger,
         )
       end
 
