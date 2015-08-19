@@ -27,6 +27,7 @@ module BetweenMeals
         @cmd = BetweenMeals::Repo::Hg::Cmd.new(
           :bin => @bin,
           :cwd => @repo_path,
+          :logger => @logger,
         )
       end
 
@@ -137,7 +138,7 @@ module BetweenMeals
       end
 
       def valid_ref?(ref)
-        @cmd.rev(ref).stdout
+        @cmd.rev(ref)
         return true
       rescue
         raise Changeset::ReferenceError

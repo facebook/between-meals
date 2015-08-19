@@ -39,6 +39,7 @@ module BetweenMeals
         @cmd = BetweenMeals::Repo::Git::Cmd.new(
           :bin => @bin,
           :cwd => @repo_path,
+          :logger => @logger,
         )
       end
 

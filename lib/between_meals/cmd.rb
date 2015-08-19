@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+require 'logger'
+
 module BetweenMeals
   class Cmd
     attr_accessor :bin
@@ -21,6 +23,7 @@ module BetweenMeals
     def initialize(params)
       @bin = params[:bin] || fail
       @cwd = params[:cwd] || Dir.pwd
+      @logger = params[:logger] || Logger.new(STDOUT)
     end
 
     def cmd(params, cwd = nil)
@@ -28,6 +31,7 @@ module BetweenMeals
         cwd = File.expand_path(@cwd)
       end
       cmd = "#{@bin} #{params}"
+      @logger.info("Running \"#{cmd}\"")
       c = Mixlib::ShellOut.new(
         cmd,
         :cwd => cwd
