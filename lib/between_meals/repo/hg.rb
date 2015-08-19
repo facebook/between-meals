@@ -130,10 +130,13 @@ module BetweenMeals
       end
 
       def upstream?(rev)
+        # Check if commit is an ancestor of master
+        # Returns the diff if common ancestor is found,
+        # returns nothing if not
         if @cmd.rev("'ancestor(master,#{rev}) & #{rev}'").stdout.empty?
-          return true
-        else
           return false
+        else
+          return true
         end
       end
 
