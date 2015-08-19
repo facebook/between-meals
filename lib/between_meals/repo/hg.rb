@@ -80,8 +80,8 @@ module BetweenMeals
 
       def head_parents
         [{
-          :time => Time.parse(@cmd.log('date|isodate').stdout),
-          :rev => @cmd.log('node').stdout,
+          :time => Time.parse(@cmd.log('date|isodate', 'master').stdout),
+          :rev => @cmd.log('node', 'master').stdout,
         }]
       rescue
         [{

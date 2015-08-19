@@ -23,8 +23,8 @@ module BetweenMeals
           cmd("log -r #{rev}")
         end
 
-        def log(template)
-          cmd("log -r . -l 1 -T '{#{template}}'")
+        def log(template, rev = '.')
+          cmd("log -r #{rev} -l 1 -T '{#{template}}'")
         end
 
         def clone(url, repo_path)
