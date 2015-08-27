@@ -109,7 +109,7 @@ module BetweenMeals
 
       def last_msg=(msg)
         if last_msg.strip != msg.strip
-          @cmd.amend(msg.strip)
+          @cmd.amend(msg.strip.gsub("'") { "\'" })
         end
       end
 
