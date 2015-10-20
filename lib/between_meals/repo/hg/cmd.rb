@@ -15,6 +15,8 @@
 # limitations under the License.
 
 require 'between_meals/cmd'
+require 'shellwords'
+
 module BetweenMeals
   class Repo
     class Hg < BetweenMeals::Repo
@@ -44,7 +46,7 @@ module BetweenMeals
         end
 
         def amend(msg)
-          cmd("commit --amend -m '#{msg}'")
+          cmd("commit --amend -m '#{Shellwords.escape msg}'")
         end
 
         def status(start_ref = nil, end_ref = nil)
