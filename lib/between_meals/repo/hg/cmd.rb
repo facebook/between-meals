@@ -15,7 +15,7 @@
 # limitations under the License.
 
 require 'between_meals/cmd'
-require 'shellwords'
+require 'tempfile'
 
 module BetweenMeals
   class Repo
@@ -46,7 +46,14 @@ module BetweenMeals
         end
 
         def amend(msg)
-          cmd("commit --amend -m '#{Shellwords.escape msg}'")
+          begin
+            f = Tempfile.new('beetwen_meals.hg.amend')
+            f.write(msg)
+            cmd("commit --amend -l #{f.path}")
+          ensure
+            f.close
+            f.unlink
+          end
         end
 
         def status(start_ref = nil, end_ref = nil)
