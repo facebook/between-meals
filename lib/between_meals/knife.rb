@@ -109,7 +109,7 @@ module BetweenMeals
           cookbooks.each do |cb|
             next unless File.exists?("#{path}/#{cb}")
             @logger.warn("Running berkshelf on cookbook: #{cb}")
-            exec!("cd #{path}/#{cb} && #{@berks} update #{berks_config} && " +
+            exec!("cd #{path}/#{cb} && #{@berks} install #{berks_config} && " +
               "#{@berks} upload #{berks_config}", @logger)
           end
         end
