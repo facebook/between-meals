@@ -10,3 +10,5 @@ gemfile:
 script:
   - bundle exec rspec
   - bundle exec rubocop
+
+sudo: false
