@@ -60,14 +60,19 @@ module BetweenMeals
         valid_ref?(end_ref) if end_ref
 
         @logger.info("Diff between #{start_ref} and #{end_ref}")
-        @cmd.diff(start_ref, end_ref, @repo_path).stdout.lines.map do |line|
-          m = line.match(/^(\w)\w?\s+(\S+)$/)
-          fail "Could not parse line: #{line}" unless m
+        changes = @cmd.diff(start_ref, end_ref, @repo_path).stdout
 
-          {
-            :status => m[1] == 'D' ? :deleted : :modified,
-            :path => m[2].sub("#{@repo_path}/", '')
-          }
+        begin
+          parse_status(changes).compact
+        rescue => e
+          @logger.error(
+            'Something went wrong. Please please report this output.'
+          )
+          @logger.error(e)
+          stdout.lines.each do |line|
+            @logger.error(line.strip)
+          end
+          exit(1)
         end
       end
 
@@ -90,6 +95,23 @@ module BetweenMeals
         @cmd.info_r(ref, @repo_path)
       rescue
         raise Changeset::ReferenceError
+      end
+
+      private
+
+      def parse_status(changes)
+        # http://svnbook.red-bean.com/en/1.0/re26.html
+        changes.lines.map do |line|
+          case line
+          when (/^([\w ])\w?\s+(\S+)$/)
+            {
+              :status => Regexp.last_match(1) == 'D' ? :deleted : :modified,
+              :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
+            }
+          else
+            fail 'No match'
+          end
+        end
       end
     end
   end
