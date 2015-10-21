@@ -46,7 +46,7 @@ module BetweenMeals
         end
 
         def amend(msg)
-          f = Tempfile.new('beetwen_meals.hg.amend')
+          f = Tempfile.new('between_meals.hg.amend')
           begin
             f.write(msg)
             cmd("commit --amend -l #{f.path}")
