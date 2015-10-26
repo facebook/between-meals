@@ -35,7 +35,11 @@ module BetweenMeals
     def self.get(type, repo_path, logger)
       case type
       when 'auto'
-        logger.info('Trying to detect your repo type')
+        unless File.directory?(repo_path)
+          logger.warn("#{repo_path} does not point to a repo")
+          exit(1)
+        end
+        logger.info('Trying to detect repo type')
         require 'between_meals/repo/git'
         require 'between_meals/repo/hg'
         require 'between_meals/repo/svn'
@@ -54,7 +58,7 @@ module BetweenMeals
             logger.debug("Skipping #{klass}")
           end
         end
-        logger.info('Failed detecting repo type')
+        logger.warn("Failed detecting repo type at #{repo_path}")
         exit(1)
       when 'svn'
         require 'between_meals/repo/svn'
