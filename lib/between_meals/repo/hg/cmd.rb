@@ -49,6 +49,7 @@ module BetweenMeals
           f = Tempfile.new('between_meals.hg.amend')
           begin
             f.write(msg)
+            f.flush
             cmd("commit --amend -l #{f.path}")
           ensure
             f.close
