@@ -154,7 +154,7 @@ module BetweenMeals
         # rubocop:disable MultilineBlockChain
         changes.lines.map do |line|
           case line
-          when /^A\s+(\S+)$/
+          when /^A\s+(.+)$/
             # A path
             {
               :status => :modified,
@@ -166,13 +166,13 @@ module BetweenMeals
               :status => :modified,
               :path => Regexp.last_match(2)
             }
-          when /^D\s+(\S+)$/
+          when /^D\s+(.+)$/
             # D path
             {
               :status => :deleted,
               :path => Regexp.last_match(1)
             }
-          when /^M(?:\d*)\s+(\S+)$/
+          when /^M(?:\d*)\s+(.+)$/
             # M<numbers> path
             {
               :status => :modified,
@@ -190,7 +190,7 @@ module BetweenMeals
                 :path => Regexp.last_match(2)
               }
             ]
-          when /^T\s+(\S+)$/
+          when /^T\s+(.+)$/
             # T path
             [
               {
