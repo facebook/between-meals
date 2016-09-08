@@ -204,7 +204,7 @@ module BetweenMeals
               :path => Regexp.last_match(1)
             }
           else
-            fail 'Failed to parse repo status line. Try a --force-upload.'
+            fail 'Failed to parse repo status line.'
           end
         end
         # rubocop:enable MultilineBlockChain

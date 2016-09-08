@@ -203,7 +203,7 @@ module BetweenMeals
               }
             ]
           else
-            fail 'Failed to parse repo status line. Try a --force-upload.'
+            fail 'Failed to parse repo status line.'
           end
         end.flatten.map do |x|
           {

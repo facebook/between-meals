@@ -109,7 +109,7 @@ module BetweenMeals
               :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
             }
           else
-            fail 'Failed to parse repo status line. Try a --force-upload.'
+            fail 'Failed to parse repo status line.'
           end
         end
       end
