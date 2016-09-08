@@ -97,7 +97,7 @@ EOS
     git = BetweenMeals::Repo::Git.new('foo', logger)
     lambda do
       git.send(:parse_status, 'M foo/bar baz')
-    end.should raise_error('Failed to parse repo status line.')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
@@ -105,6 +105,6 @@ EOS
     git = BetweenMeals::Repo::Git.new('foo', logger)
     lambda do
       git.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('Failed to parse repo status line.')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 end

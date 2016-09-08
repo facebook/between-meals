@@ -203,7 +203,7 @@ module BetweenMeals
               }
             ]
           else
-            fail 'Failed to parse repo status line.'
+            fail 'Failed to parse repo diff line.'
           end
         end.flatten.map do |x|
           {

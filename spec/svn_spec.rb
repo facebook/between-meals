@@ -83,7 +83,7 @@ describe BetweenMeals::Repo::Svn do
     svn = BetweenMeals::Repo::Svn.new('foo', logger)
     lambda do
       svn.send(:parse_status, 'M foo/bar baz')
-    end.should raise_error('Failed to parse repo status line.')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
@@ -91,6 +91,6 @@ describe BetweenMeals::Repo::Svn do
     svn = BetweenMeals::Repo::Svn.new('foo', logger)
     lambda do
       svn.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('Failed to parse repo status line.')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 end
