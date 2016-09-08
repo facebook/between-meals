@@ -119,4 +119,20 @@ describe BetweenMeals::Repo::Hg do
       hg.name.should eq(example[:name])
     end
   end
+
+  it 'should error on spaces in file names' do
+    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
+    svn = BetweenMeals::Repo::Hg.new('foo', logger)
+    lambda do
+      svn.send(:parse_status, 'M foo/bar baz')
+    end.should raise_error('Failed to parse repo status line. Try a --force-upload.')
+  end
+
+  it 'should handle malformed output' do
+    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
+    svn = BetweenMeals::Repo::Hg.new('foo', logger)
+    lambda do
+      svn.send(:parse_status, 'HGFS djs/ dsd)')
+    end.should raise_error('No match')
+  end
 end

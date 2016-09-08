@@ -91,6 +91,7 @@ EOS
         should eq(fixture[:result])
     end
   end
+
   it 'should error on spaces in file names' do
     BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
     git = BetweenMeals::Repo::Git.new('foo', logger)
@@ -98,6 +99,7 @@ EOS
       git.send(:parse_status, 'M foo/bar baz')
     end.should raise_error('Failed to parse repo status line. Try a --force-upload.')
   end
+
   it 'should handle malformed output' do
     BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
     git = BetweenMeals::Repo::Git.new('foo', logger)
