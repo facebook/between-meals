@@ -53,7 +53,7 @@ module BetweenMeals
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
-            'Something went wrong. Please please report this output.'
+            'Something went wrong. Please report this output.'
           )
           @logger.error(e)
           stdout.lines.each do |line|
@@ -204,7 +204,7 @@ module BetweenMeals
               :path => Regexp.last_match(1)
             }
           else
-            fail 'No match'
+            fail 'Failed to parse repo status line. Try a --force-upload.'
           end
         end
         # rubocop:enable MultilineBlockChain

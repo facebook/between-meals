@@ -66,7 +66,7 @@ module BetweenMeals
           parse_status(changes).compact
         rescue => e
           @logger.error(
-            'Something went wrong. Please please report this output.'
+            'Something went wrong. Please report this output.'
           )
           @logger.error(e)
           stdout.lines.each do |line|
@@ -109,7 +109,7 @@ module BetweenMeals
               :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
             }
           else
-            fail 'No match'
+            fail 'Failed to parse repo status line. Try a --force-upload.'
           end
         end
       end
