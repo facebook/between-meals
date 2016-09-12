@@ -28,7 +28,7 @@ describe BetweenMeals::Repo::Git do
     {
       :name => 'empty filelists',
       :changes => '',
-      :result => []
+      :result => [],
     },
     {
       :name => 'handle renames',

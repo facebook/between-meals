@@ -38,7 +38,8 @@ module BetweenMeals
           info("Cookbook is #{m[1]}")
           return {
             :cookbook_dir => dir,
-            :name => m[1] }
+            :name => m[1],
+          }
         end
         nil
       end
@@ -47,7 +48,7 @@ module BetweenMeals
         @files = files
         @name = self.class.explode_path(
           files.sample[:path],
-          cookbook_dirs
+          cookbook_dirs,
         )[:name]
         # if metadata.rb is being deleted
         #   cookbook is marked for deletion

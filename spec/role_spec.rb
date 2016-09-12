@@ -38,11 +38,11 @@ describe BetweenMeals::Changes::Role do
       :files => [
         {
           :status => :deleted,
-          :path => 'roles/test.rb'
+          :path => 'roles/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb'
+          :path => 'cookbooks/two/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -54,15 +54,15 @@ describe BetweenMeals::Changes::Role do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/one/cb_one/recipes/test.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :modified,
-          :path => 'roles/test.rb'
+          :path => 'roles/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/one/cb_one/recipes/test3.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test3.rb',
         },
       ],
       :result => [
@@ -76,7 +76,7 @@ describe BetweenMeals::Changes::Role do
       BetweenMeals::Changes::Role.find(
         fixture[:files],
         roles_dir,
-        logger
+        logger,
       ).map do |cb|
         [cb.name, cb.status]
       end.

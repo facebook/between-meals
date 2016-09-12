@@ -28,7 +28,7 @@ describe BetweenMeals::Repo::Hg do
     {
       :name => 'empty filelists',
       :changes => '',
-      :result => []
+      :result => [],
     },
     {
       :name => 'handle additions',

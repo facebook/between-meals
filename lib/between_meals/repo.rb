@@ -70,7 +70,7 @@ module BetweenMeals
         require 'between_meals/repo/hg'
         BetweenMeals::Repo::Hg.new(repo_path, logger)
       else
-        fail "Do not know repo type #{type}"
+        raise "Do not know repo type #{type}"
       end
     end
 
@@ -80,92 +80,92 @@ module BetweenMeals
     end
 
     def exists?
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def status
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     # This method *must* succeed in the case of no repo directory so that
     # users can call `checkout`. Users may call `exists?` to find out if
     # we have an underlying repo yet.
     def setup
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def head_rev
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def head_msg
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def head_msg=
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def head_parents
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def latest_revision
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def create(_url)
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     # Return files changed between two revisions
     def changes(_start_ref, _end_ref)
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def update
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     # Return all files
     def files
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def head
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def checkout
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def last_author
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def last_msg
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def last_msg=
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def name
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def email
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def upstream?(_rev)
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
 
     def valid_ref?(_rev)
-      fail "#{__method__} not implemented"
+      raise "#{__method__} not implemented"
     end
   end
 end
