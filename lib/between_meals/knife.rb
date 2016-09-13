@@ -144,7 +144,7 @@ module BetweenMeals
           end.join(' ')
           exec!(
             "#{@knife} data bag from file #{dbname} #{dbitems} -c #{@config}",
-            @logger
+            @logger,
           )
         end
       end
@@ -181,7 +181,7 @@ BLOCK
       end
       cfg << "]\n"
       unless File.directory?(File.dirname(@config))
-        Dir.mkdir(File.dirname(@config), 0755)
+        Dir.mkdir(File.dirname(@config), 0o755)
       end
       if !File.exists?(@config) ||
          ::Digest::MD5.hexdigest(cfg) !=

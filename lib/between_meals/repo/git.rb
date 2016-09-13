@@ -60,7 +60,7 @@ module BetweenMeals
           {
             :message => msg,
             :update_ref => 'HEAD',
-          }
+          },
         )
       end
 
@@ -89,7 +89,7 @@ module BetweenMeals
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
-            'Something went wrong. Please please report this output.'
+            'Something went wrong. Please report this output.',
           )
           @logger.error(e)
           stdout.lines.each do |line|
@@ -131,7 +131,7 @@ module BetweenMeals
 
       def valid_ref?(ref)
         unless @repo.exists?(ref)
-          fail Changeset::ReferenceError
+          raise Changeset::ReferenceError
         end
       end
 
@@ -158,57 +158,57 @@ module BetweenMeals
             # A path
             {
               :status => :modified,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^C(?:\d*)\s+(\S+)\s+(\S+)/
             # C<numbers> path1 path2
             {
               :status => :modified,
-              :path => Regexp.last_match(2)
+              :path => Regexp.last_match(2),
             }
           when /^D\s+(\S+)$/
             # D path
             {
               :status => :deleted,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^M(?:\d*)\s+(\S+)$/
             # M<numbers> path
             {
               :status => :modified,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^R(?:\d*)\s+(\S+)\s+(\S+)/
             # R<numbers> path1 path2
             [
               {
                 :status => :deleted,
-                :path => Regexp.last_match(1)
+                :path => Regexp.last_match(1),
               },
               {
                 :status => :modified,
-                :path => Regexp.last_match(2)
-              }
+                :path => Regexp.last_match(2),
+              },
             ]
           when /^T\s+(\S+)$/
             # T path
             [
               {
                 :status => :deleted,
-                :path => Regexp.last_match(1)
+                :path => Regexp.last_match(1),
               },
               {
                 :status => :modified,
-                :path => Regexp.last_match(1)
-              }
+                :path => Regexp.last_match(1),
+              },
             ]
           else
-            fail 'No match'
+            raise 'Failed to parse repo diff line.'
           end
         end.flatten.map do |x|
           {
             :status => x[:status],
-            :path => x[:path].sub("#{@repo_path}/", '')
+            :path => x[:path].sub("#{@repo_path}/", ''),
           }
         end
         # rubocop:enable MultilineBlockChain

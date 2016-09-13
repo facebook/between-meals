@@ -28,7 +28,7 @@ describe BetweenMeals::Repo::Git do
     {
       :name => 'empty filelists',
       :changes => '',
-      :result => []
+      :result => [],
     },
     {
       :name => 'handle renames',
@@ -91,11 +91,20 @@ EOS
         should eq(fixture[:result])
     end
   end
+
+  it 'should error on spaces in file names' do
+    BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
+    git = BetweenMeals::Repo::Git.new('foo', logger)
+    lambda do
+      git.send(:parse_status, 'M foo/bar baz')
+    end.should raise_error('Failed to parse repo diff line.')
+  end
+
   it 'should handle malformed output' do
     BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
     git = BetweenMeals::Repo::Git.new('foo', logger)
     lambda do
       git.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('No match')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 end

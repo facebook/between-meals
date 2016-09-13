@@ -77,11 +77,20 @@ describe BetweenMeals::Repo::Svn do
         should eq(fixture[:result])
     end
   end
+
+  it 'should error on spaces in file names' do
+    BetweenMeals::Repo::Svn.any_instance.stub(:setup).and_return(true)
+    svn = BetweenMeals::Repo::Svn.new('foo', logger)
+    lambda do
+      svn.send(:parse_status, 'M foo/bar baz')
+    end.should raise_error('Failed to parse repo diff line.')
+  end
+
   it 'should handle malformed output' do
     BetweenMeals::Repo::Svn.any_instance.stub(:setup).and_return(true)
     svn = BetweenMeals::Repo::Svn.new('foo', logger)
     lambda do
       svn.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('No match')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 end

@@ -66,7 +66,7 @@ module BetweenMeals
           parse_status(changes).compact
         rescue => e
           @logger.error(
-            'Something went wrong. Please please report this output.'
+            'Something went wrong. Please report this output.',
           )
           @logger.error(e)
           stdout.lines.each do |line|
@@ -103,13 +103,13 @@ module BetweenMeals
         # http://svnbook.red-bean.com/en/1.0/re26.html
         changes.lines.map do |line|
           case line
-          when (/^([\w ])\w?\s+(\S+)$/)
+          when /^([\w ])\w?\s+(\S+)$/
             {
               :status => Regexp.last_match(1) == 'D' ? :deleted : :modified,
               :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
             }
           else
-            fail 'No match'
+            raise 'Failed to parse repo diff line.'
           end
         end
       end

@@ -21,7 +21,7 @@ module BetweenMeals
     attr_accessor :bin
 
     def initialize(params)
-      @bin = params[:bin] || fail
+      @bin = params[:bin] || raise
       @cwd = params[:cwd] || Dir.pwd
       @logger = params[:logger] || Logger.new(STDOUT)
     end
@@ -34,7 +34,7 @@ module BetweenMeals
       @logger.info("Running \"#{cmd}\"")
       c = Mixlib::ShellOut.new(
         cmd,
-        :cwd => cwd
+        :cwd => cwd,
       )
       c.run_command
       c.error!

@@ -39,11 +39,11 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipes/test.rb'
+          :path => 'cookbooks/two/cb_one/recipes/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb'
+          :path => 'cookbooks/two/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -55,15 +55,15 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/one/cb_one/recipes/test.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :deleted,
-          :path => 'cookbooks/one/cb_one/recipes/test2.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test2.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/one/cb_one/recipes/test3.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test3.rb',
         },
       ],
       :result => [
@@ -75,11 +75,11 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/one/cb_one/recipes/test.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :deleted,
-          :path => 'cookbooks/one/cb_one/metadata.rb'
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -91,23 +91,23 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :deleted,
-          :path => 'cookbooks/one/cb_one/recipes/test.rb'
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :deleted,
-          :path => 'cookbooks/one/cb_one/metadata.rb'
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipes/test.rb'
+          :path => 'cookbooks/two/cb_one/recipes/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipes/test2.rb'
+          :path => 'cookbooks/two/cb_one/recipes/test2.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb'
+          :path => 'cookbooks/two/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -120,7 +120,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb'
+          :path => 'cookbooks/two/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -132,7 +132,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/README.md'
+          :path => 'cookbooks/two/cb_one/README.md',
         },
       ],
       :result => [
@@ -144,7 +144,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipe/default.rb'
+          :path => 'cookbooks/two/cb_one/recipe/default.rb',
         },
       ],
       :result => [
@@ -156,15 +156,15 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/OWNERS'
+          :path => 'cookbooks/two/OWNERS',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/OWNERS'
+          :path => 'cookbooks/OWNERS',
         },
         {
           :status => :modified,
-          :path => 'OWNERS'
+          :path => 'OWNERS',
         },
       ],
       :result => [
@@ -177,7 +177,7 @@ describe BetweenMeals::Changes::Cookbook do
       BetweenMeals::Changes::Cookbook.find(
         fixture[:files],
         cookbook_dirs,
-        logger
+        logger,
       ).map do |cb|
         [cb.name, cb.status]
       end.

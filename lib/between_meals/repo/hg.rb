@@ -53,7 +53,7 @@ module BetweenMeals
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
-            'Something went wrong. Please please report this output.'
+            'Something went wrong. Please report this output.',
           )
           @logger.error(e)
           stdout.lines.each do |line|
@@ -171,40 +171,40 @@ module BetweenMeals
           when /^A (\S+)$/
             {
               :status => :added,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^C (\S+)$/
             {
               :status => :clean,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^R (\S+)$/
             {
               :status => :deleted,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^M (\S+)$/
             {
               :status => :modified,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^! (\S+)$/
             {
               :status => :missing,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^\? (\S+)$/
             {
               :status => :untracked,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           when /^I (\S+)$/
             {
               :status => :ignored,
-              :path => Regexp.last_match(1)
+              :path => Regexp.last_match(1),
             }
           else
-            fail 'No match'
+            raise 'Failed to parse repo diff line.'
           end
         end
         # rubocop:enable MultilineBlockChain

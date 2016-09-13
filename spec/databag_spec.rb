@@ -38,15 +38,15 @@ describe BetweenMeals::Changes::Databag do
       :files => [
         {
           :status => :deleted,
-          :path => 'databags/test/databag1.json'
+          :path => 'databags/test/databag1.json',
         },
         {
           :status => :deleted,
-          :path => 'databags/test1/test2/databag2.json'
+          :path => 'databags/test1/test2/databag2.json',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb'
+          :path => 'cookbooks/two/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -58,7 +58,7 @@ describe BetweenMeals::Changes::Databag do
       :files => [
         {
           :status => :modified,
-          :path => 'databags/one/databag1.json'
+          :path => 'databags/one/databag1.json',
         },
         {
           :status => :deleted,
@@ -66,7 +66,7 @@ describe BetweenMeals::Changes::Databag do
         },
         {
           :status => :deleted,
-          :path => 'databags/two/databag3.json'
+          :path => 'databags/two/databag3.json',
         },
       ],
       :result => [
@@ -80,7 +80,7 @@ describe BetweenMeals::Changes::Databag do
       BetweenMeals::Changes::Databag.find(
         fixture[:files],
         roles_dir,
-        logger
+        logger,
       ).map do |cb|
         [cb.name, cb.status]
       end.

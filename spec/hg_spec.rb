@@ -28,7 +28,7 @@ describe BetweenMeals::Repo::Hg do
     {
       :name => 'empty filelists',
       :changes => '',
-      :result => []
+      :result => [],
     },
     {
       :name => 'handle additions',
@@ -118,5 +118,21 @@ describe BetweenMeals::Repo::Hg do
       hg.email.should eq(example[:email])
       hg.name.should eq(example[:name])
     end
+  end
+
+  it 'should error on spaces in file names' do
+    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
+    svn = BetweenMeals::Repo::Hg.new('foo', logger)
+    lambda do
+      svn.send(:parse_status, 'M foo/bar baz')
+    end.should raise_error('Failed to parse repo diff line.')
+  end
+
+  it 'should handle malformed output' do
+    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
+    svn = BetweenMeals::Repo::Hg.new('foo', logger)
+    lambda do
+      svn.send(:parse_status, 'HGFS djs/ dsd)')
+    end.should raise_error('Failed to parse repo diff line.')
   end
 end

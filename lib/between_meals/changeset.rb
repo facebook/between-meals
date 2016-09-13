@@ -27,7 +27,7 @@ module BetweenMeals
   # Basically, you always want to use BetweenMeals::Changes through this
   # helper class.
   class Changeset
-    class ReferenceError < Exception
+    class ReferenceError < RuntimeError
     end
 
     def initialize(logger, repo, start_ref, end_ref, locations)
