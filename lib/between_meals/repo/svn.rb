@@ -109,7 +109,7 @@ module BetweenMeals
               :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
             }
           else
-            raise 'Failed to parse repo diff line.'
+            fail 'Failed to parse repo diff line.'
           end
         end
       end

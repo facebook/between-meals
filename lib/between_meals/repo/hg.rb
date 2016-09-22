@@ -204,7 +204,7 @@ module BetweenMeals
               :path => Regexp.last_match(1),
             }
           else
-            raise 'Failed to parse repo diff line.'
+            fail 'Failed to parse repo diff line.'
           end
         end
         # rubocop:enable MultilineBlockChain

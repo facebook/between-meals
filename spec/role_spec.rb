@@ -50,6 +50,22 @@ describe BetweenMeals::Changes::Role do
       ],
     },
     {
+      :name => 'delete JSON role',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'roles/test.json',
+        },
+        {
+          :status => :modified,
+          :path => 'cookbooks/two/cb_one/metadata.rb',
+        },
+      ],
+      :result => [
+        ['test', :deleted],
+      ],
+    },
+    {
       :name => 'add/modify a role',
       :files => [
         {
@@ -59,6 +75,26 @@ describe BetweenMeals::Changes::Role do
         {
           :status => :modified,
           :path => 'roles/test.rb',
+        },
+        {
+          :status => :modified,
+          :path => 'cookbooks/one/cb_one/recipes/test3.rb',
+        },
+      ],
+      :result => [
+        ['test', :modified],
+      ],
+    },
+    {
+      :name => 'add/modify a JSON role',
+      :files => [
+        {
+          :status => :modified,
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
+        },
+        {
+          :status => :modified,
+          :path => 'roles/test.json',
         },
         {
           :status => :modified,

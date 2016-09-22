@@ -131,7 +131,7 @@ module BetweenMeals
 
       def valid_ref?(ref)
         unless @repo.exists?(ref)
-          raise Changeset::ReferenceError
+          fail Changeset::ReferenceError
         end
       end
 
@@ -203,7 +203,7 @@ module BetweenMeals
               },
             ]
           else
-            raise 'Failed to parse repo diff line.'
+            fail 'Failed to parse repo diff line.'
           end
         end.flatten.map do |x|
           {

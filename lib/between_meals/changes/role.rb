@@ -20,7 +20,7 @@ module BetweenMeals
     # Changeset aware role
     class Role < Change
       def self.name_from_path(path, role_dir)
-        re = %r{^#{role_dir}/(.+)\.rb}
+        re = %r{^#{role_dir}/(.+)\.(?:rb|json)}
         debug("[role] Matching #{path} against #{re}")
         m = path.match(re)
         if m

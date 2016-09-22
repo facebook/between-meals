@@ -42,6 +42,7 @@ module BetweenMeals
       @pem = opts[:pem] ||
              "#{@home}/.chef/#{@user}-taste-tester.pem"
       @role_dir = opts[:role_dir]
+      @role_type = opts[:role_type] || 'rb'
       @cookbook_dirs = opts[:cookbook_dirs]
       @databag_dir = opts[:databag_dir]
       @checksum_dir = opts[:checksum_dir]
@@ -51,14 +52,16 @@ module BetweenMeals
 
     def role_upload_all
       if File.exists?(@role_dir)
-        roles = File.join(@role_dir, '*.rb')
+        roles = File.join(@role_dir, "*.#{@role_type}")
         exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
       end
     end
 
     def role_upload(roles)
       if roles.any?
-        roles = roles.map { |x| File.join(@role_dir, "#{x.name}.rb") }.join(' ')
+        roles = roles.map do |x|
+          File.join(@role_dir, "#{x.name}.#{@role_type}")
+        end.join(' ')
         exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
       end
     end
@@ -234,7 +237,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       s = Mixlib::ShellOut.new("#{@knife} data bag list" +
                                " --format json -c #{@config}").run_command
       s.error!
-      db = JSON.load(s.stdout)
+      db = JSON.parse(s.stdout)
       unless db.include?(databag)
         exec!("#{@knife} data bag create #{databag} -c #{@config}", @logger)
       end
@@ -244,7 +247,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       s = Mixlib::ShellOut.new("#{@knife} data bag show #{databag}" +
                                " --format json -c #{@config}").run_command
       s.error!
-      db = JSON.load(s.stdout)
+      db = JSON.parse(s.stdout)
       if db.empty?
         exec!("#{@knife} data bag delete #{databag} --yes -c #{@config}",
               @logger)

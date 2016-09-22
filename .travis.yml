@@ -9,6 +9,6 @@ gemfile:
 
 script:
   - bundle exec rspec
-  - bundle exec rubocop
+  - bundle exec rubocop --display-cop-names
 
 sudo: false
