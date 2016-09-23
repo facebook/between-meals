@@ -21,7 +21,7 @@ module BetweenMeals
     attr_accessor :bin
 
     def initialize(params)
-      @bin = params[:bin] || raise
+      @bin = params[:bin] || fail
       @cwd = params[:cwd] || Dir.pwd
       @logger = params[:logger] || Logger.new(STDOUT)
     end
