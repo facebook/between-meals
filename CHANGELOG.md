@@ -1,3 +1,7 @@
+## 0.0.7
+* Cleaned up error messages
+* Add support for JSON roles
+
 ## 0.0.6
 * Mercurial support
 * Support for auto-detecting repo type
