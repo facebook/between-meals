@@ -98,10 +98,6 @@ MultilineOperationIndentation:
 Performance/RedundantMatch:
   Enabled: false
 
-# We don't use CAPS just for constants.
-Style/MutableConstant:
-  Enabled: false
-
 # We'll .times.map all we want.
 Performance/TimesMap:
   Enabled: false
@@ -146,3 +142,9 @@ Style/NumericLiteralPrefix:
 
 Style/VariableNumber:
   Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+AllCops:  
+  TargetRubyVersion: 2.1  
