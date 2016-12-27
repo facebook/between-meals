@@ -24,6 +24,7 @@ module BetweenMeals
       @bin = params[:bin] || fail
       @cwd = params[:cwd] || Dir.pwd
       @logger = params[:logger] || Logger.new(STDOUT)
+      @logger.info("Initialize")
     end
 
     def cmd(params, cwd = nil)
