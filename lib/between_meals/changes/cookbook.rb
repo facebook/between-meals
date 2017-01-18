@@ -30,7 +30,7 @@ module BetweenMeals
       end
 
       def self.explode_path(path, cookbook_dirs)
-        cookbook_dirs.each do |dir|
+        cookbook_dirs.sort_by{ |a| a.length }.reverse.each do |dir|
           re = %r{^#{dir}/([^/]+)/.*}
           debug("[cookbook] Matching #{path} against ^#{re}")
           m = path.match(re)

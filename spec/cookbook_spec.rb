@@ -170,13 +170,26 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [
       ],
     },
+    {
+      :name => 'match deepest subfolder first',
+      :files => [
+        {
+          :status => :modified,
+          :path => 'cookbooks/core/cb_one/metadata.rb',
+        },
+      ],
+      :cookbook_dirs => ['cookbooks', 'cookbooks/core'],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
   ]
 
   fixtures.each do |fixture|
     it "should handle #{fixture[:name]}" do
       BetweenMeals::Changes::Cookbook.find(
         fixture[:files],
-        cookbook_dirs,
+        fixture[:cookbook_dirs] || cookbook_dirs,
         logger,
       ).map do |cb|
         [cb.name, cb.status]
