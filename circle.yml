@@ -3,5 +3,8 @@ machine:
     version: 2.3.0
 
 test:
+  pre:
+    - gem update --system
   post:
     - bundle exec rspec
+    - bundle exec rubocop --display-cop-names
