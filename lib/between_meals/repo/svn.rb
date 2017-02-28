@@ -88,8 +88,7 @@ module BetweenMeals
         end
       end
 
-      def upstream?
-      end
+      def upstream?; end
 
       def valid_ref?(ref)
         @cmd.info_r(ref, @repo_path)
