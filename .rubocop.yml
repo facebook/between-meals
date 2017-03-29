@@ -110,6 +110,9 @@ Performance/RedundantMerge:
 Style/ConditionalAssignment:
   Enabled: false
 
+Style/IndentHeredoc:
+  Enabled: false
+
 #
 # Modified rules
 #
