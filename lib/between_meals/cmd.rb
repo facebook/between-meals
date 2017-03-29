@@ -36,6 +36,10 @@ module BetweenMeals
         cmd,
         :cwd => cwd,
       )
+      # macOS needs /usr/local/bin as hg cannot be installed in /bin or /usr/bin
+      c.environment = {
+        'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin',
+      }
       c.run_command
       c.error!
       c
