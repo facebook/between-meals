@@ -26,6 +26,8 @@ module BetweenMeals
   class Knife
     include BetweenMeals::Util
 
+    attr_accessor :cookbook_dirs
+
     def initialize(opts = {})
       @logger = opts[:logger] || nil
       @user = opts[:user] || ENV['USER']
