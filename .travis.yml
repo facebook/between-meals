@@ -1,4 +1,5 @@
 language: ruby
+sudo: false
 
 before_install: gem update --system
 
