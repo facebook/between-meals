@@ -1,10 +1,31 @@
-machine:
-  ruby:
-    version: 2.3.4
+defaults: &defaults
+  parallelism: 3
+  steps:
+    - checkout
+    - run: sudo apt-get install cmake
+    - run: gem update --system
+    - run: bundle install
+    - run: bundle exec rspec
+    - run: bundle exec rubocop --display-cop-names
 
-test:
-  pre:
-    - gem update --system
-  post:
-    - bundle exec rspec
-    - bundle exec rubocop --display-cop-names
+version: 2
+jobs:
+  ruby_2_2:
+    <<: *defaults
+    docker:
+      - image: circleci/ruby:2.2
+  ruby_2_3:
+    <<: *defaults
+    docker:
+      - image: circleci/ruby:2.3.4
+  ruby_2_4:
+    <<: *defaults
+    docker:
+      - image: circleci/ruby:2.4
+workflows:
+  version: 2
+  test:
+    jobs:
+      - ruby_2_2
+      - ruby_2_3
+      - ruby_2_4
