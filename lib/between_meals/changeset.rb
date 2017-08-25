@@ -31,7 +31,7 @@ module BetweenMeals
     end
 
     def initialize(
-      logger, repo, start_ref, end_ref, locations, track_symlinks=false
+      logger, repo, start_ref, end_ref, locations, track_symlinks = false
     )
       @logger = logger
       @repo = repo

@@ -96,7 +96,7 @@ module BetweenMeals
         links_as_files
       end
 
-      def initialize(files, cookbook_dirs, repo_dir, track_symlinks=false)
+      def initialize(files, cookbook_dirs, repo_dir, track_symlinks = false)
         @files = files
         @repo_dir = repo_dir
         @cookbook_dirs = cookbook_dirs
@@ -119,7 +119,7 @@ module BetweenMeals
 
       # Given a list of changed files
       # create a list of Cookbook objects
-      def self.find(list, cookbook_dirs, logger, repo, track_symlinks=false)
+      def self.find(list, cookbook_dirs, logger, repo, track_symlinks = false)
         @@logger = logger
         return [] if list.nil? || list.empty?
         # rubocop:disable MultilineBlockChain

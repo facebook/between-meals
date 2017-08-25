@@ -28,6 +28,12 @@ describe BetweenMeals::Changes::Cookbook do
     ['cookbooks/one', 'cookbooks/two']
   end
 
+  class Repo
+    def repo_path
+      '../'
+    end
+  end
+
   fixtures = [
     {
       :name => 'empty filelists',
@@ -178,6 +184,8 @@ describe BetweenMeals::Changes::Cookbook do
         fixture[:files],
         cookbook_dirs,
         logger,
+        Repo.new(),
+        false,
       ).map do |cb|
         [cb.name, cb.status]
       end.
