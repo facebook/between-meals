@@ -30,12 +30,15 @@ module BetweenMeals
     class ReferenceError < RuntimeError
     end
 
-    def initialize(logger, repo, start_ref, end_ref, locations)
+    def initialize(
+      logger, repo, start_ref, end_ref, locations, track_symlinks=false
+    )
       @logger = logger
       @repo = repo
       @cookbook_dirs = locations[:cookbook_dirs].dup
       @role_dir = locations[:role_dir]
       @databag_dir = locations[:databag_dir]
+      @track_symlinks = track_symlinks
       # Figure out which files changed if refs provided
       # or return all files (full upload) otherwise
       if start_ref
@@ -49,7 +52,9 @@ module BetweenMeals
     end
 
     def cookbooks
-      BetweenMeals::Changes::Cookbook.find(@files, @cookbook_dirs, @logger)
+      BetweenMeals::Changes::Cookbook.find(
+        @files, @cookbook_dirs, @logger, @repo, @track_symlinks
+      )
     end
 
     def roles
