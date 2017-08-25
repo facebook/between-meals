@@ -29,7 +29,7 @@ module BetweenMeals
   class Changeset
     class ReferenceError < RuntimeError
     end
-
+    # rubocop:disable Metrics/ParameterLists
     def initialize(
       logger, repo, start_ref, end_ref, locations, track_symlinks = false
     )
