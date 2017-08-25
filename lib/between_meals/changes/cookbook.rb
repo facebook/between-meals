@@ -46,14 +46,6 @@ module BetweenMeals
         }
       end
 
-<<<<<<< HEAD
-=======
-      def self.track_symlinks?()
-        # I Dont Know where to store this value
-        true
-      end
-
->>>>>>> origin/master
       def self.prepend_repo?(link_path)
         return link_path if link_path.start_with?(@repo_dir)
         File.join(@repo_dir, link_path)
