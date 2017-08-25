@@ -184,7 +184,7 @@ describe BetweenMeals::Changes::Cookbook do
         fixture[:files],
         cookbook_dirs,
         logger,
-        Repo.new(),
+        Repo.new,
         false,
       ).map do |cb|
         [cb.name, cb.status]
