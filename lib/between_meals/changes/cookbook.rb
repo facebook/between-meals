@@ -26,7 +26,7 @@ module BetweenMeals
       def self.explode_path(path)
         @cookbook_dirs.each do |dir|
           re = %r{^#{dir}/([^/]+)/.*}
-          debug("[cookbook] #{path} meaningful? [#{re}]: #{m}")
+          debug("[cookbook] Matching #{path} against ^#{re}")
           m = path.match(re)
           next unless m
           info("Cookbook is #{m[1]}")
