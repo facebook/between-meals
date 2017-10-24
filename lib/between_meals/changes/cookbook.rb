@@ -26,12 +26,12 @@ module BetweenMeals
       def self.explode_path(path)
         @cookbook_dirs.each do |dir|
           re = %r{^#{dir}/([^/]+)/.*}
+          debug("[cookbook] #{path} meaningful? [#{re}]: #{m}")
           m = path.match(re)
           next unless m
-          debug("[cookbook] #{path} meaningful? [#{re}]: #{m}")
           info("Cookbook is #{m[1]}")
           return {
-            :cookbook_dir => m[0],
+            :cookbook_dir => dir,
             :name => m[1],
           }
         end
