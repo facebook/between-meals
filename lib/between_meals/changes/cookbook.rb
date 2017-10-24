@@ -19,88 +19,66 @@ module BetweenMeals
   module Changes
     # Changeset aware cookbook
     class Cookbook < Change
-      def self.which_cookbook_dir?(path)
+      def self.meaningful_cookbook_file?(path)
+        explode_path(path)
+      end
+
+      def self.explode_path(path)
         @cookbook_dirs.each do |dir|
-          # a symlink will never have trailing '/', add one.
-          path += '/' if @track_symlinks && symlinked_dir?(path)
           re = %r{^#{dir}/([^/]+)/.*}
           m = path.match(re)
-          debug("[cookbook] #{path} meaningful? [#{re}]: #{m}")
           next unless m
-          return [dir, m[1]]
+          debug("[cookbook] #{path} meaningful? [#{re}]: #{m}")
+          info("Cookbook is #{m[1]}")
+          return {
+            :cookbook_dir => m[0],
+            :name => m[1],
+          }
         end
         nil
       end
 
-      def self.meaningful_cookbook_file?(path)
-        return which_cookbook_dir?(path).nil? ? false : true
-      end
-
-      def self.explode_path(path)
-        m = which_cookbook_dir?(path)
-        return nil if m.nil?
-        info("Cookbook is #{m[1]}")
-        return {
-          :cookbook_dir => m[0],
-          :name => m[1],
-        }
-      end
-
-      def self.prepend_repo?(link_path)
-        return link_path if link_path.start_with?(@repo_dir)
-        File.join(@repo_dir, link_path)
-      end
-
       def self.symlinked_dir?(link_path)
-        link_path = prepend_repo?(link_path)
         File.symlink?(link_path) &&
-        File.directory?(symlink_absolute_path(link_path))
+          File.directory?(File.absolute_path(link_path))
       end
 
-      def self.symlink_absolute_path(link_path)
-        link_path = prepend_repo?(link_path)
-        File.realpath(link_path)
-      end
-
-      def self.symlinks(list)
-        # For each symlink get the real path, if any files have changed under
-        # the real path, fake them as coming from the symlink path. This allows
-        # the normal cookbook logic to just work.
+      def self.map_symlinks(files)
+        # For each symlink get the source path, if any files have changed under
+        # the source path, fake them as coming from the symlink path. This
+        # allows the normal cookbook logic to just work.
         require 'find'
         symlinks = {}
         @cookbook_dirs.each do |dir|
           dir = File.join(@repo_dir, dir)
-          # Finds all symlinks in coobbookdirs
+          # Finds all symlinks in cookbook dirs
           Find.find(dir).select { |f| f if File.symlink?(f) }.each do |link|
             next if symlinks[link]
-            real = symlink_absolute_path(link)
+            source = File.absolute_path(link)
             repo = File.join(@repo_dir, '/')
-            # maps all symlinks to real paths
+            # maps absolute symlink path to relative source and link paths
             symlinks[link] = {
-              'real' => real.gsub(repo, ''),
+              'source' => source.gsub(repo, ''),
               'link' => link.gsub(repo, ''),
             }
           end
         end
-        # Create the data hash expected for each file but fake the real path as
-        # a symlink path. Hacky but works :)
-        links_as_files = []
-        symlinks.each do |_, link|
-          list.each do |x|
-            next unless x[:path].start_with?(link['real'])
-            y = x
-            y[:path].gsub!(link['real'], link['link'])
-            links_as_files << y
+
+        # Create the data hash expected for each file but fake the source path
+        # as a symlink path. Hacky but works :)
+        symlinks.each do |link_abs_path, lrp| # link_relative_path
+          files.each do |f|
+            next unless f[:path].start_with?(lrp['source'])
+            f[:path].gsub!(lrp['source'], lrp['link'])
+            # a symlink will never have trailing '/', add one.
+            f[:path] += '/' if symlinked_dir?(link_abs_path)
           end
         end
-        links_as_files
       end
 
-      def initialize(files, cookbook_dirs, repo_dir, track_symlinks = false)
+      def initialize(files, cookbook_dirs)
         @files = files
-        @repo_dir = repo_dir
         @cookbook_dirs = cookbook_dirs
-        @track_symlinks = track_symlinks
         @name = self.class.explode_path(files.sample[:path])[:name]
         # if metadata.rb is being deleted
         #   cookbook is marked for deletion
@@ -125,8 +103,7 @@ module BetweenMeals
         # rubocop:disable MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)
         @cookbook_dirs = cookbook_dirs
-        @track_symlinks = track_symlinks
-        list += symlinks(list) if @track_symlinks
+        map_symlinks(list) if track_symlinks
         list.
           group_by do |x|
           # Group by prefix of cookbok_dir + cookbook_name
@@ -143,9 +120,7 @@ module BetweenMeals
             self.meaningful_cookbook_file?(c[:path])
           end.any?
           if is_cookbook
-            BetweenMeals::Changes::Cookbook.new(
-              change, @cookbook_dirs, @repo_dir, @track_symlinks
-            )
+            BetweenMeals::Changes::Cookbook.new(change, @cookbook_dirs)
           end
         end.compact
         # rubocop:enable MultilineBlockChain
