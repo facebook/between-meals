@@ -86,7 +86,11 @@ module BetweenMeals
         #   and will be re-uploaded
         if files.
            select { |x| x[:status] == :deleted }.
-           map { |x| x[:path].match(%{.*metadata\.rb$}) }.
+           map do |x|
+             x[:path].match(
+               %{.*(#{cookbook_dirs.join('|')})/[^\\\.]*metadata\.rb$}
+             )
+           end.
            compact.
            any?
           @status = :deleted
