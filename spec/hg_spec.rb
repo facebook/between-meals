@@ -111,7 +111,7 @@ describe BetweenMeals::Repo::Hg do
 
   examples.each do |example|
     it 'should read config' do
-      cmd = double(Mixlib::ShellOut, stdout: example[:config])
+      cmd = double(Mixlib::ShellOut, :stdout => example[:config])
       allow_any_instance_of(BetweenMeals::Cmd).
         to receive(:cmd).and_return(cmd)
 
