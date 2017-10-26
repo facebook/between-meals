@@ -180,6 +180,18 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [
       ],
     },
+    {
+      :name => 'when metadata file is not in the root of the cb dir',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/two/cb_one/files/default/metadata.rb',
+        },
+      ],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
   ]
 
   {

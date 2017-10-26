@@ -88,7 +88,7 @@ module BetweenMeals
            select { |x| x[:status] == :deleted }.
            map do |x|
              x[:path].match(
-               %{.*(#{cookbook_dirs.join('|')})/[^\\\.]*metadata\.rb$},
+               %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.rb$},
              )
            end.
            compact.
