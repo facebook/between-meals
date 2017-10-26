@@ -71,26 +71,29 @@ describe BetweenMeals::Repo::Svn do
 
   fixtures.each do |fixture|
     it "should handle #{fixture[:name]}" do
-      BetweenMeals::Repo::Svn.any_instance.stub(:setup).and_return(true)
+      expect_any_instance_of(BetweenMeals::Repo::Svn).
+        to receive(:setup).and_return(true)
       svn = BetweenMeals::Repo::Svn.new('foo', logger)
-      svn.send(:parse_status, fixture[:changes]).
-        should eq(fixture[:result])
+      expect(svn.send(:parse_status, fixture[:changes])).
+        to eq(fixture[:result])
     end
   end
 
   it 'should error on spaces in file names' do
-    BetweenMeals::Repo::Svn.any_instance.stub(:setup).and_return(true)
+    expect_any_instance_of(BetweenMeals::Repo::Svn).
+      to receive(:setup).and_return(true)
     svn = BetweenMeals::Repo::Svn.new('foo', logger)
-    lambda do
+    expect(lambda do
       svn.send(:parse_status, 'M foo/bar baz')
-    end.should raise_error('Failed to parse repo diff line.')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
-    BetweenMeals::Repo::Svn.any_instance.stub(:setup).and_return(true)
+    expect_any_instance_of(BetweenMeals::Repo::Svn).
+      to receive(:setup).and_return(true)
     svn = BetweenMeals::Repo::Svn.new('foo', logger)
-    lambda do
+    expect(lambda do
       svn.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('Failed to parse repo diff line.')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 end

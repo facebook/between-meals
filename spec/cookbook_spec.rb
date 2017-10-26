@@ -19,18 +19,22 @@ require 'between_meals/changes/change'
 require 'between_meals/changes/cookbook'
 require 'between_meals/changeset'
 require 'logger'
+require 'find'
 
 describe BetweenMeals::Changes::Cookbook do
   let(:logger) do
     Logger.new('/dev/null')
   end
   let(:cookbook_dirs) do
-    ['cookbooks/one', 'cookbooks/two']
+    ['cookbooks/one', 'cookbooks/two', 'cookbooks/three']
+  end
+  let(:repo_path) do
+    "#{ENV['HOME']}/devfiles"
   end
 
   class Repo
     def repo_path
-      '../'
+      "#{ENV['HOME']}/devfiles"
     end
   end
 
@@ -178,18 +182,38 @@ describe BetweenMeals::Changes::Cookbook do
     },
   ]
 
-  fixtures.each do |fixture|
-    it "should handle #{fixture[:name]}" do
-      BetweenMeals::Changes::Cookbook.find(
-        fixture[:files],
-        cookbook_dirs,
-        logger,
-        Repo.new,
-        false,
-      ).map do |cb|
-        [cb.name, cb.status]
-      end.
-        should eq(fixture[:result])
+  {
+    'Normally' => false,
+    'With symlinks' => true,
+  }.each do |c, track_symlinks|
+    context "Running BetweenMeals #{c}" do
+      before do
+        allow(File).to receive(:realpath).with(repo_path).and_return(repo_path)
+        if track_symlinks
+          cookbook_dirs.each do |dir|
+            repo = File.join(repo_path, dir)
+            link = File.join(repo, 'three', 'cb_one')
+            source = File.join(repo, 'one', 'cb_one')
+            links = dir.include?('three') ? [link] : []
+            allow(Find).to receive(:find).with(repo).and_return(links)
+            allow(File).to receive(:symlink?).and_return(true)
+            allow(File).to receive(:absolute_path).and_return(source)
+          end
+        end
+      end
+      fixtures.each do |fixture|
+        it "should handle #{fixture[:name]}" do
+          expect(BetweenMeals::Changes::Cookbook.find(
+            fixture[:files],
+            cookbook_dirs,
+            logger,
+            Repo.new,
+            track_symlinks,
+          ).map do |cb|
+            [cb.name, cb.status]
+          end).to eq(fixture[:result])
+        end
+      end
     end
   end
 end

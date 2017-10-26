@@ -83,10 +83,11 @@ describe BetweenMeals::Repo::Hg do
 
   examples.each do |fixture|
     it "should handle #{fixture[:name]}" do
-      BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
+      allow_any_instance_of(BetweenMeals::Repo::Hg).
+        to receive(:setup).and_return(true)
       hg = BetweenMeals::Repo::Hg.new('foo', logger)
-      hg.send(:parse_status, fixture[:changes]).
-        should eq(fixture[:result])
+      expect(hg.send(:parse_status, fixture[:changes])).
+        to eq(fixture[:result])
     end
   end
 
@@ -110,29 +111,31 @@ describe BetweenMeals::Repo::Hg do
 
   examples.each do |example|
     it 'should read config' do
-      cmd = double(Mixlib::ShellOut)
-      cmd.stub(:stdout).and_return(example[:config])
-      BetweenMeals::Cmd.any_instance.stub(:cmd).and_return(cmd)
+      cmd = double(Mixlib::ShellOut, stdout: example[:config])
+      allow_any_instance_of(BetweenMeals::Cmd).
+        to receive(:cmd).and_return(cmd)
 
       hg = BetweenMeals::Repo::Hg.new('foo', logger)
-      hg.email.should eq(example[:email])
-      hg.name.should eq(example[:name])
+      expect(hg.email).to eq(example[:email])
+      expect(hg.name).to eq(example[:name])
     end
   end
 
   it 'should error on spaces in file names' do
-    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
-    svn = BetweenMeals::Repo::Hg.new('foo', logger)
-    lambda do
-      svn.send(:parse_status, 'M foo/bar baz')
-    end.should raise_error('Failed to parse repo diff line.')
+    allow_any_instance_of(BetweenMeals::Repo::Hg).
+      to receive(:setup).and_return(true)
+    hg = BetweenMeals::Repo::Hg.new('foo', logger)
+    expect(lambda do
+      hg.send(:parse_status, 'M foo/bar baz')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
-    BetweenMeals::Repo::Hg.any_instance.stub(:setup).and_return(true)
-    svn = BetweenMeals::Repo::Hg.new('foo', logger)
-    lambda do
-      svn.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('Failed to parse repo diff line.')
+    allow_any_instance_of(BetweenMeals::Repo::Hg).
+      to receive(:setup).and_return(true)
+    hg = BetweenMeals::Repo::Hg.new('foo', logger)
+    expect(lambda do
+      hg.send(:parse_status, 'HGFS djs/ dsd)')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 end
