@@ -69,11 +69,11 @@ describe BetweenMeals::Repo::Git do
     },
     {
       :name => 'handle misc',
-      :changes => <<EOS ,
+      :changes => <<CHANGES ,
 R050 foo/bar/baz foo/bang/bong
 D foo/bar/baz
 C foo/bar/baz foo/bang/bong
-EOS
+CHANGES
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bang/bong' },

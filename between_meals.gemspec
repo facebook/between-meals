@@ -15,6 +15,9 @@ Gem::Specification.new do |s|
     json
     mixlib-shellout
     rugged
+    pry
+    pry-stack_explorer
+    pry-byebug
   }.each do |dep|
     s.add_dependency dep
   end

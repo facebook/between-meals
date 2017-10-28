@@ -50,6 +50,7 @@ module BetweenMeals
         stdout = @cmd.status(start_ref, end_ref).stdout
         begin
           parse_status(stdout).compact
+        # rubocop:disable Lint/RescueWithoutErrorClass
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
@@ -65,6 +66,7 @@ module BetweenMeals
 
       def update
         @cmd.pull.stdout
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         @logger.error('Something went wrong with hg!')
         @logger.error(cmd.stdout)
@@ -83,6 +85,7 @@ module BetweenMeals
           :time => Time.parse(@cmd.log('date|isodate', 'master').stdout),
           :rev => @cmd.log('node', 'master').stdout,
         }]
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         [{
           :time => nil,
@@ -103,6 +106,7 @@ module BetweenMeals
 
       def last_msg
         @cmd.log('desc').stdout
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         nil
       end
@@ -115,12 +119,14 @@ module BetweenMeals
 
       def email
         username[2]
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         nil
       end
 
       def name
         username[1]
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         nil
       end
@@ -143,6 +149,7 @@ module BetweenMeals
       def valid_ref?(ref)
         @cmd.rev(ref)
         return true
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         raise Changeset::ReferenceError
       end

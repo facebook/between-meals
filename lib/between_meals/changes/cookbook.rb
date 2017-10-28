@@ -20,7 +20,7 @@ module BetweenMeals
     # Changeset aware cookbook
     class Cookbook < Change
       def self.meaningful_cookbook_file?(path)
-        explode_path(path)
+        !explode_path(path).nil?
       end
 
       def self.explode_path(path)
@@ -51,7 +51,7 @@ module BetweenMeals
         symlinks = {}
         @cookbook_dirs.each do |dir|
           dir = File.join(@repo_dir, dir)
-          # Finds all symlinks in cookbook dirs
+          # Finds all symlinks in cookbook_dir
           Find.find(dir).select { |f| f if File.symlink?(f) }.each do |link|
             next if symlinks[link]
             source = File.absolute_path(link)
@@ -64,16 +64,21 @@ module BetweenMeals
           end
         end
 
-        # Create the data hash expected for each file but fake the source path
-        # as a symlink path. Hacky but works :)
+        # Create the file hash expected for each file that is a link or coming
+        # from a linked directory but fake the source path as a symlink path.
+        # Hacky but works :)
+        links_to_append = []
         symlinks.each do |link_abs_path, lrp| # link_relative_path
           files.each do |f|
             next unless f[:path].start_with?(lrp['source'])
-            f[:path].gsub!(lrp['source'], lrp['link'])
+            l = Marshal.load(Marshal.dump(f))
+            l[:path].gsub!(lrp['source'], lrp['link'])
             # a symlink will never have trailing '/', add one.
-            f[:path] += '/' if symlinked_dir?(link_abs_path)
+            l[:path] += '/' if symlinked_dir?(link_abs_path)
+            links_to_append << l
           end
         end
+        links_to_append
       end
 
       def initialize(files, cookbook_dirs)
@@ -107,7 +112,8 @@ module BetweenMeals
         # rubocop:disable MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)
         @cookbook_dirs = cookbook_dirs
-        map_symlinks(list) if track_symlinks
+        # require 'pry'; binding.pry if track_symlinks
+        list += map_symlinks(list) if track_symlinks
         list.
           group_by do |x|
           # Group by prefix of cookbok_dir + cookbook_name

@@ -27,6 +27,7 @@ module BetweenMeals
       @repo = nil
       @bin = nil
       setup
+    # rubocop:disable Lint/RescueWithoutErrorClass
     rescue
       @logger.warn("Unable to read repo from #{File.expand_path(repo_path)}")
       exit(1)
@@ -54,6 +55,7 @@ module BetweenMeals
               logger.info("Repo found to be #{klass.to_s.split('::').last}")
               return r
             end
+          # rubocop:disable Lint/RescueWithoutErrorClass
           rescue
             logger.debug("Skipping #{klass}")
           end

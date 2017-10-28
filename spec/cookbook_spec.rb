@@ -61,6 +61,18 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
+      :name => 'modifying of a cookbook file',
+      :files => [
+        {
+          :status => :modified,
+          :path => 'cookbooks/one/cb_one/files/chefctl.rb',
+        },
+      ],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
+    {
       :name => 'a mix of in-place modifications and deletes',
       :files => [
         {
@@ -203,18 +215,35 @@ describe BetweenMeals::Changes::Cookbook do
         allow(File).to receive(:realpath).with(repo_path).and_return(repo_path)
         if track_symlinks
           cookbook_dirs.each do |dir|
+            # This mocks out that there is a cookbook and script symlinked
+            # from a different cookbook_dir, For all of the tests.
             repo = File.join(repo_path, dir)
-            link = File.join(repo, 'three', 'cb_one')
-            source = File.join(repo, 'one', 'cb_one')
-            links = dir.include?('three') ? [link] : []
-            allow(Find).to receive(:find).with(repo).and_return(links)
+            link1 = "#{repo_path}/cookbooks/three/cb_one"
+            link2 = "#{repo_path}/cookbooks/three/cb_one/files/chefctl.rb"
+            links = [link1, link2]
+            src1 = 'cookbooks/one/cb_one'
+            src2 = 'cookbooks/one/cb_one/files/chefctl.rb'
+            find_res = dir.include?('three') ? links : []
+            allow(Find).to receive(:find).with(repo).and_return(find_res)
             allow(File).to receive(:symlink?).and_return(true)
-            allow(File).to receive(:absolute_path).and_return(source)
+            allow(File).to receive(:absolute_path).with(link1).and_return(src1)
+            allow(File).to receive(:absolute_path).with(link2).and_return(src2)
           end
         end
       end
       fixtures.each do |fixture|
         it "should handle #{fixture[:name]}" do
+          # If we are track_symlinks and there were changes to one/cb_one or to
+          # the chefctl script in one/cb_one, we should expect one more upload
+          # of cb_one, to the cookbooks/three locaiton.
+          files = fixture[:files]
+          res = fixture[:result]
+          ctl = files.select { |f| f[:path].include?('chefctl') }.any?
+          cb_one = files.select { |f| f[:path].include?('one/cb_one') }.any?
+          if track_symlinks && (ctl || cb_one)
+            cb_one_res = res.find { |r| r[1] if r[0].include?('cb_one') }
+            fixture[:result] << cb_one_res
+          end
           expect(BetweenMeals::Changes::Cookbook.find(
             fixture[:files],
             cookbook_dirs,

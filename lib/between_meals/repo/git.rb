@@ -29,6 +29,7 @@ module BetweenMeals
         if File.exists?(File.expand_path(@repo_path))
           begin
             @repo = Rugged::Repository.new(File.expand_path(@repo_path))
+          # rubocop:disable Lint/RescueWithoutErrorClass
           rescue
             @repo = nil
           end
@@ -86,6 +87,7 @@ module BetweenMeals
         stdout = @cmd.diff(start_ref, end_ref).stdout
         begin
           parse_status(stdout).compact
+        # rubocop:disable Lint/RescueWithoutErrorClass
         rescue => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
@@ -113,6 +115,7 @@ module BetweenMeals
           return true
         end
         return false
+      # rubocop:disable Lint/RescueWithoutErrorClass
       rescue
         return false
       end
