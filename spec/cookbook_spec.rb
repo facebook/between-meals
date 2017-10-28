@@ -233,9 +233,9 @@ describe BetweenMeals::Changes::Cookbook do
       end
       fixtures.each do |fixture|
         it "should handle #{fixture[:name]}" do
-          # If we are track_symlinks and there were changes to one/cb_one or to
-          # the chefctl script in one/cb_one, we should expect one more upload
-          # of cb_one, to the cookbooks/three locaiton.
+          # If track_symlinks and there were changes to one/cb_one or to the
+          # chefctl script in one/cb_one, we should expect one more upload of
+          # cb_one, to the cookbooks/three location.
           files = fixture[:files]
           res = fixture[:result]
           ctl = files.select { |f| f[:path].include?('chefctl') }.any?
