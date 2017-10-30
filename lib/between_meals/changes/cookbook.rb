@@ -68,13 +68,15 @@ module BetweenMeals
         # from a linked directory but fake the source path as a symlink path.
         # Hacky but works :)
         links_to_append = []
-        symlinks.each do |link_abs_path, lrp| # link_relative_path
+        symlinks.each do |lap, lrp| # link_abs_path, link_relative_path
           files.each do |f|
+            # If a link is being checked in, and a dir add a '/'
+            f[:path] += '/' if f[:path] == lrp['link'] && symlinked_dir?(lap)
             next unless f[:path].start_with?(lrp['source'])
             l = Marshal.load(Marshal.dump(f))
             l[:path].gsub!(lrp['source'], lrp['link'])
             # a symlink will never have trailing '/', add one.
-            l[:path] += '/' if symlinked_dir?(link_abs_path)
+            l[:path] += '/' if symlinked_dir?(lap)
             links_to_append << l
           end
         end
