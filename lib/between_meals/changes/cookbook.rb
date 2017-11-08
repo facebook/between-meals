@@ -110,7 +110,6 @@ module BetweenMeals
         # rubocop:disable MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)
         @cookbook_dirs = cookbook_dirs
-        # require 'pry'; binding.pry if track_symlinks
         list += map_symlinks(list) if track_symlinks
         list.
           group_by do |x|
