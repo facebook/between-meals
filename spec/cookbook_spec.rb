@@ -207,12 +207,11 @@ describe BetweenMeals::Changes::Cookbook do
             # from a different cookbook_dir, For all of the tests.
             repo = File.join(repo_path, dir)
             link = "#{repo_path}/cookbooks/three/cb_one"
-            links = [link1]
             src = 'cookbooks/one/cb_one'
-            find_res = dir.include?('three') ? links : []
-            allow(Find).to receive(:find).with(repo).and_return(find_res)
+            find_res = dir.include?('three') ? ['cb_one'] : []
+            allow(Dir).to receive(:foreach).with(repo).and_return(find_res)
             allow(File).to receive(:symlink?).and_return(true)
-            allow(File).to receive(:absolute_path).with(link).and_return(src)
+            allow(File).to receive(:realpath).with(link).and_return(src)
           end
         end
       end
