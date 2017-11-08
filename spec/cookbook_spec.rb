@@ -61,18 +61,6 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'modifying of a cookbook file',
-      :files => [
-        {
-          :status => :modified,
-          :path => 'cookbooks/one/cb_one/files/chefctl.rb',
-        },
-      ],
-      :result => [
-        ['cb_one', :modified],
-      ],
-    },
-    {
       :name => 'a mix of in-place modifications and deletes',
       :files => [
         {
@@ -218,16 +206,13 @@ describe BetweenMeals::Changes::Cookbook do
             # This mocks out that there is a cookbook and script symlinked
             # from a different cookbook_dir, For all of the tests.
             repo = File.join(repo_path, dir)
-            link1 = "#{repo_path}/cookbooks/three/cb_one"
-            link2 = "#{repo_path}/cookbooks/three/cb_one/files/chefctl.rb"
-            links = [link1, link2]
-            src1 = 'cookbooks/one/cb_one'
-            src2 = 'cookbooks/one/cb_one/files/chefctl.rb'
+            link = "#{repo_path}/cookbooks/three/cb_one"
+            links = [link1]
+            src = 'cookbooks/one/cb_one'
             find_res = dir.include?('three') ? links : []
             allow(Find).to receive(:find).with(repo).and_return(find_res)
             allow(File).to receive(:symlink?).and_return(true)
-            allow(File).to receive(:absolute_path).with(link1).and_return(src1)
-            allow(File).to receive(:absolute_path).with(link2).and_return(src2)
+            allow(File).to receive(:absolute_path).with(link).and_return(src)
           end
         end
       end
@@ -238,9 +223,8 @@ describe BetweenMeals::Changes::Cookbook do
           # cb_one, to the cookbooks/three location.
           files = fixture[:files]
           res = fixture[:result]
-          ctl = files.select { |f| f[:path].include?('chefctl') }.any?
           cb_one = files.select { |f| f[:path].include?('one/cb_one') }.any?
-          if track_symlinks && (ctl || cb_one)
+          if track_symlinks && cb_one
             cb_one_res = res.find { |r| r[1] if r[0].include?('cb_one') }
             fixture[:result] << cb_one_res
           end

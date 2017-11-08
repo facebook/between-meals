@@ -38,23 +38,20 @@ module BetweenMeals
         nil
       end
 
-      def self.symlinked_dir?(link_path)
-        File.symlink?(link_path) &&
-          File.directory?(File.absolute_path(link_path))
-      end
-
       def self.map_symlinks(files)
         # For each symlink get the source path, if any files have changed under
         # the source path, fake them as coming from the symlink path. This
         # allows the normal cookbook logic to just work.
-        require 'find'
         symlinks = {}
         @cookbook_dirs.each do |dir|
           dir = File.join(@repo_dir, dir)
-          # Finds all symlinks in cookbook_dir
-          Find.find(dir).select { |f| f if File.symlink?(f) }.each do |link|
+          # Find symlinks in each cookbook_dir
+          Dir.foreach(dir).select do |d|
+            File.symlink?(File.join(dir, d))
+          end.each do |link|
+            link = File.join(dir, link)
             next if symlinks[link]
-            source = File.absolute_path(link)
+            source = File.realpath(link)
             repo = File.join(@repo_dir, '/')
             # maps absolute symlink path to relative source and link paths
             symlinks[link] = {
@@ -70,13 +67,12 @@ module BetweenMeals
         links_to_append = []
         symlinks.each do |lap, lrp| # link_abs_path, link_relative_path
           files.each do |f|
-            # If a link is being checked in, and a dir add a '/'
-            f[:path] += '/' if f[:path] == lrp['link'] && symlinked_dir?(lap)
+            # a symlink will never have trailing '/', add one.
+            f[:path] += '/' if f[:path] == lrp['link']
             next unless f[:path].start_with?(lrp['source'])
+            # This make a deep dup of the file hash
             l = Marshal.load(Marshal.dump(f))
             l[:path].gsub!(lrp['source'], lrp['link'])
-            # a symlink will never have trailing '/', add one.
-            l[:path] += '/' if symlinked_dir?(lap)
             links_to_append << l
           end
         end
