@@ -46,9 +46,10 @@ module BetweenMeals
         @cookbook_dirs.each do |dir|
           dir = File.join(@repo_dir, dir)
           # Find symlinks in each cookbook_dir
-          Dir.foreach(dir).select do |d|
+          links = Dir.foreach(dir).select do |d|
             File.symlink?(File.join(dir, d))
-          end.each do |link|
+          end
+          links.each do |link|
             link = File.join(dir, link)
             next if symlinks[link]
             source = File.realpath(link)
@@ -65,7 +66,7 @@ module BetweenMeals
         # from a linked directory but fake the source path as a symlink path.
         # Hacky but works :)
         links_to_append = []
-        symlinks.each do |lap, lrp| # link_abs_path, link_relative_path
+        symlinks.each_values do |lrp| # link_abs_path, link_relative_path
           files.each do |f|
             # a symlink will never have trailing '/', add one.
             f[:path] += '/' if f[:path] == lrp['link']
