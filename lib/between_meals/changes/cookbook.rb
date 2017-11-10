@@ -66,7 +66,7 @@ module BetweenMeals
         # from a linked directory but fake the source path as a symlink path.
         # Hacky but works :)
         links_to_append = []
-        symlinks.each_values do |lrp| # link_abs_path, link_relative_path
+        symlinks.each_value do |lrp| # link_abs_path, link_relative_path
           files.each do |f|
             # a symlink will never have trailing '/', add one.
             f[:path] += '/' if f[:path] == lrp['link']

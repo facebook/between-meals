@@ -64,8 +64,7 @@ module BetweenMeals
 
         begin
           parse_status(changes).compact
-        # rubocop:disable Lint/RescueWithoutErrorClass
-        rescue => e
+        rescue StandardError => e
           @logger.error(
             'Something went wrong. Please report this output.',
           )
@@ -93,8 +92,7 @@ module BetweenMeals
 
       def valid_ref?(ref)
         @cmd.info_r(ref, @repo_path)
-      # rubocop:disable Lint/RescueWithoutErrorClass
-      rescue
+      rescue StandardError
         raise Changeset::ReferenceError
       end
 
