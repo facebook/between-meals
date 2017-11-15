@@ -113,6 +113,9 @@ Style/ConditionalAssignment:
 Style/IndentHeredoc:
   Enabled: false
 
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
 #
 # Modified rules
 #

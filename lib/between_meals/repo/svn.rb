@@ -64,7 +64,7 @@ module BetweenMeals
 
         begin
           parse_status(changes).compact
-        rescue => e
+        rescue StandardError => e
           @logger.error(
             'Something went wrong. Please report this output.',
           )
@@ -92,7 +92,7 @@ module BetweenMeals
 
       def valid_ref?(ref)
         @cmd.info_r(ref, @repo_path)
-      rescue
+      rescue StandardError
         raise Changeset::ReferenceError
       end
 
