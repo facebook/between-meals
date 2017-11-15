@@ -27,9 +27,7 @@ module BetweenMeals
     end
 
     def cmd(params, cwd = nil)
-      unless cwd
-        cwd = File.expand_path(@cwd)
-      end
+      cwd ||= File.expand_path(@cwd)
       cmd = "#{@bin} #{params}"
       @logger.info("Running \"#{cmd}\"")
       c = Mixlib::ShellOut.new(

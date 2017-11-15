@@ -29,7 +29,7 @@ module BetweenMeals
         if File.exists?(File.expand_path(@repo_path))
           begin
             @repo = Rugged::Repository.new(File.expand_path(@repo_path))
-          rescue
+          rescue StandardError
             @repo = nil
           end
         else
@@ -86,7 +86,7 @@ module BetweenMeals
         stdout = @cmd.diff(start_ref, end_ref).stdout
         begin
           parse_status(stdout).compact
-        rescue => e
+        rescue StandardError => e
           # We've seen some weird non-reproducible failures here
           @logger.error(
             'Something went wrong. Please report this output.',
@@ -113,7 +113,7 @@ module BetweenMeals
           return true
         end
         return false
-      rescue
+      rescue StandardError
         return false
       end
 
