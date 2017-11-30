@@ -240,7 +240,7 @@ describe BetweenMeals::Changes::Cookbook do
             # For the symlink test, we expect there to be an upload of cb_one
             # when the symlinks feature is enabled
             if fixture[:name].include?('symlink')
-              fixture[:result] << ["cb_one", :modified]
+              fixture[:result] << ['cb_one', :modified]
             end
           end
           expect(BetweenMeals::Changes::Cookbook.find(
