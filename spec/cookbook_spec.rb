@@ -40,12 +40,22 @@ describe BetweenMeals::Changes::Cookbook do
 
   fixtures = [
     {
-      :name => 'empty filelists',
+      :name => 'break with symlink, when track_symlinks is not enabled',
+      :files => [
+        {
+          :status => :modified,
+          :path => 'cookbooks/three/cb_one',
+        },
+      ],
+      :result => [],
+    },
+    {
+      :name => 'handle empty filelists',
       :files => [],
       :result => [],
     },
     {
-      :name => 'modifying of a cookbook',
+      :name => 'handle modifying of a cookbook',
       :files => [
         {
           :status => :modified,
@@ -61,7 +71,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'a mix of in-place modifications and deletes',
+      :name => 'handle a mix of in-place modifications and deletes',
       :files => [
         {
           :status => :modified,
@@ -81,7 +91,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'removing metadata.rb - invalid cookbook, delete it',
+      :name => 'handle removing metadata.rb - invalid cookbook, delete it',
       :files => [
         {
           :status => :modified,
@@ -97,7 +107,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'changing cookbook location',
+      :name => 'handle changing cookbook location',
       :files => [
         {
           :status => :deleted,
@@ -126,7 +136,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'modifying metadata only',
+      :name => 'handle modifying metadata only',
       :files => [
         {
           :status => :modified,
@@ -138,7 +148,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'modifying README only',
+      :name => 'handle modifying README only',
       :files => [
         {
           :status => :modified,
@@ -150,7 +160,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'modifying recipe only',
+      :name => 'handle modifying recipe only',
       :files => [
         {
           :status => :modified,
@@ -162,7 +172,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'skipping non-cookbook files',
+      :name => 'handle skipping non-cookbook files',
       :files => [
         {
           :status => :modified,
@@ -181,7 +191,7 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
-      :name => 'when metadata file is not in the root of the cb dir',
+      :name => 'handle when metadata file is not in the root of the cb dir',
       :files => [
         {
           :status => :deleted,
@@ -216,7 +226,8 @@ describe BetweenMeals::Changes::Cookbook do
         end
       end
       fixtures.each do |fixture|
-        it "should handle #{fixture[:name]}" do
+        next if fixture[:name].include?('symlink') && track_symlinks
+        it "should #{fixture[:name]}" do
           # If track_symlinks and there were changes to one/cb_one or to the
           # chefctl script in one/cb_one, we should expect one more upload of
           # cb_one, to the cookbooks/three location.

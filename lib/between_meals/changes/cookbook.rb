@@ -90,15 +90,11 @@ module BetweenMeals
         #   and will be re-uploaded
         if files.
            select { |x| x[:status] == :deleted }.
-<<<<<<< HEAD
            map do |x|
              x[:path].match(
-               %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.rb$},
+               %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.(rb|json)$},
              )
            end.
-=======
-           map { |x| x[:path].match(%{.*metadata\.(rb|json)$}) }.
->>>>>>> facebook/master
            compact.
            any?
           @status = :deleted
