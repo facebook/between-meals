@@ -262,9 +262,9 @@ describe BetweenMeals::Changes::Cookbook do
       end
       fixtures.each do |fixture|
         it "should handle #{fixture[:name]}" do
-          expected = fixture[:result] == fixture[:result_with_symlink_tracking]
+          expected = fixture[:result]
           if track_symlinks
-              expected = fixture[:result_with_symlink_tracking]
+            expected = fixture[:result_with_symlink_tracking]
           end
           expect(BetweenMeals::Changes::Cookbook.find(
             fixture[:files],
