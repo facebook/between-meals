@@ -50,11 +50,11 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipes/test.rb',
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb',
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -140,7 +140,7 @@ describe BetweenMeals::Changes::Cookbook do
       :result_with_symlink_tracking => [
         ['cb_one', :deleted],
         ['cb_one', :modified],
-        ['cb_one', :modified],
+        ['cb_one', :deleted],
       ],
     },
     {
@@ -148,7 +148,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb',
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -164,7 +164,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/README.md',
+          :path => 'cookbooks/one/cb_one/README.md',
         },
       ],
       :result => [
@@ -180,7 +180,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipe/default.rb',
+          :path => 'cookbooks/one/cb_one/recipe/default.rb',
         },
       ],
       :result => [
@@ -215,7 +215,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :deleted,
-          :path => 'cookbooks/two/cb_one/files/default/metadata.rb',
+          :path => 'cookbooks/one/cb_one/files/default/metadata.rb',
         },
       ],
       :result => [
