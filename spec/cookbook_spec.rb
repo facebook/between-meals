@@ -212,7 +212,7 @@ describe BetweenMeals::Changes::Cookbook do
       before do
         allow(File).to receive(:realpath).with(repo_path).and_return(repo_path)
         if track_symlinks
-          cookbook_dirs.reject!{ |d| d.include?('one') }
+          cookbook_dirs.reject! { |d| d.include?('one') }
           cookbook_dirs.each do |dir|
             # This mocks out that there is a cookbook symlinked from a different
             # cookbook_dir, For all of the tests.
