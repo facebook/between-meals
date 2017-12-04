@@ -43,7 +43,6 @@ describe BetweenMeals::Changes::Cookbook do
       :name => 'empty filelists',
       :files => [],
       :result => [],
-      :result_with_symlink_tracking => [],
     },
     {
       :name => 'modifying of a cookbook',
@@ -58,10 +57,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [
-        ['cb_one', :modified],
-      ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
         ['cb_one', :modified],
       ],
     },
@@ -84,10 +79,6 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [
         ['cb_one', :modified],
       ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
-        ['cb_one', :modified],
-      ],
     },
     {
       :name => 'removing metadata.rb - invalid cookbook, delete it',
@@ -102,10 +93,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [
-        ['cb_one', :deleted],
-      ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :deleted],
         ['cb_one', :deleted],
       ],
     },
@@ -137,11 +124,6 @@ describe BetweenMeals::Changes::Cookbook do
         ['cb_one', :deleted],
         ['cb_one', :modified],
       ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :deleted],
-        ['cb_one', :modified],
-        ['cb_one', :deleted],
-      ],
     },
     {
       :name => 'modifying metadata only',
@@ -152,10 +134,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [
-        ['cb_one', :modified],
-      ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
         ['cb_one', :modified],
       ],
     },
@@ -170,10 +148,6 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [
         ['cb_one', :modified],
       ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
-        ['cb_one', :modified],
-      ],
     },
     {
       :name => 'modifying recipe only',
@@ -184,10 +158,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [
-        ['cb_one', :modified],
-      ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
         ['cb_one', :modified],
       ],
     },
@@ -208,7 +178,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [],
-      :result_with_symlink_tracking => [],
     },
     {
       :name => 'when metadata file is not in the root of the cb dir',
@@ -219,10 +188,6 @@ describe BetweenMeals::Changes::Cookbook do
         },
       ],
       :result => [
-        ['cb_one', :modified],
-      ],
-      :result_with_symlink_tracking => [
-        ['cb_one', :modified],
         ['cb_one', :modified],
       ],
     },
@@ -247,6 +212,7 @@ describe BetweenMeals::Changes::Cookbook do
       before do
         allow(File).to receive(:realpath).with(repo_path).and_return(repo_path)
         if track_symlinks
+          cookbook_dirs.reject!{ |d| d.include?('one') }
           cookbook_dirs.each do |dir|
             # This mocks out that there is a cookbook symlinked from a different
             # cookbook_dir, For all of the tests.
@@ -263,7 +229,7 @@ describe BetweenMeals::Changes::Cookbook do
       fixtures.each do |fixture|
         it "should handle #{fixture[:name]}" do
           expected = fixture[:result]
-          if track_symlinks
+          if track_symlinks && fixture[:result_with_symlink_tracking]
             expected = fixture[:result_with_symlink_tracking]
           end
           expect(BetweenMeals::Changes::Cookbook.find(
@@ -274,7 +240,7 @@ describe BetweenMeals::Changes::Cookbook do
             track_symlinks,
           ).map do |cb|
             [cb.name, cb.status]
-          end).to eq(expected)
+          end.sort).to eq(expected.sort)
         end
       end
     end
