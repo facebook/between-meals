@@ -30,10 +30,10 @@ describe 'BetweenMeals::Repo' do
     BetweenMeals::Repo::Hg,
   ].each do |klass|
     it "#{klass} should conform to BetweenMeals::Repo class interface" do
-      klass.public_methods.sort.should eq(class_interface)
+      expect(klass.public_methods.sort).to eq(class_interface)
     end
     it "#{klass} should conform to BetweenMeals::Repo instance interface" do
-      klass.instance_methods.sort.should eq(instance_interface)
+      expect(klass.instance_methods.sort).to eq(instance_interface)
     end
   end
 end

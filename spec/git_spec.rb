@@ -69,11 +69,11 @@ describe BetweenMeals::Repo::Git do
     },
     {
       :name => 'handle misc',
-      :changes => <<EOS ,
+      :changes => <<CHANGES ,
 R050 foo/bar/baz foo/bang/bong
 D foo/bar/baz
 C foo/bar/baz foo/bang/bong
-EOS
+CHANGES
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bang/bong' },
@@ -85,26 +85,29 @@ EOS
 
   fixtures.each do |fixture|
     it "should handle #{fixture[:name]}" do
-      BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
+      expect_any_instance_of(BetweenMeals::Repo::Git).
+        to receive(:setup).and_return(true)
       git = BetweenMeals::Repo::Git.new('foo', logger)
-      git.send(:parse_status, fixture[:changes]).
-        should eq(fixture[:result])
+      expect(git.send(:parse_status, fixture[:changes])).
+        to eq(fixture[:result])
     end
   end
 
   it 'should error on spaces in file names' do
-    BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
+    expect_any_instance_of(BetweenMeals::Repo::Git).
+      to receive(:setup).and_return(true)
     git = BetweenMeals::Repo::Git.new('foo', logger)
-    lambda do
+    expect(lambda do
       git.send(:parse_status, 'M foo/bar baz')
-    end.should raise_error('Failed to parse repo diff line.')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
-    BetweenMeals::Repo::Git.any_instance.stub(:setup).and_return(true)
+    expect_any_instance_of(BetweenMeals::Repo::Git).
+      to receive(:setup).and_return(true)
     git = BetweenMeals::Repo::Git.new('foo', logger)
-    lambda do
+    expect(lambda do
       git.send(:parse_status, 'HGFS djs/ dsd)')
-    end.should raise_error('Failed to parse repo diff line.')
+    end).to raise_error('Failed to parse repo diff line.')
   end
 end

@@ -109,14 +109,13 @@ describe BetweenMeals::Changes::Role do
 
   fixtures.each do |fixture|
     it "should handle #{fixture[:name]}" do
-      BetweenMeals::Changes::Role.find(
+      expect(BetweenMeals::Changes::Role.find(
         fixture[:files],
         roles_dir,
         logger,
       ).map do |cb|
         [cb.name, cb.status]
-      end.
-        should eq(fixture[:result])
+      end).to eq(fixture[:result])
     end
   end
 end

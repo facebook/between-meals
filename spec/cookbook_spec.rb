@@ -19,13 +19,23 @@ require 'between_meals/changes/change'
 require 'between_meals/changes/cookbook'
 require 'between_meals/changeset'
 require 'logger'
+require 'find'
 
 describe BetweenMeals::Changes::Cookbook do
   let(:logger) do
     Logger.new('/dev/null')
   end
   let(:cookbook_dirs) do
-    ['cookbooks/one', 'cookbooks/two']
+    ['cookbooks/one', 'cookbooks/two', 'cookbooks/three']
+  end
+  let(:repo_path) do
+    "#{ENV['HOME']}/devfiles"
+  end
+
+  class Repo
+    def repo_path
+      "#{ENV['HOME']}/devfiles"
+    end
   end
 
   fixtures = [
@@ -39,11 +49,11 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipes/test.rb',
+          :path => 'cookbooks/one/cb_one/recipes/test.rb',
         },
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb',
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -120,7 +130,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/metadata.rb',
+          :path => 'cookbooks/one/cb_one/metadata.rb',
         },
       ],
       :result => [
@@ -132,7 +142,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/README.md',
+          :path => 'cookbooks/one/cb_one/README.md',
         },
       ],
       :result => [
@@ -144,7 +154,7 @@ describe BetweenMeals::Changes::Cookbook do
       :files => [
         {
           :status => :modified,
-          :path => 'cookbooks/two/cb_one/recipe/default.rb',
+          :path => 'cookbooks/one/cb_one/recipe/default.rb',
         },
       ],
       :result => [
@@ -167,21 +177,72 @@ describe BetweenMeals::Changes::Cookbook do
           :path => 'OWNERS',
         },
       ],
-      :result => [
+      :result => [],
+    },
+    {
+      :name => 'when metadata file is not in the root of the cb dir',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/one/cb_one/files/default/metadata.rb',
+        },
       ],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
+    {
+      :name => 'new symlink being created',
+      :files => [
+        {
+          :status => :modified,
+          :path => 'cookbooks/three/cb_one',
+        },
+      ],
+      :result => [],
+      :result_with_symlink_tracking => [['cb_one', :modified]],
     },
   ]
 
-  fixtures.each do |fixture|
-    it "should handle #{fixture[:name]}" do
-      BetweenMeals::Changes::Cookbook.find(
-        fixture[:files],
-        cookbook_dirs,
-        logger,
-      ).map do |cb|
-        [cb.name, cb.status]
-      end.
-        should eq(fixture[:result])
+  {
+    'Normally' => false,
+    'With symlinks' => true,
+  }.each do |c, track_symlinks|
+    context "Running BetweenMeals #{c}" do
+      before do
+        allow(File).to receive(:realpath).with(repo_path).and_return(repo_path)
+        if track_symlinks
+          cookbook_dirs.reject! { |d| d.include?('one') }
+          cookbook_dirs.each do |dir|
+            # This mocks out that there is a cookbook symlinked from a different
+            # cookbook_dir, For all of the tests.
+            repo = File.join(repo_path, dir)
+            link = "#{repo_path}/cookbooks/three/cb_one"
+            src = 'cookbooks/one/cb_one'
+            find_res = dir.include?('three') ? ['cb_one'] : []
+            allow(Dir).to receive(:foreach).with(repo).and_return(find_res)
+            allow(File).to receive(:symlink?).and_return(true)
+            allow(File).to receive(:realpath).with(link).and_return(src)
+          end
+        end
+      end
+      fixtures.each do |fixture|
+        it "should handle #{fixture[:name]}" do
+          expected = fixture[:result]
+          if track_symlinks && fixture[:result_with_symlink_tracking]
+            expected = fixture[:result_with_symlink_tracking]
+          end
+          expect(BetweenMeals::Changes::Cookbook.find(
+            fixture[:files],
+            cookbook_dirs,
+            logger,
+            Repo.new,
+            track_symlinks,
+          ).map do |cb|
+            [cb.name, cb.status]
+          end.sort).to eq(expected.sort)
+        end
+      end
     end
   end
 end
