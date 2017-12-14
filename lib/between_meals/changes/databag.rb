@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# rubocop:disable ClassVars
 module BetweenMeals
   module Changes
     # Changeset aware databag
@@ -37,7 +36,9 @@ module BetweenMeals
       end
 
       def self.find(list, databag_dir, logger)
+        # rubocop:disable ClassVars
         @@logger = logger
+        # rubocop:enable ClassVars
         return [] if list.nil? || list.empty?
         list.
           select { |x| self.name_from_path(x[:path], databag_dir) }.

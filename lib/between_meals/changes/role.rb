@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# rubocop:disable ClassVars
 module BetweenMeals
   module Changes
     # Changeset aware role
@@ -38,7 +37,9 @@ module BetweenMeals
       # Given a list of changed files
       # create a list of Role objects
       def self.find(list, role_dir, logger)
+        # rubocop:disable ClassVars
         @@logger = logger
+        # rubocop:enable ClassVars
         return [] if list.nil? || list.empty?
         list.
           select { |x| self.name_from_path(x[:path], role_dir) }.
