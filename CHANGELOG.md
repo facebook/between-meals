@@ -1,3 +1,10 @@
+## 0.0.8
+* Create pem dir if it does not exist
+* Add option to track symlinks
+* Handle metadata.json in addition to metadata.rb
+* Make cookbook dirs accessible from outside the knife object
+* Update path for MacOSX
+
 ## 0.0.7
 * Cleaned up error messages
 * Add support for JSON roles
