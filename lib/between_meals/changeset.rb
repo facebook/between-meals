@@ -33,6 +33,7 @@ module BetweenMeals
     def initialize(
       logger, repo, start_ref, end_ref, locations, track_symlinks = false
     )
+      # rubocop:enable Metrics/ParameterLists
       @logger = logger
       @repo = repo
       @cookbook_dirs = locations[:cookbook_dirs].dup

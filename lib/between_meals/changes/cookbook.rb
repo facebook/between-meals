@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# rubocop:disable ClassVars
 module BetweenMeals
   module Changes
     # Changeset aware cookbook
@@ -106,7 +105,9 @@ module BetweenMeals
       # Given a list of changed files
       # create a list of Cookbook objects
       def self.find(list, cookbook_dirs, logger, repo, track_symlinks = false)
+        # rubocop:disable ClassVars
         @@logger = logger
+        # rubocop:enable ClassVars
         return [] if list.nil? || list.empty?
         # rubocop:disable MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)

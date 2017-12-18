@@ -86,3 +86,4 @@ module BetweenMeals
     end
   end
 end
+# rubocop:enable ClassVars
