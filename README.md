@@ -6,7 +6,7 @@
 ## Intro
 Ohai!
 
-Between Meals is the library for calculating what Chef objects where modified
+Between Meals is the library for calculating what Chef objects were modified
 between two revisions in a version control system. It is also the library
 that backs Taste Tester and Grocery Delivery.
 
