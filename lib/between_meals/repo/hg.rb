@@ -165,7 +165,6 @@ module BetweenMeals
         #  I = ignored
         #    = origin of the previous file (with --copies)
 
-        # rubocop:disable MultilineBlockChain
         changes.lines.map do |line|
           case line
           when /^A (\S+)$/
@@ -207,7 +206,6 @@ module BetweenMeals
             fail 'Failed to parse repo diff line.'
           end
         end
-        # rubocop:enable MultilineBlockChain
       end
     end
   end
