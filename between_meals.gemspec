@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.license = 'Apache'
   %w{
     colorize
-    json
     mixlib-shellout
     rugged
   }.each do |dep|
