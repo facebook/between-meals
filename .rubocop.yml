@@ -87,9 +87,6 @@ FileName:
 PerceivedComplexity:
   Enabled: false
 
-UnneededDisable:
-  Enabled: false
-
 # Seems buggy - https://github.com/bbatsov/rubocop/issues/2690
 MultilineOperationIndentation:
   Enabled: false
@@ -106,11 +103,7 @@ Performance/TimesMap:
 Performance/RedundantMerge:
   Enabled: false
 
-# Bug with constants? https://phabricator.fb.com/P56108678
-Style/ConditionalAssignment:
-  Enabled: false
-
-Style/IndentHeredoc:
+Layout/IndentHeredoc:
   Enabled: false
 
 Naming/HeredocDelimiterNaming:
@@ -140,7 +133,7 @@ TrailingCommaInHashLiteral:
 TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/IndentArray:
+Layout/IndentArray:
   EnforcedStyle: consistent
 
 Style/SignalException:
@@ -149,7 +142,7 @@ Style/SignalException:
 Style/NumericLiteralPrefix:
   Enabled: false
 
-Style/VariableNumber:
+Naming/VariableNumber:
   Enabled: false
 
 Metrics/BlockLength:
