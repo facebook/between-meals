@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
     rspec-expectations
     rspec-mocks
     rubocop
-    simplecov
   }.each do |dep|
     s.add_development_dependency dep
   end
