@@ -50,7 +50,7 @@ module BetweenMeals
           begin
             f.write(msg)
             f.flush
-            cmd("commit --amend -l #{f.path}")
+            cmd("commit --amend --exclude '**' -l #{f.path}")
           ensure
             f.close
             f.unlink
