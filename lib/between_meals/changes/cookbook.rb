@@ -83,7 +83,8 @@ module BetweenMeals
         @files = files
         @cookbook_dirs = cookbook_dirs
         @name = self.class.explode_path(files.sample[:path])[:name]
-        # if metadata.rb is being deleted
+        # if metadata.(json|rb) is being deleted and we aren't also
+        # adding/modifying one of those two,
         #   cookbook is marked for deletion
         # otherwise it was modified
         #   and will be re-uploaded
@@ -95,7 +96,13 @@ module BetweenMeals
              )
            end.
            compact.
-           any?
+           any? &&
+           files.reject { |x| x[:status] == :deleted }.
+           map do |x|
+             x[:path].match(
+               %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.(rb|json)$},
+             )
+           end.none?
           @status = :deleted
         else
           @status = :modified

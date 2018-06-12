@@ -180,6 +180,38 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [],
     },
     {
+      :name => 'one metadata deleted, one modified',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/one/cb_one/metadata.json',
+        },
+        {
+          :status => :modified,
+          :path => 'cookbooks/one/cb_one/metadata.rb',
+        },
+      ],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
+    {
+      :name => 'deleting both metadata files',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/one/cb_one/metadata.json',
+        },
+        {
+          :status => :deleted,
+          :path => 'cookbooks/one/cb_one/metadata.rb',
+        },
+      ],
+      :result => [
+        ['cb_one', :deleted],
+      ],
+    },
+    {
       :name => 'when metadata file is not in the root of the cb dir',
       :files => [
         {
