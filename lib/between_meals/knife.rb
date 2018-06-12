@@ -225,7 +225,7 @@ zvgEHqbS0/QkJGOZ+UifPRanTDuGYQkPdHHOER4UghbM+Kz5rZbBicJ3bCyNOsah
 IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
 6wX4GR84dwyhG80yd4TP8Qo=
 -----END PRIVATE KEY-----
-    BLOCK
+      BLOCK
 
       unless File.directory?(File.dirname(@pem))
         Dir.mkdir(File.dirname(@pem), 0o755)
