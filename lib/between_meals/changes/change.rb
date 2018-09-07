@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # vim: syntax=ruby:expandtab:shiftwidth=2:softtabstop=2:tabstop=2
 
 # Copyright 2013-present Facebook
@@ -37,15 +39,11 @@ module BetweenMeals
       end
 
       def self.info(msg)
-        if @@logger
-          @@logger.info(msg)
-        end
+        @@logger&.info(msg)
       end
 
       def self.debug(msg)
-        if @@logger
-          @@logger.debug(msg)
-        end
+        @@logger&.debug(msg)
       end
 
       def info(msg)
