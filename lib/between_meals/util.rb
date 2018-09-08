@@ -71,18 +71,22 @@ module BetweenMeals
     end
 
     def port_open?(port)
-      begin
-        Timeout.timeout(1) do
-          begin
-            s = TCPSocket.new('localhost', port)
-            s.close
-            return true
-          rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-            return false
+      ips = Socket.ip_address_list
+      ips.map!(&:ip_address)
+      ips.each do |ip|
+        begin
+          Timeout.timeout(1) do
+            begin
+              s = TCPSocket.new(ip, port)
+              s.close
+              return true
+            rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+              next
+            end
           end
+        rescue Timeout::Error
+          next
         end
-      rescue Timeout::Error
-        return false
       end
       return false
     end
