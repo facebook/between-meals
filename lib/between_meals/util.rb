@@ -17,13 +17,15 @@
 # limitations under the License.
 
 require 'colorize'
+require 'net/http'
+require 'openssl'
 require 'socket'
 require 'timeout'
 
 module BetweenMeals
   # A set of simple utility functions used throughout BetweenMeals
   #
-  # Feel freeo to use... note that if you pass in a logger once
+  # Feel free to use... note that if you pass in a logger once
   # you don't need to again, but be safe and always pass one in. :)
 
   # Util classes need class vars :)
@@ -89,6 +91,26 @@ module BetweenMeals
         end
       end
       return false
+    end
+
+    def chef_zero_running?(port)
+      begin
+        Timeout.timeout(1) do
+          begin
+            uri = URI("http://localhost:#{port}")
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            req = Net::HTTP::Get.new(uri.request_uri)
+            res = http.request(req)
+            return res['Server'] == 'chef-zero'
+          rescue StandardError
+            return false
+          end
+        end
+      rescue Timeout::Error
+        return false
+      end
     end
   end
 end
