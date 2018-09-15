@@ -94,23 +94,21 @@ module BetweenMeals
     end
 
     def chef_zero_running?(port)
-      begin
-        Timeout.timeout(1) do
-          begin
-            uri = URI("http://localhost:#{port}")
-            http = Net::HTTP.new(uri.host, uri.port)
-            http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            req = Net::HTTP::Get.new(uri.request_uri)
-            res = http.request(req)
-            return res['Server'] == 'chef-zero'
-          rescue StandardError
-            return false
-          end
+      Timeout.timeout(1) do
+        begin
+          uri = URI("http://localhost:#{port}")
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          req = Net::HTTP::Get.new(uri.request_uri)
+          res = http.request(req)
+          return res['Server'] == 'chef-zero'
+        rescue StandardError
+          return false
         end
-      rescue Timeout::Error
-        return false
       end
+    rescue Timeout::Error
+      return false
     end
   end
 end
