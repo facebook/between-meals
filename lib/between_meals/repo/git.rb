@@ -114,6 +114,7 @@ module BetweenMeals
         if @cmd.merge_base(rev, master).stdout.strip == rev
           return true
         end
+
         return false
       rescue StandardError
         return false

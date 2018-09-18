@@ -42,6 +42,7 @@ module BetweenMeals
         @@logger = logger
         # rubocop:enable ClassVars
         return [] if list.nil? || list.empty?
+
         list.
           select { |x| self.name_from_path(x[:path], databag_dir) }.
           map do |x|
