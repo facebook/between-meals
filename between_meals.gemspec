@@ -23,9 +23,9 @@ Gem::Specification.new do |s|
     rspec-core
     rspec-expectations
     rspec-mocks
-    rubocop
     simplecov
   }.each do |dep|
     s.add_development_dependency dep
   end
+  s.add_development_dependency 'rubocop', '0.49.1'
 end
