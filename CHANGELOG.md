@@ -1,3 +1,10 @@
+## 0.0.9
+* New helpers for testing if chef-zero is running more methodically
+* Ensure _all_addresses when determining of a port is open
+* Gracefully handle cookbooks with both `metadata.json` and `metadata.rb`
+* Fix amend on hg so it only modifies the message, not the code
+* Remove the dependency on JSON now that 2.4 has it
+
 ## 0.0.8
 * Create pem dir if it does not exist
 * Add option to track symlinks
