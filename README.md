@@ -23,3 +23,6 @@ functions.
 * Mixlib::ShellOut
 * Rugged
 
+## License
+
+See the `LICENSE` file in this repo.
