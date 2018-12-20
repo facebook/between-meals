@@ -33,13 +33,20 @@ module BetweenMeals
       c = Mixlib::ShellOut.new(
         cmd,
         :cwd => cwd,
+        :env => {
+          # macOS needs /usr/local/bin as hg cannot be installed in /bin or
+          # /usr/bin
+          'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin',
+        },
       )
-      # macOS needs /usr/local/bin as hg cannot be installed in /bin or /usr/bin
-      c.environment = {
-        'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin',
-      }
       c.run_command
-      c.error!
+      if c.error?
+        # Let's make sure the error goes to the logs
+        @logger.error("#{@bin} failed: #{c.format_for_exception}")
+        # if our logger is STDOUT, we'll double log when we throw
+        # the exception, but that's OK
+        c.error!
+      end
       c
     end
   end
