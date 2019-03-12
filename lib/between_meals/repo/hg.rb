@@ -65,9 +65,9 @@ module BetweenMeals
 
       def update
         @cmd.pull.stdout
-      rescue StandardError
+      rescue StandardError => e
         @logger.error('Something went wrong with hg!')
-        @logger.error(cmd.stdout)
+        @logger.error(e)
         raise
       end
 
