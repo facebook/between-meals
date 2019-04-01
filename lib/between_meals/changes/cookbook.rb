@@ -30,6 +30,7 @@ module BetweenMeals
           debug("[cookbook] Matching #{path} against ^#{re}")
           m = path.match(re)
           next unless m
+
           info("Cookbook is #{m[1]}")
           return {
             :cookbook_dir => dir,
@@ -53,6 +54,7 @@ module BetweenMeals
           links.each do |link|
             link = File.join(dir, link)
             next if symlinks[link]
+
             source = File.realpath(link)
             repo = File.join(@repo_dir, '/')
             # maps absolute symlink path to relative source and link paths
@@ -72,6 +74,7 @@ module BetweenMeals
             # a symlink will never have trailing '/', add one.
             f[:path] += '/' if f[:path] == lrp['link']
             next unless f[:path].start_with?(lrp['source'])
+
             # This make a deep dup of the file hash
             l = Marshal.load(Marshal.dump(f))
             l[:path].gsub!(lrp['source'], lrp['link'])
@@ -119,6 +122,7 @@ module BetweenMeals
         @@logger = logger
         # rubocop:enable ClassVars
         return [] if list.nil? || list.empty?
+
         # rubocop:disable MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)
         @cookbook_dirs = cookbook_dirs
