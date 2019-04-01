@@ -104,7 +104,8 @@ module BetweenMeals
              x[:path].match(
                %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.(rb|json)$},
              )
-           end.none?
+           end.none? &&
+           files.select { |x| x[:status] == :added }.none?
           @status = :deleted
         else
           @status = :modified
