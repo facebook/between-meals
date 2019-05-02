@@ -234,6 +234,28 @@ describe BetweenMeals::Changes::Cookbook do
       :result => [],
       :result_with_symlink_tracking => [['cb_one', :modified]],
     },
+    {
+      :name => 'replacing metadata file with symlink',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/three/cb_one/metadata.rb',
+        },
+      ],
+      :result => [['cb_one', :deleted]],
+      :result_with_symlink_tracking => [['cb_one', :modified]],
+    },
+    {
+      :name => 'replacing non-metadata file with symlink',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/three/OWNERS',
+        },
+      ],
+      :result => [],
+      :result_with_symlink_tracking => [],
+    },
   ]
 
   {
@@ -255,6 +277,12 @@ describe BetweenMeals::Changes::Cookbook do
             allow(Dir).to receive(:foreach).with(repo).and_return(find_res)
             allow(File).to receive(:symlink?).and_return(true)
             allow(File).to receive(:realpath).with(link).and_return(src)
+            allow(File).to receive(:file?).with(
+              File.join(repo_path, src, 'metadata.rb'),
+            ).and_return(true)
+            allow(File).to receive(:file?).with(
+              File.join(repo_path, src, 'OWNERS'),
+            ).and_return(true)
           end
         end
       end
