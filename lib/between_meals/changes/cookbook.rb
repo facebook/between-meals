@@ -71,6 +71,19 @@ module BetweenMeals
           files.each do |f|
             # a symlink will never have trailing '/', add one.
             f[:path] += '/' if f[:path] == lrp['link']
+
+            # If a metadata file in the path of a symlink target directory has a
+            # deleted status, check if a metadata file exists in the symlink
+            # source directory. If so, mark it as modified to prevent deletion.
+            symlink_source_dir = File.join(@repo_dir, lrp['source'])
+            if (f[:path] == File.join(lrp['link'], 'metadata.rb') ||
+                f[:path] == File.join(lrp['link'], 'metadata.json')) &&
+                f[:status] == :deleted &&
+                (File.file?(File.join(symlink_source_dir, 'metadata.rb')) ||
+                 File.file?(File.join(symlink_source_dir, 'metadata.json')))
+              f[:status] = :modified
+            end
+
             next unless f[:path].start_with?(lrp['source'])
 
             # This make a deep dup of the file hash

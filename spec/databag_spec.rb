@@ -62,7 +62,7 @@ describe BetweenMeals::Changes::Databag do
         },
         {
           :status => :deleted,
-          :path => 'databags/test/databag2.rb' # wrong extension
+          :path => 'databags/test/databag2.rb', # wrong extension
         },
         {
           :status => :deleted,
