@@ -235,7 +235,22 @@ describe BetweenMeals::Changes::Cookbook do
       :result_with_symlink_tracking => [['cb_one', :modified]],
     },
     {
-      :name => 'replacing metadata file with symlink',
+      :name => 'replacing metadata file with new symlink',
+      :files => [
+        {
+          :status => :deleted,
+          :path => 'cookbooks/three/cb_one/metadata.rb',
+        },
+        {
+          :status => :added,
+          :path => 'cookbooks/one/cb_one/metadata.rb',
+        },
+      ],
+      :result => [['cb_one', :deleted], ['cb_one', :modified]],
+      :result_with_symlink_tracking => [['cb_one', :modified]],
+    },
+    {
+      :name => 'replacing metadata file with existing symlink',
       :files => [
         {
           :status => :deleted,
