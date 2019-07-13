@@ -102,7 +102,7 @@ module BetweenMeals
         # http://svnbook.red-bean.com/en/1.0/re26.html
         changes.lines.map do |line|
           case line
-          when /^([\w ])\w?\s+(\S+)$/
+          when /^([\w ])\w?\s+(.+)$/
             {
               :status => Regexp.last_match(1) == 'D' ? :deleted : :modified,
               :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),

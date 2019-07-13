@@ -167,37 +167,37 @@ module BetweenMeals
 
         changes.lines.map do |line|
           case line
-          when /^A (\S+)$/
+          when /^A (.+)$/
             {
               :status => :added,
               :path => Regexp.last_match(1),
             }
-          when /^C (\S+)$/
+          when /^C (.+)$/
             {
               :status => :clean,
               :path => Regexp.last_match(1),
             }
-          when /^R (\S+)$/
+          when /^R (.+)$/
             {
               :status => :deleted,
               :path => Regexp.last_match(1),
             }
-          when /^M (\S+)$/
+          when /^M (.+)$/
             {
               :status => :modified,
               :path => Regexp.last_match(1),
             }
-          when /^! (\S+)$/
+          when /^! (.+)$/
             {
               :status => :missing,
               :path => Regexp.last_match(1),
             }
-          when /^\? (\S+)$/
+          when /^\? (.+)$/
             {
               :status => :untracked,
               :path => Regexp.last_match(1),
             }
-          when /^I (\S+)$/
+          when /^I (.+)$/
             {
               :status => :ignored,
               :path => Regexp.last_match(1),
