@@ -1,3 +1,8 @@
+## 0.0.10
+* Ensure errors are logged to the logger
+* Fix logging when `hg pull` fails
+* Fix symlink handling
+
 ## 0.0.9
 * New helpers for testing if chef-zero is running more methodically
 * Ensure _all_addresses when determining of a port is open
