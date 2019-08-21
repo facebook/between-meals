@@ -39,6 +39,14 @@ module BetweenMeals
       @config = opts[:config] ||
                 "#{@home}/.chef/knife-#{@user}-taste-tester.rb"
       @knife = opts[:bin] || 'knife'
+      @knife_verb_option = ''
+      unless @logger.nil?
+        if @logger.level == Logger::DEBUG
+          @knife_verb_option = '-VV'
+        elsif @logger.level == Logger::INFO
+          @knife_verb_option = '-V'
+        end
+      end
       @berks = opts[:berks_bin] || 'berks'
       @berks_config = opts[:berks_config]
       @pem = opts[:pem] ||
@@ -55,7 +63,8 @@ module BetweenMeals
     def role_upload_all
       if File.exists?(@role_dir)
         roles = File.join(@role_dir, "*.#{@role_type}")
-        exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
+        exec!("#{@knife} role from file #{roles} #{@knife_verb_option} " +
+          "-c #{@config}", @logger)
       end
     end
 
@@ -64,22 +73,23 @@ module BetweenMeals
         roles = roles.map do |x|
           File.join(@role_dir, "#{x.name}.#{@role_type}")
         end.join(' ')
-        exec!("#{@knife} role from file #{roles} -c #{@config}", @logger)
+        exec!("#{@knife} role from file #{roles} #{@knife_verb_option} " +
+          "-c #{@config}", @logger)
       end
     end
 
     def role_delete(roles)
       if roles.any?
         roles.each do |role|
-          exec!(
-            "#{@knife} role delete #{role.name} --yes -c #{@config}", @logger
-          )
+          exec!("#{@knife} role delete #{role.name} #{@knife_verb_option} " +
+            "--yes -c #{@config}", @logger)
         end
       end
     end
 
     def cookbook_upload_all
-      exec!("#{@knife} cookbook upload -a -c #{@config}", @logger)
+      exec!("#{@knife} cookbook upload -a #{@knife_verb_option} " +
+        "-c #{@config}", @logger)
     end
 
     def berks_cookbook_upload_all
@@ -99,7 +109,8 @@ module BetweenMeals
     def cookbook_upload(cookbooks)
       if cookbooks.any?
         cookbooks = cookbooks.map(&:name).join(' ')
-        exec!("#{@knife} cookbook upload #{cookbooks} -c #{@config}", @logger)
+        exec!("#{@knife} cookbook upload #{cookbooks} #{@knife_verb_option} " +
+          "-c #{@config}", @logger)
       end
     end
 
@@ -126,7 +137,8 @@ module BetweenMeals
       if cookbooks.any?
         cookbooks.each do |cookbook|
           exec!("#{@knife} cookbook delete #{cookbook.name}" +
-                  " --purge -a --yes -c #{@config}", @logger)
+                  " --purge -a --yes #{@knife_verb_option} -c #{@config}",
+                @logger)
         end
       end
     end
@@ -149,7 +161,8 @@ module BetweenMeals
             File.join(@databag_dir, dbname, "#{x.item}.json")
           end.join(' ')
           exec!(
-            "#{@knife} data bag from file #{dbname} #{dbitems} -c #{@config}",
+            "#{@knife} data bag from file #{dbname} #{dbitems} " +
+            "#{@knife_verb_option} -c #{@config}",
             @logger,
           )
         end
@@ -161,7 +174,7 @@ module BetweenMeals
         databags.group_by(&:name).each do |dbname, dbs|
           dbs.each do |db|
             exec!("#{@knife} data bag delete #{dbname} #{db.item}" +
-                    " --yes -c #{@config}", @logger)
+                    " --yes #{@knife_verb_option} -c #{@config}", @logger)
           end
           delete_databag_if_empty(dbname)
         end
@@ -242,22 +255,25 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
 
     def create_databag_if_missing(databag)
       s = Mixlib::ShellOut.new("#{@knife} data bag list" +
-                               " --format json -c #{@config}").run_command
+                               " --format json #{@knife_verb_option} " +
+                               "-c #{@config}").run_command
       s.error!
       db = JSON.parse(s.stdout)
       unless db.include?(databag)
-        exec!("#{@knife} data bag create #{databag} -c #{@config}", @logger)
+        exec!("#{@knife} data bag create #{databag} #{@knife_verb_option} " +
+          "-c #{@config}", @logger)
       end
     end
 
     def delete_databag_if_empty(databag)
       s = Mixlib::ShellOut.new("#{@knife} data bag show #{databag}" +
-                               " --format json -c #{@config}").run_command
+                               " --format json #{@knife_verb_option} " +
+                               "-c #{@config}").run_command
       s.error!
       db = JSON.parse(s.stdout)
       if db.empty?
-        exec!("#{@knife} data bag delete #{databag} --yes -c #{@config}",
-              @logger)
+        exec!("#{@knife} data bag delete #{databag} --yes " +
+          "#{@knife_verb_option} -c #{@config}", @logger)
       end
     end
   end
