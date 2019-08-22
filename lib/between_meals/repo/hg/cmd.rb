@@ -34,7 +34,8 @@ module BetweenMeals
         end
 
         def pull
-          cmd('pull --rebase')
+          cmd('pull')
+          cmd('checkout master --clean')
         end
 
         def manifest
