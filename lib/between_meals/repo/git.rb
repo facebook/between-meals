@@ -152,7 +152,7 @@ module BetweenMeals
         #    be committed)
         # X: "unknown" change type (most probably a bug, please report it)
 
-        # rubocop:disable MultilineBlockChain
+        # rubocop:disable Style/MultilineBlockChain
         changes.lines.map do |line|
           case line
           when /^A\s+(\S+)$/
@@ -212,7 +212,7 @@ module BetweenMeals
             :path => x[:path].sub("#{@repo_path}/", ''),
           }
         end
-        # rubocop:enable MultilineBlockChain
+        # rubocop:enable Style/MultilineBlockChain
       end
     end
   end

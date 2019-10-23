@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# rubocop:disable ClassVars
+# rubocop:disable Style/ClassVars
 module BetweenMeals
   # A set of classes that represent a given item's change (a cookbook
   # that's changed, a role that's changed or a databag item that's changed).
@@ -54,4 +54,4 @@ module BetweenMeals
     end
   end
 end
-# rubocop:enable ClassVars
+# rubocop:enable Style/ClassVars

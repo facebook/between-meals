@@ -194,7 +194,7 @@ cache_type 'BasicFile'
 client_key '#{@client_key}'
 cache_options(:path => File.expand_path("#{@checksum_dir}"))
 cookbook_path [
-BLOCK
+      BLOCK
       @cookbook_dirs.each do |dir|
         cfg << "  \"#{dir}\",\n"
       end

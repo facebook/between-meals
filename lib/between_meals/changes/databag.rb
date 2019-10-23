@@ -36,9 +36,9 @@ module BetweenMeals
       end
 
       def self.find(list, databag_dir, logger)
-        # rubocop:disable ClassVars
+        # rubocop:disable Style/ClassVars
         @@logger = logger
-        # rubocop:enable ClassVars
+        # rubocop:enable Style/ClassVars
         return [] if list.nil? || list.empty?
 
         list.

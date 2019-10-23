@@ -128,12 +128,12 @@ module BetweenMeals
       # Given a list of changed files
       # create a list of Cookbook objects
       def self.find(list, cookbook_dirs, logger, repo, track_symlinks = false)
-        # rubocop:disable ClassVars
+        # rubocop:disable Style/ClassVars
         @@logger = logger
-        # rubocop:enable ClassVars
+        # rubocop:enable Style/ClassVars
         return [] if list.nil? || list.empty?
 
-        # rubocop:disable MultilineBlockChain
+        # rubocop:disable Style/MultilineBlockChain
         @repo_dir = File.realpath(repo.repo_path)
         @cookbook_dirs = cookbook_dirs
         list += map_symlinks(list) if track_symlinks
@@ -156,7 +156,7 @@ module BetweenMeals
             BetweenMeals::Changes::Cookbook.new(change, @cookbook_dirs)
           end
         end.compact
-        # rubocop:enable MultilineBlockChain
+        # rubocop:enable Style/MultilineBlockChain
       end
     end
   end

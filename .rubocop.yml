@@ -16,7 +16,7 @@ Layout/DotPosition:
 Layout/EmptyLineBetweenDefs:
   Enabled: false
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: consistent
 
 # This recommends using external gems to parse heredocs
@@ -41,9 +41,6 @@ Lint/AmbiguousBlockAssociation:
 
 # it wants File.exist? instead of File.exists?
 Lint/DeprecatedClassMethods:
-  Enabled: false
-
-Lint/UnneededDisable:
   Enabled: false
 
 Metrics/AbcSize:
@@ -75,31 +72,21 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+# this trips on *any* method called 'get_*' wtf.
+Naming/AccessorMethodName:
+  Enabled: false
+
+# This blows up on things like base_packages-redhat
+Naming/FileName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
 # commenting out until we upgrade to chefdk 3.x
 # Heredocs are fine with "EOF"
 # Naming/HeredocDelimiterNaming:
 #   Enabled: false
-
-# buggy: https://github.com/bbatsov/rubocop/issues/2639
-Performance/RedundantMatch:
-  Enabled: false
-
-# https://github.com/bbatsov/rubocop/issues/2676
-Performance/RedundantMerge:
-  Enabled: false
-
-# disable until we upgrade chef solo to chef 13. Otherwise people will be told
-# to use a method that doesn't exist in the verison of ruby in solo
-Performance/RegexpMatch:
-  Enabled: false
-
-# We'll .times.map all we want.
-Performance/TimesMap:
-  Enabled: false
-
-# this trips on *any* method called 'get_*' wtf.
-Style/AccessorMethodName:
-  Enabled: false
 
 # Disabled because of the way 'variables' works.
 Style/BracesAroundHashParameters:
@@ -116,10 +103,6 @@ Style/Documentation:
   Enabled: false
 
 Style/Encoding:
-  Enabled: false
-
-# This blows up on things like base_packages-redhat
-Style/FileName:
   Enabled: false
 
 Style/FormatStringToken:
@@ -201,11 +184,11 @@ Style/SymbolArray:
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 
-Style/VariableNumber:
-  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
 
 Style/WordArray:
   Enabled: false

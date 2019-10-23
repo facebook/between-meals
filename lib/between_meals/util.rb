@@ -27,7 +27,7 @@ module BetweenMeals
   # you don't need to again, but be safe and always pass one in. :)
 
   # Util classes need class vars :)
-  # rubocop:disable ClassVars
+  # rubocop:disable Style/ClassVars
   module Util
     @@logger = nil
 
@@ -110,4 +110,4 @@ module BetweenMeals
     end
   end
 end
-# rubocop:enable ClassVars
+# rubocop:enable Style/ClassVars

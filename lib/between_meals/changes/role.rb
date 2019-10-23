@@ -37,9 +37,9 @@ module BetweenMeals
       # Given a list of changed files
       # create a list of Role objects
       def self.find(list, role_dir, logger)
-        # rubocop:disable ClassVars
+        # rubocop:disable Style/ClassVars
         @@logger = logger
-        # rubocop:enable ClassVars
+        # rubocop:enable Style/ClassVars
         return [] if list.nil? || list.empty?
 
         list.
