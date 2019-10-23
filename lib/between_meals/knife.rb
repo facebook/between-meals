@@ -241,8 +241,12 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
 -----END PRIVATE KEY-----
       BLOCK
 
-      unless File.directory?(File.dirname(@pem))
-        Dir.mkdir(File.dirname(@pem), 0o755)
+      begin
+        unless File.directory?(File.dirname(@pem))
+          Dir.mkdir(File.dirname(@pem), 0o755)
+        end
+      rescue Errno::EEXIST => e
+        @logger.warn("#{File.dirname(@pem)} already exists, not creating: #{e}")
       end
 
       unless File.exists?(@pem)
