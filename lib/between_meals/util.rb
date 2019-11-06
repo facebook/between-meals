@@ -38,16 +38,17 @@ module BetweenMeals
       info("Executed in #{format('%.2f', Time.now - t0)}s")
     end
 
-    def exec!(command, logger = nil)
+    def exec!(command, logger = nil, stream = nil)
       @@logger = logger if logger
-      c = execute(command)
+      c = execute(command, stream)
       c.error!
       return c.status.exitstatus, c.stdout
     end
 
-    def exec(command, logger = nil)
+    def exec(command, logger = nil, stream = nil)
       @@logger = logger if logger
-      c = execute(command)
+
+      c = execute(command, stream)
       return c.status.exitstatus, c.stdout
     end
 
@@ -57,9 +58,9 @@ module BetweenMeals
       @@logger&.info(msg)
     end
 
-    def execute(command)
+    def execute(command, stream)
       info("Running: #{command}")
-      c = Mixlib::ShellOut.new(command)
+      c = Mixlib::ShellOut.new(command, :live_stream => stream)
       c.run_command
       c.stdout.lines.each do |line|
         info("STDOUT: #{line.strip}")
