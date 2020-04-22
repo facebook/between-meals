@@ -31,38 +31,53 @@ describe BetweenMeals::Repo::Git do
       :result => [],
     },
     {
-      :name => 'handle renames',
-      :changes => 'R050 foo/bar/baz foo/bang/bong',
+      :name => 'renames',
+      :changes => "R050\tfoo/bar/baz\tfoo/bang/bong",
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bang/bong' },
       ],
     },
     {
-      :name => 'handle type changes',
-      :changes => 'T foo/bar/baz',
+      :name => 'renames with spaces',
+      :changes => "R050\tfoo/bar/baz bad\tfoo/bang/baz_good",
+      :result => [
+        { :status => :deleted, :path => 'bar/baz bad' },
+        { :status => :modified, :path => 'bang/baz_good' },
+      ],
+    },
+    {
+      :name => 'type changes',
+      :changes => "T\tfoo/bar/baz",
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bar/baz' },
       ],
     },
     {
-      :name => 'handle additions',
-      :changes => 'A foo/bar/baz',
+      :name => 'additions',
+      :changes => "A\tfoo/bar/baz",
       :result => [
         { :status => :modified, :path => 'bar/baz' },
       ],
     },
     {
-      :name => 'handle deletes',
-      :changes => 'D foo/bar/baz',
+      :name => 'additions with spaces',
+      :changes => "A\tfoo/bar/baz derp",
+      :result => [
+        { :status => :modified, :path => 'bar/baz derp' },
+      ],
+    },
+    {
+      :name => 'deletes',
+      :changes => "D\tfoo/bar/baz",
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
       ],
     },
     {
-      :name => 'handle modifications',
-      :changes => 'M004 foo/bar/baz',
+      :name => 'modifications',
+      :changes => "M004\tfoo/bar/baz",
       :result => [
         { :status => :modified, :path => 'bar/baz' },
       ],
@@ -70,15 +85,17 @@ describe BetweenMeals::Repo::Git do
     {
       :name => 'handle misc',
       :changes => <<CHANGES ,
-R050 foo/bar/baz foo/bang/bong
-D foo/bar/baz
-C foo/bar/baz foo/bang/bong
+R050\tfoo/bar/baz\tfoo/bang/bong
+D\tfoo/bar/baz
+C\tfoo/bar/baz\tfoo/bang/bong
+D\tfoo/bar/baz bad
 CHANGES
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bang/bong' },
         { :status => :deleted, :path => 'bar/baz' },
         { :status => :modified, :path => 'bang/bong' },
+        { :status => :deleted, :path => 'bar/baz bad' },
       ],
     },
   ]
@@ -91,15 +108,6 @@ CHANGES
       expect(git.send(:parse_status, fixture[:changes])).
         to eq(fixture[:result])
     end
-  end
-
-  it 'should error on spaces in file names' do
-    expect_any_instance_of(BetweenMeals::Repo::Git).
-      to receive(:setup).and_return(true)
-    git = BetweenMeals::Repo::Git.new('foo', logger)
-    expect(lambda do
-      git.send(:parse_status, 'M foo/bar baz')
-    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do

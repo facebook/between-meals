@@ -166,41 +166,42 @@ module BetweenMeals
         #    = origin of the previous file (with --copies)
 
         changes.lines.map do |line|
-          case line
-          when /^A (\S+)$/
+          parts = line.chomp.split(nil, 2)
+          case parts[0]
+          when 'A'
             {
               :status => :added,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^C (\S+)$/
+          when 'C'
             {
               :status => :clean,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^R (\S+)$/
+          when 'R'
             {
               :status => :deleted,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^M (\S+)$/
+          when 'M'
             {
               :status => :modified,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^! (\S+)$/
+          when '!'
             {
               :status => :missing,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^\? (\S+)$/
+          when '?'
             {
               :status => :untracked,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
-          when /^I (\S+)$/
+          when 'I'
             {
               :status => :ignored,
-              :path => Regexp.last_match(1),
+              :path => parts[1],
             }
           else
             fail 'Failed to parse repo diff line.'
