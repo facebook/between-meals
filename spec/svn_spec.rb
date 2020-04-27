@@ -33,6 +33,13 @@ describe BetweenMeals::Repo::Svn do
       ],
     },
     {
+      :name => 'handle additions with files with spaces',
+      :changes => 'A foo/bar/baz bot',
+      :result => [
+        { :status => :modified, :path => 'bar/baz bot' },
+      ],
+    },
+    {
       :name => 'handle file modifications',
       :changes => 'M foo/bar/baz',
       :result => [
@@ -54,6 +61,13 @@ describe BetweenMeals::Repo::Svn do
       ],
     },
     {
+      :name => 'handle attribute modifications on files with spaces',
+      :changes => ' M foo/bar/baz bot',
+      :result => [
+        { :status => :modified, :path => 'bar/baz bot' },
+      ],
+    },
+    {
       :name => 'handle file & attribute modifications',
       :changes => 'MM foo/bar/baz',
       :result => [
@@ -61,10 +75,24 @@ describe BetweenMeals::Repo::Svn do
       ],
     },
     {
+      :name => 'handle file & attribute modifications on files with spaces',
+      :changes => 'MM foo/bar/baz bot',
+      :result => [
+        { :status => :modified, :path => 'bar/baz bot' },
+      ],
+    },
+    {
       :name => 'handle deletes',
       :changes => 'D foo/bar/baz',
       :result => [
         { :status => :deleted, :path => 'bar/baz' },
+      ],
+    },
+    {
+      :name => 'handle deletes for files with spaces',
+      :changes => 'D foo/bar/baz bot',
+      :result => [
+        { :status => :deleted, :path => 'bar/baz bot' },
       ],
     },
   ]
@@ -77,15 +105,6 @@ describe BetweenMeals::Repo::Svn do
       expect(svn.send(:parse_status, fixture[:changes])).
         to eq(fixture[:result])
     end
-  end
-
-  it 'should error on spaces in file names' do
-    expect_any_instance_of(BetweenMeals::Repo::Svn).
-      to receive(:setup).and_return(true)
-    svn = BetweenMeals::Repo::Svn.new('foo', logger)
-    expect(lambda do
-      svn.send(:parse_status, 'M foo/bar baz')
-    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do

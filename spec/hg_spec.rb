@@ -38,6 +38,13 @@ describe BetweenMeals::Repo::Hg do
       ],
     },
     {
+      :name => 'handle additions with spaces',
+      :changes => 'A bar/baz bot',
+      :result => [
+        { :status => :added, :path => 'bar/baz bot' },
+      ],
+    },
+    {
       :name => 'handle deletes',
       :changes => 'R bar/baz',
       :result => [
@@ -45,10 +52,24 @@ describe BetweenMeals::Repo::Hg do
       ],
     },
     {
+      :name => 'handle deletes with spaces',
+      :changes => 'R bar/baz bot',
+      :result => [
+        { :status => :deleted, :path => 'bar/baz bot' },
+      ],
+    },
+    {
       :name => 'handle modifications',
       :changes => 'M bar/baz',
       :result => [
         { :status => :modified, :path => 'bar/baz' },
+      ],
+    },
+    {
+      :name => 'handle modifications with spaces',
+      :changes => 'M bar/baz bot',
+      :result => [
+        { :status => :modified, :path => 'bar/baz bot' },
       ],
     },
     {
@@ -119,15 +140,6 @@ describe BetweenMeals::Repo::Hg do
       expect(hg.email).to eq(example[:email])
       expect(hg.name).to eq(example[:name])
     end
-  end
-
-  it 'should error on spaces in file names' do
-    allow_any_instance_of(BetweenMeals::Repo::Hg).
-      to receive(:setup).and_return(true)
-    hg = BetweenMeals::Repo::Hg.new('foo', logger)
-    expect(lambda do
-      hg.send(:parse_status, 'M foo/bar baz')
-    end).to raise_error('Failed to parse repo diff line.')
   end
 
   it 'should handle malformed output' do
