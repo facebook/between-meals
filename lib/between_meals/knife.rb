@@ -199,8 +199,11 @@ BLOCK
         cfg << "  \"#{dir}\",\n"
       end
       cfg << "]\n"
-      unless File.directory?(File.dirname(@config))
+      begin
         Dir.mkdir(File.dirname(@config), 0o755)
+      rescue Errno::EEXIST
+        # not an error if it's already there.
+        nil
       end
       if !File.exists?(@config) ||
          ::Digest::MD5.hexdigest(cfg) !=
@@ -242,11 +245,10 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       BLOCK
 
       begin
-        unless File.directory?(File.dirname(@pem))
-          Dir.mkdir(File.dirname(@pem), 0o755)
-        end
-      rescue Errno::EEXIST => e
-        @logger.warn("#{File.dirname(@pem)} already exists, not creating: #{e}")
+        Dir.mkdir(File.dirname(@pem), 0o755)
+      rescue Errno::EEXIST
+        # not an error if it's already there.
+        nil
       end
 
       unless File.exists?(@pem)
