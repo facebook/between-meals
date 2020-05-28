@@ -1,3 +1,9 @@
+## 0.0.11
+* Eliminate mkdir race condition
+* Handle spaces in filenames
+* Expose Mixlib::ShellOut's streaming in Utils
+* Make knife verbose if logging level is DEBUG or INFO
+
 ## 0.0.10
 * Ensure errors are logged to the logger
 * Fix logging when `hg pull` fails

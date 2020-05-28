@@ -16,7 +16,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'between_meals'
-  s.version = '0.0.10'
+  s.version = '0.0.11'
   s.homepage = 'https://github.com/facebook/between-meals'
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = ['README.md', 'LICENSE']
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.authors = ['Phil Dibowitz', 'Marcin Sawicki']
   s.files = %w{README.md LICENSE} + Dir.glob('lib/between_meals/*.rb') +
             Dir.glob('lib/between_meals/**/*.rb')
-  s.license = 'Apache'
+  s.license = 'Apache-2.0'
   %w{
     colorize
     mixlib-shellout
