@@ -1,6 +1,5 @@
 # Between Meals
 
-[![TravisCI](https://travis-ci.org/facebook/between-meals.svg)](http://travis-ci.org/facebook/between-meals)
 [![CircleCI](https://circleci.com/gh/facebook/between-meals.svg?style=svg)](https://circleci.com/gh/facebook/between-meals)
 
 ## Intro
