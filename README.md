@@ -1,6 +1,6 @@
 # Between Meals
 
-[![CircleCI](https://circleci.com/gh/facebook/between-meals.svg?style=svg)](https://circleci.com/gh/facebook/between-meals)
+![Continuous Integration](https://github.com/facebook/between-meals/workflows/Continuous%20Integration/badge.svg?event=push)
 
 ## Intro
 Ohai!
