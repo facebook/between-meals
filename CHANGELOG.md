@@ -1,3 +1,5 @@
+# Changelog
+
 ## 0.0.11
 * Eliminate mkdir race condition
 * Handle spaces in filenames
