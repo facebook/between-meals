@@ -61,7 +61,7 @@ module BetweenMeals
     end
 
     def role_upload_all
-      if File.exists?(@role_dir)
+      if File.exist?(@role_dir)
         roles = File.join(@role_dir, "*.#{@role_type}")
         exec!("#{@knife} role from file #{roles} #{@knife_verb_option} " +
           "-c #{@config}", @logger)
@@ -123,7 +123,7 @@ module BetweenMeals
       if cookbooks.any?
         @cookbook_dirs.each do |path|
           cookbooks.each do |cb|
-            next unless File.exists?("#{path}/#{cb}")
+            next unless File.exist?("#{path}/#{cb}")
 
             @logger.warn("Running berkshelf on cookbook: #{cb}")
             exec!("cd #{path}/#{cb} && #{@berks} install #{berks_config} && " +
@@ -205,7 +205,7 @@ BLOCK
         # not an error if it's already there.
         nil
       end
-      if !File.exists?(@config) ||
+      if !File.exist?(@config) ||
          ::Digest::MD5.hexdigest(cfg) !=
          ::Digest::MD5.hexdigest(File.read(@config))
         @logger.info("Generating #{@config}")
@@ -251,7 +251,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
         nil
       end
 
-      unless File.exists?(@pem)
+      unless File.exist?(@pem)
         @logger.info("Generating #{@pem}")
         File.write(@pem, pem)
       end

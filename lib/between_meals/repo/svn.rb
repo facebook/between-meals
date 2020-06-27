@@ -33,7 +33,7 @@ module BetweenMeals
       end
 
       def exists?
-        Dir.exists?(Pathname.new(@repo_path).join('.svn'))
+        Dir.exist?(Pathname.new(@repo_path).join('.svn'))
       end
 
       def head_rev

@@ -32,6 +32,7 @@ module BetweenMeals
       exit(1)
     end
 
+    # rubocop:disable Style/RedundantBegin
     def self.get(type, repo_path, logger)
       case type
       when 'auto'
@@ -73,6 +74,7 @@ module BetweenMeals
         fail "Do not know repo type #{type}"
       end
     end
+    # rubocop:enable Style/RedundantBegin
 
     def bin=(bin)
       @bin = bin

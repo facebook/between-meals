@@ -26,7 +26,7 @@ module BetweenMeals
   class Repo
     class Git < BetweenMeals::Repo
       def setup
-        if File.exists?(File.expand_path(@repo_path))
+        if File.exist?(File.expand_path(@repo_path))
           begin
             @repo = Rugged::Repository.new(File.expand_path(@repo_path))
           rescue StandardError
