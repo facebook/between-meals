@@ -32,7 +32,7 @@ module BetweenMeals
       end
 
       def exists?
-        Dir.exists?(Pathname.new(@repo_path).join('.hg'))
+        Dir.exist?(Pathname.new(@repo_path).join('.hg'))
       end
 
       def head_rev

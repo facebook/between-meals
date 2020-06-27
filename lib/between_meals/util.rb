@@ -75,36 +75,30 @@ module BetweenMeals
       ips = Socket.ip_address_list
       ips.map!(&:ip_address)
       ips.each do |ip|
-        begin
-          Timeout.timeout(1) do
-            begin
-              s = TCPSocket.new(ip, port)
-              s.close
-              return true
-            rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-              next
-            end
-          end
-        rescue Timeout::Error
+        Timeout.timeout(1) do
+          s = TCPSocket.new(ip, port)
+          s.close
+          return true
+        rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
           next
         end
+      rescue Timeout::Error
+        next
       end
       return false
     end
 
     def chef_zero_running?(port, use_ssl)
       Timeout.timeout(1) do
-        begin
-          http = Net::HTTP.new('localhost', port)
-          if use_ssl
-            http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          end
-          res = http.get('/')
-          return res['Server'] == 'chef-zero'
-        rescue StandardError
-          return false
+        http = Net::HTTP.new('localhost', port)
+        if use_ssl
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         end
+        res = http.get('/')
+        return res['Server'] == 'chef-zero'
+      rescue StandardError
+        return false
       end
     rescue Timeout::Error
       return false
