@@ -18,7 +18,6 @@ functions.
 ## Dependencies
 
 * Colorize
-* JSON
 * Mixlib::ShellOut
 * Rugged
 
