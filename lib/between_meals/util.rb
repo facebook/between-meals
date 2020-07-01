@@ -71,38 +71,47 @@ module BetweenMeals
       return c
     end
 
+    # while we support ruby 2.4
+    # rubocop:disable Style/RedundantBegin
     def port_open?(port)
       ips = Socket.ip_address_list
       ips.map!(&:ip_address)
       ips.each do |ip|
-        Timeout.timeout(1) do
-          s = TCPSocket.new(ip, port)
-          s.close
-          return true
-        rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        begin
+          Timeout.timeout(1) do
+            begin
+              s = TCPSocket.new(ip, port)
+              s.close
+              return true
+            rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+              next
+            end
+          end
+        rescue Timeout::Error
           next
         end
-      rescue Timeout::Error
-        next
       end
       return false
     end
 
     def chef_zero_running?(port, use_ssl)
       Timeout.timeout(1) do
-        http = Net::HTTP.new('localhost', port)
-        if use_ssl
-          http.use_ssl = true
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        begin
+          http = Net::HTTP.new('localhost', port)
+          if use_ssl
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
+          res = http.get('/')
+          return res['Server'] == 'chef-zero'
+        rescue StandardError
+          return false
         end
-        res = http.get('/')
-        return res['Server'] == 'chef-zero'
-      rescue StandardError
-        return false
       end
     rescue Timeout::Error
       return false
     end
+    # rubocop:enable Style/RedundantBegin
   end
 end
 # rubocop:enable ClassVars
