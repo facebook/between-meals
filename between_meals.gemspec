@@ -26,20 +26,8 @@ Gem::Specification.new do |s|
   s.files = %w{README.md LICENSE} + Dir.glob('lib/between_meals/*.rb') +
             Dir.glob('lib/between_meals/**/*.rb')
   s.license = 'Apache-2.0'
-  %w{
-    colorize
-    mixlib-shellout
-    rugged
-  }.each do |dep|
-    s.add_dependency dep
-  end
-  %w{
-    rspec-core
-    rspec-expectations
-    rspec-mocks
-    simplecov
-  }.each do |dep|
-    s.add_development_dependency dep
-  end
-  s.add_development_dependency 'rubocop', '0.55.0'
+
+  s.add_dependency 'colorize'
+  s.add_dependency 'mixlib-shellout'
+  s.add_dependency 'rugged'
 end
