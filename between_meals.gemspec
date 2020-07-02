@@ -17,29 +17,19 @@
 Gem::Specification.new do |s|
   s.name = 'between_meals'
   s.version = '0.0.11'
+  s.summary = 'Between Meals'
+  s.description = 'Library for calculating Chef differences between revisions'
+  s.license = 'Apache-2.0'
+  s.authors = ['Phil Dibowitz', 'Marcin Sawicki']
   s.homepage = 'https://github.com/facebook/between-meals'
   s.platform = Gem::Platform::RUBY
-  s.extra_rdoc_files = ['README.md', 'LICENSE']
-  s.summary = 'Between Meals'
-  s.description = 'Library for calculation Chef differences between revisions'
-  s.authors = ['Phil Dibowitz', 'Marcin Sawicki']
-  s.files = %w{README.md LICENSE} + Dir.glob('lib/between_meals/*.rb') +
-            Dir.glob('lib/between_meals/**/*.rb')
-  s.license = 'Apache-2.0'
-  %w{
-    colorize
-    mixlib-shellout
-    rugged
-  }.each do |dep|
-    s.add_dependency dep
-  end
-  %w{
-    rspec-core
-    rspec-expectations
-    rspec-mocks
-    simplecov
-  }.each do |dep|
-    s.add_development_dependency dep
-  end
-  s.add_development_dependency 'rubocop', '0.55.0'
+
+  s.extra_rdoc_files = %w{README.md LICENSE}
+
+  s.files = %w{README.md LICENSE} +
+    Dir.glob('lib/**/*', File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
+
+  s.add_dependency 'colorize'
+  s.add_dependency 'mixlib-shellout'
+  s.add_dependency 'rugged'
 end
