@@ -108,7 +108,7 @@ module BetweenMeals
         @repo.index.map { |x| { :path => x[:path], :status => :created } }
       end
 
-      def upstream?(rev, master = 'remotes/trunk')
+      def upstream?(rev, master = 'upstream/master')
         if @cmd.merge_base(rev, master).stdout.strip == rev
           return true
         end
