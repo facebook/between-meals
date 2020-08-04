@@ -110,7 +110,6 @@ module BetweenMeals
     rescue Timeout::Error
       return false
     end
-    # rubocop:enable Style/RedundantBegin
   end
 end
 # rubocop:enable ClassVars

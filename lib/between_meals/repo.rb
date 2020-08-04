@@ -31,6 +31,7 @@ module BetweenMeals
       @logger.warn("Unable to read repo from #{File.expand_path(repo_path)}")
       exit(1)
     end
+
     def self.get(type, repo_path, logger)
       case type
       when 'auto'
@@ -72,7 +73,6 @@ module BetweenMeals
         fail "Do not know repo type #{type}"
       end
     end
-    # rubocop:enable Style/RedundantBegin
 
     def bin=(bin)
       @bin = bin
