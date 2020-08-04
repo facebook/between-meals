@@ -21,7 +21,11 @@ module BetweenMeals
     class Git < BetweenMeals::Repo
       class Cmd < BetweenMeals::Cmd
         def config(key)
-          cmd("config #{key}")
+          s = cmd("config #{key}", nil, true)
+          unless [0, 1].include?(s.exitstatus)
+            s.error!
+          end
+          s
         end
 
         def clone(url, repo_path)

@@ -26,7 +26,7 @@ module BetweenMeals
       @logger = params[:logger] || Logger.new(STDOUT)
     end
 
-    def cmd(params, cwd = nil)
+    def cmd(params, cwd = nil, nofail = false)
       cwd ||= File.expand_path(@cwd)
       cmd = "#{@bin} #{params}"
       @logger.info("Running \"#{cmd}\"")
@@ -40,7 +40,8 @@ module BetweenMeals
         },
       )
       c.run_command
-      if c.error?
+      # If the user asked us not to fail, let them handle error reporting
+      if c.error? && !nofail
         # Let's make sure the error goes to the logs
         @logger.error("#{@bin} failed: #{c.format_for_exception}")
         # if our logger is STDOUT, we'll double log when we throw

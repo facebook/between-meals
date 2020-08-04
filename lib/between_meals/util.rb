@@ -71,8 +71,6 @@ module BetweenMeals
       return c
     end
 
-    # while we support ruby 2.4
-    # rubocop:disable Style/RedundantBegin
     def port_open?(port)
       ips = Socket.ip_address_list
       ips.map!(&:ip_address)
@@ -111,7 +109,6 @@ module BetweenMeals
     rescue Timeout::Error
       return false
     end
-    # rubocop:enable Style/RedundantBegin
   end
 end
 # rubocop:enable ClassVars
