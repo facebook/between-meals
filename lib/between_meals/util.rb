@@ -72,7 +72,6 @@ module BetweenMeals
     end
 
     # while we support ruby 2.4
-    # rubocop:disable Style/RedundantBegin
     def port_open?(port)
       ips = Socket.ip_address_list
       ips.map!(&:ip_address)
