@@ -71,7 +71,6 @@ module BetweenMeals
       return c
     end
 
-    # while we support ruby 2.4
     def port_open?(port)
       ips = Socket.ip_address_list
       ips.map!(&:ip_address)
