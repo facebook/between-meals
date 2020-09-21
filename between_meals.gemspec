@@ -16,7 +16,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'between_meals'
-  s.version = '0.0.11'
+  s.version = '0.0.12'
   s.summary = 'Between Meals'
   s.description = 'Library for calculating Chef differences between revisions'
   s.license = 'Apache-2.0'
