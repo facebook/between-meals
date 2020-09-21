@@ -43,6 +43,12 @@ module BetweenMeals
         )
       end
 
+      # Allow people to get access to the underlying Rugged
+      # object for their hooks
+      def repo_object
+        @repo
+      end
+
       def exists?
         !@repo.nil?
       end
