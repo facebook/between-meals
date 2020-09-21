@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.12
+* Moved to Actions, deprecated Travis+Circle
+* Unified style to match other FB-Chef-related-repos
+* Linted Markdown docs
+* Provide access to underlying repo object, if one exists
+* git: Don't assume 'git-svn'
+* git: Better handling of `git config` when a field is not set
+* Cleanup gemspec
+* Drop ruby 2.3 support
+
 ## 0.0.11
 * Eliminate mkdir race condition
 * Handle spaces in filenames
