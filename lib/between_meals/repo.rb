@@ -87,6 +87,12 @@ module BetweenMeals
       fail "#{__method__} not implemented"
     end
 
+    # Only interesting in the case of git where we have an underlying
+    # repo object courtesy of Rugged.
+    def repo_object
+      fail "#{__method__} not implemented"
+    end
+
     # This method *must* succeed in the case of no repo directory so that
     # users can call `checkout`. Users may call `exists?` to find out if
     # we have an underlying repo yet.
