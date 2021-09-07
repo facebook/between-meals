@@ -79,7 +79,7 @@ module BetweenMeals
     end
 
     def role_delete(roles)
-      current_roles = server_role_list()
+      current_roles = server_role_list
       if roles.any?
         roles.each do |role|
           if current_roles.include?(role)
@@ -137,7 +137,7 @@ module BetweenMeals
     end
 
     def cookbook_delete(cookbooks)
-      current_cookbooks = server_cookbook_list()
+      current_cookbooks = server_cookbook_list
       if cookbooks.any?
         cookbooks.each do |cookbook|
           if current_cookbooks.include?(cookbook.name)
@@ -176,7 +176,7 @@ module BetweenMeals
     end
 
     def databag_delete(databags)
-      current_databags = server_databag_list()
+      current_databags = server_databag_list
       if databags.any?
         databags.group_by(&:name).each do |dbname, dbs|
           if current_databags.include?(dbname)
@@ -292,7 +292,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       end
     end
 
-    def server_databag_list()
+    def server_databag_list
       s = Mixlib::ShellOut.new("#{@knife} data bag list" +
                                " --format json #{@knife_verb_option} " +
                                "-c #{@config}").run_command
@@ -301,7 +301,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       return dbs
     end
 
-    def server_cookbook_list()
+    def server_cookbook_list
       s = Mixlib::ShellOut.new("#{@knife} cookbook list" +
                                " --format json #{@knife_verb_option} " +
                                "-c #{@config}").run_command
@@ -311,7 +311,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       return cookbooks
     end
 
-    def server_role_list()
+    def server_role_list
       s = Mixlib::ShellOut.new("#{@knife} role list" +
                                " --format json #{@knife_verb_option} " +
                                "-c #{@config}").run_command
