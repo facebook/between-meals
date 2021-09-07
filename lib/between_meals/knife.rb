@@ -79,10 +79,13 @@ module BetweenMeals
     end
 
     def role_delete(roles)
+      current_roles = server_role_list()
       if roles.any?
         roles.each do |role|
-          exec!("#{@knife} role delete #{role.name} #{@knife_verb_option} " +
-            "--yes -c #{@config}", @logger)
+          if current_roles.include?(role)
+            exec!("#{@knife} role delete #{role.name} #{@knife_verb_option} " +
+              "--yes -c #{@config}", @logger)
+          end
         end
       end
     end
@@ -134,11 +137,14 @@ module BetweenMeals
     end
 
     def cookbook_delete(cookbooks)
+      current_cookbooks = server_cookbook_list()
       if cookbooks.any?
         cookbooks.each do |cookbook|
-          exec!("#{@knife} cookbook delete #{cookbook.name}" +
-                  " --purge -a --yes #{@knife_verb_option} -c #{@config}",
-                @logger)
+          if current_cookbooks.include?(cookbook.name)
+            exec!("#{@knife} cookbook delete #{cookbook.name}" +
+                    " --purge -a --yes #{@knife_verb_option} -c #{@config}",
+                  @logger)
+          end
         end
       end
     end
@@ -170,13 +176,16 @@ module BetweenMeals
     end
 
     def databag_delete(databags)
+      current_databags = server_databag_list()
       if databags.any?
         databags.group_by(&:name).each do |dbname, dbs|
-          dbs.each do |db|
-            exec!("#{@knife} data bag delete #{dbname} #{db.item}" +
-                    " --yes #{@knife_verb_option} -c #{@config}", @logger)
+          if current_databags.include?(dbname)
+            dbs.each do |db|
+              exec!("#{@knife} data bag delete #{dbname} #{db.item}" +
+                      " --yes #{@knife_verb_option} -c #{@config}", @logger)
+            end
+            delete_databag_if_empty(dbname)
           end
-          delete_databag_if_empty(dbname)
         end
       end
     end
@@ -281,6 +290,34 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
         exec!("#{@knife} data bag delete #{databag} --yes " +
           "#{@knife_verb_option} -c #{@config}", @logger)
       end
+    end
+
+    def server_databag_list()
+      s = Mixlib::ShellOut.new("#{@knife} data bag list" +
+                               " --format json #{@knife_verb_option} " +
+                               "-c #{@config}").run_command
+      s.error!
+      dbs = JSON.parse(s.stdout)
+      return dbs
+    end
+
+    def server_cookbook_list()
+      s = Mixlib::ShellOut.new("#{@knife} cookbook list" +
+                               " --format json #{@knife_verb_option} " +
+                               "-c #{@config}").run_command
+      s.error!
+      cookbooks = JSON.parse(s.stdout)
+      cookbooks.map! { |cb| cb.split[0] }.compact
+      return cookbooks
+    end
+
+    def server_role_list()
+      s = Mixlib::ShellOut.new("#{@knife} role list" +
+                               " --format json #{@knife_verb_option} " +
+                               "-c #{@config}").run_command
+      s.error!
+      roles = JSON.parse(s.stdout)
+      return roles
     end
   end
 end
