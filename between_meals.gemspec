@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.files = %w{README.md LICENSE} +
     Dir.glob('lib/**/*', File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
 
+  s.required_ruby_version = '>= 2.4.0'
   s.add_dependency 'colorize'
   s.add_dependency 'mixlib-shellout'
   s.add_dependency 'rugged'

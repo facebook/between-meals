@@ -26,6 +26,7 @@ module BetweenMeals
     class Change
       @@logger = nil
       attr_accessor :name, :status
+
       def to_s
         @name
       end
