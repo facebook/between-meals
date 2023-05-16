@@ -19,6 +19,7 @@ module BetweenMeals
     # Changeset aware databag
     class Databag < Change
       attr_accessor :item
+
       def self.name_from_path(path, databag_dir)
         re = %r{^#{databag_dir}/([^/]+)/([^/]+)\.json}
         debug("[databag] Matching #{path} against #{re}")
