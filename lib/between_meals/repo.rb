@@ -48,15 +48,15 @@ module BetweenMeals
           BetweenMeals::Repo::Hg,
           BetweenMeals::Repo::Svn,
         ].each do |klass|
-          begin
-            r = klass.new(repo_path, logger)
-            if r.exists?
-              logger.info("Repo found to be #{klass.to_s.split('::').last}")
-              return r
-            end
-          rescue StandardError
-            logger.debug("Skipping #{klass}")
+
+          r = klass.new(repo_path, logger)
+          if r.exists?
+            logger.info("Repo found to be #{klass.to_s.split('::').last}")
+            return r
           end
+        rescue StandardError
+          logger.debug("Skipping #{klass}")
+
         end
         logger.warn("Failed detecting repo type at #{repo_path}")
         exit(1)
