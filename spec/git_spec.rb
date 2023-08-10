@@ -84,7 +84,7 @@ describe BetweenMeals::Repo::Git do
     },
     {
       :name => 'handle misc',
-      :changes => <<CHANGES ,
+      :changes => <<CHANGES,
 R050\tfoo/bar/baz\tfoo/bang/bong
 D\tfoo/bar/baz
 C\tfoo/bar/baz\tfoo/bang/bong
