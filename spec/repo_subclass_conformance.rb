@@ -15,25 +15,15 @@
 # limitations under the License.
 
 require 'between_meals/repo'
-require 'between_meals/repo/git'
-require 'between_meals/repo/svn'
 
-describe 'BetweenMeals::Repo' do
+shared_examples 'Repo subclass conformance' do |klass|
   let(:class_interface) { BetweenMeals::Repo.public_methods.sort }
   let(:instance_interface) { BetweenMeals::Repo.instance_methods.sort }
 
-  # Misc Repos should not expose anything more than parent class,
-  # which default to 'Not implemented'
-  [
-    BetweenMeals::Repo::Git,
-    BetweenMeals::Repo::Svn,
-    BetweenMeals::Repo::Hg,
-  ].each do |klass|
-    it "#{klass} should conform to BetweenMeals::Repo class interface" do
-      expect(klass.public_methods.sort).to eq(class_interface)
-    end
-    it "#{klass} should conform to BetweenMeals::Repo instance interface" do
-      expect(klass.instance_methods.sort).to eq(instance_interface)
-    end
+  it "#{klass} should conform to BetweenMeals::Repo class interface" do
+    expect(klass.public_methods.sort).to eq(class_interface)
+  end
+  it "#{klass} should conform to BetweenMeals::Repo instance interface" do
+    expect(klass.instance_methods.sort).to eq(instance_interface)
   end
 end
