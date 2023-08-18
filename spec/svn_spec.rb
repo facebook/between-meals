@@ -18,8 +18,12 @@ require 'spec_helper'
 require 'between_meals/repo/svn'
 require 'between_meals/repo.rb'
 require 'logger'
+require_relative 'repo_subclass_conformance'
 
 describe BetweenMeals::Repo::Svn do
+  context 'conforms to BetweenMeals::Repo interfaces' do
+    it_behaves_like 'Repo subclass conformance', BetweenMeals::Repo::Svn
+  end
   let(:logger) do
     Logger.new('/dev/null')
   end
