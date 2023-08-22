@@ -32,7 +32,7 @@ module BetweenMeals
       end
 
       def initialize(file, databag_dir)
-        @status = file[:status]
+        @status = file[:status] == :deleted ? :deleted : :modified
         @name, @item = self.class.name_from_path(file[:path], databag_dir)
       end
 
