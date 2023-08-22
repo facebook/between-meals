@@ -34,8 +34,8 @@ module BetweenMeals
       end
 
       def status=(value)
-        if ALLOWED_STATUSES.exclude?(@value)
-          fail "#{self.class} status attribute can only be one of #{ALLOWED_STATUSES}"
+        unless ALLOWED_STATUSES.include?(value)
+          fail "#{self.class} status attribute can only be one of #{ALLOWED_STATUSES} not #{value}"
         end
         @status = value
       end
