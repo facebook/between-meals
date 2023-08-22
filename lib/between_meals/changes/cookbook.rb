@@ -119,9 +119,9 @@ module BetweenMeals
                %{^(#{cookbook_dirs.join('|')})/[^/]+/metadata\.(rb|json)$},
              )
            end.none?
-          @status = :deleted
+          self.status = :deleted
         else
-          @status = :modified
+          self.status = :modified
         end
       end
 

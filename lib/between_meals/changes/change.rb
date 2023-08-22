@@ -24,11 +24,20 @@ module BetweenMeals
   module Changes
     # Common functionality
     class Change
+      ALLOWED_STATUSES = [:modified, :deleted].freeze
       @@logger = nil
-      attr_accessor :name, :status
+      attr_accessor :name
+      attr_reader :status
 
       def to_s
         @name
+      end
+
+      def status=(value)
+        if ALLOWED_STATUSES.exclude?(@value)
+          fail "#{self.class} status attribute can only be one of #{ALLOWED_STATUSES}"
+        end
+        @status = value
       end
 
       # People who use us through find() can just pass in logger,

@@ -32,8 +32,8 @@ module BetweenMeals
       end
 
       def initialize(file, databag_dir)
-        @status = file[:status] == :deleted ? :deleted : :modified
-        @name, @item = self.class.name_from_path(file[:path], databag_dir)
+        self.status = file[:status] == :deleted ? :deleted : :modified
+        self.name, self.item = self.class.name_from_path(file[:path], databag_dir)
       end
 
       def self.find(list, databag_dir, logger)

@@ -68,9 +68,13 @@ describe BetweenMeals::Changes::Databag do
           :status => :deleted,
           :path => 'databags/two/databag3.json',
         },
+        {
+          :status => :added,
+          :path => 'databags/three/databag1.json',
+        },
       ],
       :result => [
-        ['one', :modified], ['two', :deleted]
+        ['one', :modified], ['two', :deleted], ['three', :modified]
       ],
     },
   ]

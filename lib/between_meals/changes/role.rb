@@ -30,8 +30,8 @@ module BetweenMeals
       end
 
       def initialize(file, role_dir)
-        @status = file[:status] == :deleted ? :deleted : :modified
-        @name = self.class.name_from_path(file[:path], role_dir)
+        self.status = file[:status] == :deleted ? :deleted : :modified
+        self.name = self.class.name_from_path(file[:path], role_dir)
       end
 
       # Given a list of changed files

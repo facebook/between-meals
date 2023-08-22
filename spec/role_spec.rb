@@ -77,12 +77,16 @@ describe BetweenMeals::Changes::Role do
           :path => 'roles/test.rb',
         },
         {
+          :status => :added,
+          :path => 'roles/test2.rb',
+        },
+        {
           :status => :modified,
           :path => 'cookbooks/one/cb_one/recipes/test3.rb',
         },
       ],
       :result => [
-        ['test', :modified],
+        ['test', :modified], ['test2', :modified],
       ],
     },
     {
