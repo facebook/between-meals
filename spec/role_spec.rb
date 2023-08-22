@@ -86,7 +86,8 @@ describe BetweenMeals::Changes::Role do
         },
       ],
       :result => [
-        ['test', :modified], ['test2', :modified],
+        ['test', :modified],
+        ['test2', :modified],
       ],
     },
     {
