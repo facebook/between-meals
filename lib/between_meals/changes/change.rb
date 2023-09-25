@@ -24,6 +24,10 @@ module BetweenMeals
   module Changes
     # Common functionality
     class Change
+      # Since we either need to upload or delete, we only accept two statuses.
+      # VCSs will differentiate between various kinds of modifies, adds, etc.
+      # so instead of handling all possibilities here, we expect the caller to
+      # collapse them into `:modified` or `:deleted`.
       ALLOWED_STATUSES = [:modified, :deleted].freeze
       @@logger = nil
       attr_accessor :name
