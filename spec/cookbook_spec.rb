@@ -162,6 +162,18 @@ describe BetweenMeals::Changes::Cookbook do
       ],
     },
     {
+      :name => 'adding recipe',
+      :files => [
+        {
+          :status => :added,
+          :path => 'cookbooks/one/cb_one/recipe/extra.rb',
+        },
+      ],
+      :result => [
+        ['cb_one', :modified],
+      ],
+    },
+    {
       :name => 'skipping non-cookbook files',
       :files => [
         {

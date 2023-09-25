@@ -24,11 +24,24 @@ module BetweenMeals
   module Changes
     # Common functionality
     class Change
+      # Since we either need to upload or delete, we only accept two statuses.
+      # VCSs will differentiate between various kinds of modifies, adds, etc.
+      # so instead of handling all possibilities here, we expect the caller to
+      # collapse them into `:modified` or `:deleted`.
+      ALLOWED_STATUSES = [:modified, :deleted].freeze
       @@logger = nil
-      attr_accessor :name, :status
+      attr_accessor :name
+      attr_reader :status
 
       def to_s
         @name
+      end
+
+      def status=(value)
+        unless ALLOWED_STATUSES.include?(value)
+          fail "#{self.class} status attribute can only be one of #{ALLOWED_STATUSES} not #{value}"
+        end
+        @status = value
       end
 
       # People who use us through find() can just pass in logger,
