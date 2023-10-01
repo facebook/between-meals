@@ -2,6 +2,13 @@
 
 ![Continuous Integration](https://github.com/facebook/between-meals/workflows/Continuous%20Integration/badge.svg?event=push)
 
+- [Intro](#Intro)
+- [Dependencies](#Dependencies)
+- [How to Install](#Intro)
+- [License](#License)
+  
+
+<a id="Intro"></a>
 ## Intro
 Ohai!
 
@@ -15,12 +22,25 @@ other source control systems.
 It also includes some wrappers around knife execution and a few other utility
 functions.
 
+<a id="Dependencies"></a>
 ## Dependencies
 
-* Colorize
-* Mixlib::ShellOut
-* Rugged
+* [Colorize](https://github.com/fazibear/colorize)
+* [Mixlib::ShellOut](https://github.com/chef/mixlib-shellout)
+* [Rugged](https://github.com/libgit2/rugged)
 
+<a id="Install"></a>
+## How to Install
+
+* GEMFILE
+  ```
+  gem 'between_meals', '~> 0.0.12'
+  ```
+* INSTALL
+  ```
+  gem install between_meals
+  ```
+<a id="License"></a>
 ## License
 
 See the `LICENSE` file in this repo.
