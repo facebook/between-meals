@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gemspec
 
+group :git do
+  gem 'rugged'
+end
+
 group :development do
   gem 'rspec-core', '~> 3.11'
   gem 'rspec-expectations', '~> 3.11'

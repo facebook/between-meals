@@ -32,5 +32,4 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.5.0'
   s.add_dependency 'colorize'
   s.add_dependency 'mixlib-shellout'
-  s.add_dependency 'rugged'
 end
