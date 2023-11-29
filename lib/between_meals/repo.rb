@@ -40,15 +40,13 @@ module BetweenMeals
           exit(1)
         end
         logger.info('Trying to detect repo type')
-        require 'between_meals/repo/git'
-        require 'between_meals/repo/hg'
-        require 'between_meals/repo/svn'
-        [
-          BetweenMeals::Repo::Git,
-          BetweenMeals::Repo::Hg,
-          BetweenMeals::Repo::Svn,
-        ].each do |klass|
-
+        {
+          'Hg' => 'between_meals/repo/hg',
+          'Svn' => 'between_meals/repo/svn',
+          'Git' => 'between_meals/repo/git',
+        }.each do |klass_name, req|
+          require req
+          klass = BetweenMeals::Repo.const_get(klass_name)
           r = klass.new(repo_path, logger)
           if r.exists?
             logger.info("Repo found to be #{klass.to_s.split('::').last}")
@@ -60,15 +58,15 @@ module BetweenMeals
         end
         logger.warn("Failed detecting repo type at #{repo_path}")
         exit(1)
+      when 'hg'
+        require 'between_meals/repo/hg'
+        BetweenMeals::Repo::Hg.new(repo_path, logger)
       when 'svn'
         require 'between_meals/repo/svn'
         BetweenMeals::Repo::Svn.new(repo_path, logger)
       when 'git'
         require 'between_meals/repo/git'
         BetweenMeals::Repo::Git.new(repo_path, logger)
-      when 'hg'
-        require 'between_meals/repo/hg'
-        BetweenMeals::Repo::Hg.new(repo_path, logger)
       else
         fail "Do not know repo type #{type}"
       end
