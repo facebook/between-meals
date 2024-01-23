@@ -261,7 +261,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
 
     def create_databag_if_missing(databag)
       s = Mixlib::ShellOut.new("#{@knife} data bag list" +
-                               " --format json #{@knife_verb_option} " +
+                               " --format json " +
                                "-c #{@config}").run_command
       s.error!
       db = JSON.parse(s.stdout)
