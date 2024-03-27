@@ -15,6 +15,7 @@
 # limitations under the License.
 
 require 'mixlib/shellout'
+require 'between_meals/repo/if'
 
 module BetweenMeals
   # Local checkout wrapper
