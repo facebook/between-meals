@@ -15,6 +15,14 @@
 # limitations under the License.
 
 require 'spec_helper'
+
+# Test if rugged gem is available, skip tests if not
+begin
+  require 'rugged'
+rescue LoadError
+  return
+end
+
 require 'between_meals/repo/git'
 require 'between_meals/repo.rb'
 require 'logger'
