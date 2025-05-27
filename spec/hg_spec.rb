@@ -22,7 +22,7 @@ require_relative 'repo_subclass_conformance'
 
 describe BetweenMeals::Repo::Hg do
   context 'conforms to BetweenMeals::Repo interfaces' do
-    it_behaves_like 'Repo subclass conformance', BetweenMeals::Repo::Git
+    it_behaves_like 'Repo subclass conformance', BetweenMeals::Repo::Hg
   end
   let(:logger) do
     Logger.new('/dev/null')
