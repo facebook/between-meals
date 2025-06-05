@@ -64,11 +64,19 @@ module BetweenMeals
       end
 
       def update
-        @cmd.pull.stdout
-      rescue StandardError => e
-        @logger.error('Something went wrong with hg!')
-        @logger.error(e)
-        raise
+        retry_count = 0
+        begin
+          @cmd.pull.stdout
+        rescue StandardError => e
+          @logger.error('Something went wrong with hg!')
+          @logger.error(e)
+          if retry_count > 4
+            raise
+          end
+          sleep(2 ** retry_count)
+          retry_count += 1
+          retry
+        end
       end
 
       # Return all files
