@@ -263,6 +263,8 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
       s = Mixlib::ShellOut.new("#{@knife} data bag list" +
                                ' --format json ' +
                                "-c #{@config}").run_command
+
+      s.stdout.gsub!(/^[A-Z].*\n/, '')
       s.error!
       db = JSON.parse(s.stdout)
       unless db.include?(databag)
