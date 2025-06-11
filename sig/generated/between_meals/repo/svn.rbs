@@ -1,0 +1,32 @@
+# Generated from lib/between_meals/repo/svn.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Svn < BetweenMeals::Repo
+      def setup: () -> untyped
+
+      def exists?: () -> untyped
+
+      def head_rev: () -> untyped
+
+      def latest_revision: () -> untyped
+
+      def checkout: (untyped url) -> untyped
+
+      # Return files changed between two revisions
+      def changes: (untyped start_ref, untyped end_ref) -> untyped
+
+      def update: () -> untyped
+
+      def files: () -> untyped
+
+      def upstream?: () -> untyped
+
+      def valid_ref?: (untyped ref) -> untyped
+
+      private
+
+      def parse_status: (untyped changes) -> untyped
+    end
+  end
+end

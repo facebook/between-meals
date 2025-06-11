@@ -1,0 +1,16 @@
+# Generated from lib/between_meals/changes/role.rb with RBS::Inline
+
+module BetweenMeals
+  module Changes
+    # Changeset aware role
+    class Role < Change
+      def self.name_from_path: (untyped path, untyped role_dir) -> untyped
+
+      def initialize: (untyped file, untyped role_dir) -> untyped
+
+      # Given a list of changed files
+      # create a list of Role objects
+      def self.find: (untyped list, untyped role_dir, untyped logger) -> untyped
+    end
+  end
+end

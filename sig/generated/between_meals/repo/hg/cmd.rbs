@@ -1,0 +1,25 @@
+# Generated from lib/between_meals/repo/hg/cmd.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Hg < BetweenMeals::Repo
+      class Cmd < BetweenMeals::Cmd
+        def rev: (untyped rev) -> untyped
+
+        def log: (untyped template, ?untyped rev) -> untyped
+
+        def clone: (untyped url, untyped repo_path) -> untyped
+
+        def pull: () -> untyped
+
+        def manifest: () -> untyped
+
+        def username: () -> untyped
+
+        def amend: (untyped msg) -> untyped
+
+        def status: (?untyped start_ref, ?untyped end_ref) -> untyped
+      end
+    end
+  end
+end

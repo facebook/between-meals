@@ -1,0 +1,47 @@
+# Generated from lib/between_meals/repo/hg.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Hg < BetweenMeals::Repo
+      def setup: () -> untyped
+
+      def exists?: () -> untyped
+
+      def head_rev: () -> untyped
+
+      def checkout: (untyped url) -> untyped
+
+      # Return files changed between two revisions
+      def changes: (untyped start_ref, untyped end_ref) -> untyped
+
+      def update: () -> untyped
+
+      # Return all files
+      def files: () -> untyped
+
+      def head_parents: () -> untyped
+
+      def last_author: () -> untyped
+
+      def last_msg: () -> untyped
+
+      def last_msg=: (untyped msg) -> untyped
+
+      def email: () -> untyped
+
+      def name: () -> untyped
+
+      def status: () -> untyped
+
+      def upstream?: (untyped rev) -> untyped
+
+      def valid_ref?: (untyped ref) -> untyped
+
+      private
+
+      def username: () -> untyped
+
+      def parse_status: (untyped changes) -> untyped
+    end
+  end
+end

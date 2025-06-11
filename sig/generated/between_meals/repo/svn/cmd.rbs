@@ -1,0 +1,25 @@
+# Generated from lib/between_meals/repo/svn/cmd.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Svn < BetweenMeals::Repo
+      class Cmd < BetweenMeals::Cmd
+        def diff: (untyped start_ref, untyped end_ref, untyped repo_path) -> untyped
+
+        def info: (untyped repo_path) -> untyped
+
+        def info_r: (untyped ref, untyped repo_path) -> untyped
+
+        def co: (untyped url, untyped repo_path) -> untyped
+
+        def revert: (untyped repo_path) -> untyped
+
+        def update: (untyped repo_path) -> untyped
+
+        def cleanup: (untyped repo_path) -> untyped
+
+        def ls: (untyped repo_path) -> untyped
+      end
+    end
+  end
+end

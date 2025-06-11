@@ -1,0 +1,20 @@
+# Generated from lib/between_meals/changes/cookbook.rb with RBS::Inline
+
+module BetweenMeals
+  module Changes
+    # Changeset aware cookbook
+    class Cookbook < Change
+      def self.meaningful_cookbook_file?: (untyped path) -> untyped
+
+      def self.explode_path: (untyped path) -> untyped
+
+      def self.map_symlinks: (untyped files) -> untyped
+
+      def initialize: (untyped files, untyped cookbook_dirs) -> untyped
+
+      # Given a list of changed files
+      # create a list of Cookbook objects
+      def self.find: (untyped list, untyped cookbook_dirs, untyped logger, untyped repo, ?untyped track_symlinks) -> untyped
+    end
+  end
+end
