@@ -73,7 +73,7 @@ module BetweenMeals
 
     def port_open?(port)
       ips = Socket.ip_address_list
-      ips.map!(&:ip_address)
+      ips = ips.map { |i| i.ip_address.to_s }
       ips.each do |ip|
 
         Timeout.timeout(1) do
