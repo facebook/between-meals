@@ -42,7 +42,7 @@ module BetweenMeals
         # For each symlink get the source path, if any files have changed under
         # the source path, fake them as coming from the symlink path. This
         # allows the normal cookbook logic to just work.
-        symlinks = {}
+        symlinks = {} #: Hash[String, Hash[String, String]]
         @cookbook_dirs.each do |dir|
           dir = File.join(@repo_dir, dir)
           # Find symlinks in each cookbook_dir
@@ -66,7 +66,7 @@ module BetweenMeals
         # Create the file hash expected for each file that is a link or coming
         # from a linked directory but fake the source path as a symlink path.
         # Hacky but works :)
-        links_to_append = []
+        links_to_append = [] #: Array[untyped]
         symlinks.each_value do |lrp| # link_abs_path, link_relative_path
           files.each do |f|
             # a symlink will never have trailing '/', add one.
