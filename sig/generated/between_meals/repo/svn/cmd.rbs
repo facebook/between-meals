@@ -2,8 +2,8 @@
 
 module BetweenMeals
   class Repo
-    class Svn < BetweenMeals::Repo
-      class Cmd < BetweenMeals::Cmd
+    class Svn < ::BetweenMeals::Repo
+      class Cmd < ::BetweenMeals::Cmd
         def diff: (untyped start_ref, untyped end_ref, untyped repo_path) -> untyped
 
         def info: (untyped repo_path) -> untyped

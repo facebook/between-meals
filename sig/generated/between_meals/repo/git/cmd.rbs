@@ -2,8 +2,8 @@
 
 module BetweenMeals
   class Repo
-    class Git < BetweenMeals::Repo
-      class Cmd < BetweenMeals::Cmd
+    class Git < ::BetweenMeals::Repo
+      class Cmd < ::BetweenMeals::Cmd
         def config: (untyped key) -> untyped
 
         def clone: (untyped url, untyped repo_path) -> untyped
