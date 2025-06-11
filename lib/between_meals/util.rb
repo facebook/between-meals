@@ -34,7 +34,7 @@ module BetweenMeals
     def time(logger = nil)
       @@logger = logger if logger
       t0 = Time.now
-      yield
+      yield # steep:ignore
       info("Executed in #{format('%.2f', Time.now - t0)}s")
     end
 
@@ -60,7 +60,7 @@ module BetweenMeals
 
     def execute(command, stream)
       info("Running: #{command}")
-      c = Mixlib::ShellOut.new(command, :live_stream => stream)
+      c = Mixlib::ShellOut.new(command, :live_stream => stream) # steep:ignore
       c.run_command
       c.stdout.lines.each do |line|
         info("STDOUT: #{line.strip}")
@@ -73,7 +73,7 @@ module BetweenMeals
 
     def port_open?(port)
       ips = Socket.ip_address_list
-      ips.map!(&:ip_address)
+      ips = ips.map { |i| i.ip_address.to_s }
       ips.each do |ip|
 
         Timeout.timeout(1) do

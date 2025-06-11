@@ -44,7 +44,7 @@ module BetweenMeals
       # Figure out which files changed if refs provided
       # or return all files (full upload) otherwise
       if start_ref
-        @files = []
+        @files = [] #: Array[untyped]
         @repo.changes(start_ref, end_ref).each do |file|
           @files << file
         end

@@ -1,0 +1,21 @@
+# Generated from lib/between_meals/repo/git/cmd.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Git < ::BetweenMeals::Repo
+      class Cmd < ::BetweenMeals::Cmd
+        def config: (untyped key) -> untyped
+
+        def clone: (untyped url, untyped repo_path) -> untyped
+
+        def diff: (untyped start_ref, untyped end_ref) -> untyped
+
+        def pull: () -> untyped
+
+        def merge_base: (untyped rev, untyped master) -> untyped
+
+        def status: () -> untyped
+      end
+    end
+  end
+end

@@ -1,0 +1,49 @@
+# Generated from lib/between_meals/repo/git.rb with RBS::Inline
+
+module BetweenMeals
+  class Repo
+    class Git < BetweenMeals::Repo
+      def setup: () -> untyped
+
+      # Allow people to get access to the underlying Rugged
+      # object for their hooks
+      def repo_object: () -> untyped
+
+      def exists?: () -> untyped
+
+      def head_rev: () -> untyped
+
+      def last_msg: () -> untyped
+
+      def last_msg=: (untyped msg) -> untyped
+
+      def last_author: () -> untyped
+
+      def head_parents: () -> untyped
+
+      def checkout: (untyped url) -> untyped
+
+      # Return files changed between two revisions
+      def changes: (untyped start_ref, untyped end_ref) -> untyped
+
+      def update: () -> untyped
+
+      # Return all files
+      def files: () -> untyped
+
+      def upstream?: (untyped rev, ?untyped master) -> untyped
+
+      def status: () -> untyped
+
+      def name: () -> untyped
+
+      def email: () -> untyped
+
+      def valid_ref?: (untyped ref) -> untyped
+
+      private
+
+      def parse_status: (untyped changes) -> untyped
+    end
+  end
+end

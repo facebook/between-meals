@@ -1,0 +1,23 @@
+# Generated from lib/between_meals/changeset.rb with RBS::Inline
+
+module BetweenMeals
+  # Convenience for dealing with changes
+  # Represents a list of diffs between two revisions
+  # as a series of Cookbook and Role objects
+  #
+  # Basically, you always want to use BetweenMeals::Changes through this
+  # helper class.
+  class Changeset
+    class ReferenceError < RuntimeError
+    end
+
+    # rubocop:disable Metrics/ParameterLists
+    def initialize: (untyped logger, untyped repo, untyped start_ref, untyped end_ref, untyped locations, ?untyped track_symlinks) -> untyped
+
+    def cookbooks: () -> untyped
+
+    def roles: () -> untyped
+
+    def databags: () -> untyped
+  end
+end

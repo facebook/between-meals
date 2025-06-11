@@ -1,0 +1,23 @@
+# Generated from lib/between_meals/util.rb with RBS::Inline
+
+module BetweenMeals
+  # Util classes need class vars :)
+  # rubocop:disable ClassVars
+  module Util
+    def time: (?untyped logger) -> untyped
+
+    def exec!: (untyped command, ?untyped logger, ?untyped stream) -> untyped
+
+    def exec: (untyped command, ?untyped logger, ?untyped stream) -> untyped
+
+    private
+
+    def info: (untyped msg) -> untyped
+
+    def execute: (untyped command, untyped stream) -> untyped
+
+    def port_open?: (untyped port) -> untyped
+
+    def chef_zero_running?: (untyped port, untyped use_ssl) -> untyped
+  end
+end

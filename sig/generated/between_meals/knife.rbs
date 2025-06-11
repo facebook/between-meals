@@ -1,0 +1,44 @@
+# Generated from lib/between_meals/knife.rb with RBS::Inline
+
+module BetweenMeals
+  # Knife does not have a usable API for using it as a lib
+  # This could be possibly refactored to touch its internals
+  # instead of shelling out
+  class Knife
+    include BetweenMeals::Util
+
+    attr_accessor cookbook_dirs: untyped
+
+    def initialize: (?untyped opts) -> untyped
+
+    def role_upload_all: () -> untyped
+
+    def role_upload: (untyped roles) -> untyped
+
+    def role_delete: (untyped roles) -> untyped
+
+    def cookbook_upload_all: () -> untyped
+
+    def berks_cookbook_upload_all: () -> untyped
+
+    def cookbook_upload: (untyped cookbooks) -> untyped
+
+    def berks_cookbook_upload: (untyped cookbooks) -> untyped
+
+    def cookbook_delete: (untyped cookbooks) -> untyped
+
+    def databag_upload_all: () -> untyped
+
+    def databag_upload: (untyped databags) -> untyped
+
+    def databag_delete: (untyped databags) -> untyped
+
+    def write_user_config: () -> untyped
+
+    private
+
+    def create_databag_if_missing: (untyped databag) -> untyped
+
+    def delete_databag_if_empty: (untyped databag) -> untyped
+  end
+end

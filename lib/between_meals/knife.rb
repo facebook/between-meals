@@ -274,7 +274,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
     end
 
     def delete_databag_if_empty(databag)
-      s = Mixlib::ShellOut.new("#{@knife} data bag show #{databag}" +
+      s = Mixlib::ShellOut.new("#{@knife} data bag show #{databag}" + # steep:ignore
                                " --format json #{@knife_verb_option} " +
                                "-c #{@config}").run_command
       s.error!

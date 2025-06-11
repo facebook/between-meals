@@ -19,8 +19,8 @@ require 'tempfile'
 
 module BetweenMeals
   class Repo
-    class Hg < BetweenMeals::Repo
-      class Cmd < BetweenMeals::Cmd
+    class Hg < ::BetweenMeals::Repo
+      class Cmd < ::BetweenMeals::Cmd
         def rev(rev)
           cmd("log -r #{rev}")
         end

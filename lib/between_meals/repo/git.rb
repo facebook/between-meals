@@ -28,7 +28,7 @@ module BetweenMeals
       def setup
         if File.exist?(File.expand_path(@repo_path))
           begin
-            @repo = Rugged::Repository.new(File.expand_path(@repo_path))
+            @repo = Rugged::Repository.new(File.expand_path(@repo_path)) # steep:ignore
           rescue StandardError
             @repo = nil
           end
@@ -82,7 +82,7 @@ module BetweenMeals
 
       def checkout(url)
         @cmd.clone(url, @repo_path)
-        @repo = Rugged::Repository.new(File.expand_path(@repo_path))
+        @repo = Rugged::Repository.new(File.expand_path(@repo_path)) # steep:ignore
       end
 
       # Return files changed between two revisions

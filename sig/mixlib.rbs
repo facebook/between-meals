@@ -1,0 +1,15 @@
+# Stub signatures being used from mixlib-shellout 3.4.3
+# Pull directly from upstream once it has RBS signatures
+module Mixlib
+  class ShellOut
+    attr_reader stdout: untyped
+    attr_reader stderr: untyped
+
+    def initialize: (*untyped command_args) -> untyped
+    def run_command: () -> untyped
+    def error: () -> untyped
+    def error!: () -> untyped
+    def error?: () -> untyped
+    def format_for_exception: () -> untyped
+  end
+end

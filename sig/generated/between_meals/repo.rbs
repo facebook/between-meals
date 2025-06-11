@@ -1,0 +1,67 @@
+# Generated from lib/between_meals/repo.rb with RBS::Inline
+
+module BetweenMeals
+  # Local checkout wrapper
+  class Repo
+    attr_reader repo_path: untyped
+
+    attr_reader bin: untyped
+
+    def initialize: (untyped repo_path, untyped logger) -> untyped
+
+    def self.get: (untyped type, untyped repo_path, untyped logger) -> untyped
+
+    def bin=: (untyped bin) -> untyped
+
+    def exists?: () -> untyped
+
+    def status: () -> untyped
+
+    # Only interesting in the case of git where we have an underlying
+    # repo object courtesy of Rugged.
+    def repo_object: () -> untyped
+
+    # This method *must* succeed in the case of no repo directory so that
+    # users can call `checkout`. Users may call `exists?` to find out if
+    # we have an underlying repo yet.
+    def setup: () -> untyped
+
+    def head_rev: () -> untyped
+
+    def head_msg: () -> untyped
+
+    def head_msg=: () -> untyped
+
+    def head_parents: () -> untyped
+
+    def latest_revision: () -> untyped
+
+    def create: (untyped _url) -> untyped
+
+    # Return files changed between two revisions
+    def changes: (untyped _start_ref, untyped _end_ref) -> untyped
+
+    def update: () -> untyped
+
+    # Return all files
+    def files: () -> untyped
+
+    def head: () -> untyped
+
+    def checkout: () -> untyped
+
+    def last_author: () -> untyped
+
+    def last_msg: () -> untyped
+
+    def last_msg=: () -> untyped
+
+    def name: () -> untyped
+
+    def email: () -> untyped
+
+    def upstream?: (untyped _rev) -> untyped
+
+    def valid_ref?: (untyped _rev) -> untyped
+  end
+end

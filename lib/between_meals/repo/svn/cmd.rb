@@ -17,8 +17,8 @@
 require 'between_meals/cmd'
 module BetweenMeals
   class Repo
-    class Svn < BetweenMeals::Repo
-      class Cmd < BetweenMeals::Cmd
+    class Svn < ::BetweenMeals::Repo
+      class Cmd < ::BetweenMeals::Cmd
         def diff(start_ref, end_ref, repo_path)
           cmd("diff -r #{start_ref}:#{end_ref} --summarize #{repo_path}")
         end

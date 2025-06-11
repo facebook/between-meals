@@ -1,0 +1,11 @@
+# Generated from lib/between_meals/cmd.rb with RBS::Inline
+
+module BetweenMeals
+  class Cmd
+    attr_accessor bin: untyped
+
+    def initialize: (untyped params) -> untyped
+
+    def cmd: (untyped params, ?untyped cwd, ?untyped nofail) -> untyped
+  end
+end

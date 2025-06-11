@@ -1,0 +1,16 @@
+# Generated from lib/between_meals/changes/databag.rb with RBS::Inline
+
+module BetweenMeals
+  module Changes
+    # Changeset aware databag
+    class Databag < Change
+      attr_accessor item: untyped
+
+      def self.name_from_path: (untyped path, untyped databag_dir) -> untyped
+
+      def initialize: (untyped file, untyped databag_dir) -> untyped
+
+      def self.find: (untyped list, untyped databag_dir, untyped logger) -> untyped
+    end
+  end
+end

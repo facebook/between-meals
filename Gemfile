@@ -6,6 +6,10 @@ group :git do
   gem 'rugged'
 end
 
+group :steep, :optional => true do
+  gem 'steep'
+end
+
 group :development do
   gem 'rspec-core', '~> 3.11'
   gem 'rspec-expectations', '~> 3.11'
