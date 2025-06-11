@@ -260,7 +260,7 @@ IAMAEpsWX2s2A6phgMCx7kH6wMmoZn3hb7Thh9+PfR8Jtp2/7k+ibCeF4gEWUCs5
     private
 
     def create_databag_if_missing(databag)
-      s = Mixlib::ShellOut.new("#{@knife} data bag list" + # steep:ignore
+      s = Mixlib::ShellOut.new("#{@knife} data bag list" +
                                ' --format json ' +
                                "-c #{@config}").run_command
 
