@@ -69,7 +69,7 @@ module BetweenMeals
             'Something went wrong. Please report this output.',
           )
           @logger.error(e)
-          stdout.lines.each do |line|
+          changes.lines.each do |line|
             @logger.error(line.strip)
           end
           exit(1)
