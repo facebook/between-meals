@@ -34,7 +34,7 @@ module BetweenMeals
     def time(logger = nil)
       @@logger = logger if logger
       t0 = Time.now
-      yield
+      yield # steep:ignore
       info("Executed in #{format('%.2f', Time.now - t0)}s")
     end
 
