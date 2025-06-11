@@ -30,7 +30,7 @@ module BetweenMeals
       cwd ||= File.expand_path(@cwd)
       cmd = "#{@bin} #{params}"
       @logger.info("Running \"#{cmd}\"")
-      c = Mixlib::ShellOut.new(
+      c = Mixlib::ShellOut.new( # steep:ignore
         cmd,
         :cwd => cwd,
         :env => {

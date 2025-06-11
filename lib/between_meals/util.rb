@@ -60,7 +60,7 @@ module BetweenMeals
 
     def execute(command, stream)
       info("Running: #{command}")
-      c = Mixlib::ShellOut.new(command, :live_stream => stream)
+      c = Mixlib::ShellOut.new(command, :live_stream => stream) # steep:ignore
       c.run_command
       c.stdout.lines.each do |line|
         info("STDOUT: #{line.strip}")
