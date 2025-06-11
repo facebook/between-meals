@@ -105,7 +105,7 @@ module BetweenMeals
           when /^([\w ])\w?\s+(.+)$/
             {
               :status => Regexp.last_match(1) == 'D' ? :deleted : :modified,
-              :path => Regexp.last_match(2).sub("#{@repo_path}/", ''),
+              :path => Regexp.last_match(2).to_s.sub("#{@repo_path}/", ''),
             }
           else
             fail 'Failed to parse repo diff line.'
