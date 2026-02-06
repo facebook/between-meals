@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.0.13
+* Provide IP address string to TCPSocket instead of Addrinfo
+* Fix incorrect use of stdout
+* Fix possible NilClass#sub
+* Use fully-qualified class names
+* Add annotations for steep
+* Ignore UnexpectedYield
+* Fix crash in databag upload (remove log messages before parsing JSON)
+* Remove verbosity options from data bag list shellout
+* Have repo auto-detection lazily load repository libraries
+* Fix change detection for databags
+* De-couple BetweenMeals::Repo class conformance tests
+
 ## 0.0.12
 * Moved to Actions, deprecated Travis+Circle
 * Unified style to match other FB-Chef-related-repos

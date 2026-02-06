@@ -6,10 +6,10 @@ On your checkout:
     vi between_meals.gemspec
     # create a pull request and merge it
 
-On a checkout of the **UPSTREAM** repo:
 * Add and push a tag:
     git tag -a v0.0.X -m 'version 0.0.X'
-    git push origin --tags
+    # assumes 'upstream' if the upstream and you have access
+    git push upstream --tags 
 
 * Build and push a release:
     gem build between_meals.gemspec
