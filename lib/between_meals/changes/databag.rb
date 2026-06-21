@@ -29,6 +29,10 @@ module BetweenMeals
         nil
       end
 
+      def to_s
+        "#{self.name}[#{self.item}]"
+      end
+
       def initialize(file, databag_dir)
         self.status = file[:status] == :deleted ? :deleted : :modified
         self.name, self.item = self.class.name_from_path(file[:path], databag_dir)

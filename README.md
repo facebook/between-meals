@@ -1,6 +1,8 @@
 # Between Meals
 
-![Continuous Integration](https://github.com/facebook/between-meals/workflows/Continuous%20Integration/badge.svg?event=push)
+![Continuous Integration](
+https://github.com/facebook/between-meals/workflows/Continuous%20Integration/badge.svg?event=push
+)
 
 ## Intro
 Ohai!
