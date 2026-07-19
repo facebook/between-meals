@@ -75,9 +75,21 @@ module BetweenMeals
       end
 
       def update
-        @cmd.cleanup(@repo_path)
-        @cmd.revert(@repo_path)
-        @cmd.update(@repo_path)
+        retry_count = 0
+        begin
+          @cmd.cleanup(@repo_path)
+          @cmd.revert(@repo_path)
+          @cmd.update(@repo_path)
+        rescue StandardError => e
+          @logger.error('Something went wrong with svn!')
+          @logger.error(e)
+          if retry_count > 4
+            raise
+          end
+          sleep(2 ** retry_count)
+          retry_count += 1
+          retry
+        end
       end
 
       def files
